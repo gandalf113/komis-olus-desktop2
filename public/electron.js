@@ -2,6 +2,9 @@
 const { app, BrowserWindow, ipcMain } = require('electron')
 const path = require('path')
 const isDev = require('electron-is-dev')
+const sqlite3 = require('sqlite3').verbose()
+
+let db;
 
 const createWindow = () => {
     // Create the browser window.
@@ -20,8 +23,14 @@ const createWindow = () => {
         `file://${path.join(__dirname, "../build/index.html")}`
     )
 
+    db = new sqlite3.Database(path.join(__dirname, "../src/testdb.db"), sqlite3.OPEN_READWRITE, (err) => {
+        if (err) return console.error(err.message);
+
+        console.log("connection successful")
+    })
+
     // Open the DevTools.
-    // mainWindow.webContents.openDevTools()
+    mainWindow.webContents.openDevTools()
 }
 
 // This method will be called when Electron has finished
@@ -41,6 +50,9 @@ app.whenReady().then(() => {
 // for applications and their menu bar to stay active until the user quits
 // explicitly with Cmd + Q.
 app.on('window-all-closed', () => {
+    db.close((err) => {
+        if (err) return console.error(err.message);
+    })
     if (process.platform !== 'darwin') app.quit()
 })
 
@@ -55,3 +67,28 @@ ipcMain.on("greet", (event, args) => {
 ipcMain.handle("get/version", async (event, args) => {
     return app.getVersion();
 })
+
+
+ipcMain.handle("get/clients", async (event, args) => {
+    const query = "SELECT * FROM klienci";
+    console.log("hello?")
+    
+    const response = await db.all(query, [], (err, rows) => {
+        if (err) return err.message;
+        console.log(rows)
+        return rows
+    })
+
+    return response
+})
+
+ipcMain.handle("create/client", async (event, args) => {
+    const sql = 'INSERT INTO users (first_name, last_name, phone_num, id) \
+    VALUES(?,?,?,?)';
+
+    db.run(sql, ['Jan', 'Kowalski', '123123123, 1'], (err) => {
+        if (err) return console.error(err.message);
+        console.log("a new row has been appended")
+    });
+})
+

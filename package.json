@@ -20,6 +20,7 @@
     "react-dom": "^18.1.0",
     "react-scripts": "5.0.1",
     "react-table": "^7.8.0",
+    "sqlite3": "^5.0.8",
     "web-vitals": "^2.1.4"
   },
   "scripts": {
@@ -29,7 +30,8 @@
     "react-eject": "react-scripts eject",
     "electron-build": "electron-builder",
     "build": "npm run react-build && npm run electron-build",
-    "start": "concurrently \"cross-env BROWSER=none npm run react-start\" \" wait-on http://localhost:3000 && electron .\""
+    "start": "concurrently \"cross-env BROWSER=none npm run react-start\" \" wait-on http://localhost:3000 && electron .\"",
+    "postinstall": "install-app-deps"
   },
   "eslintConfig": {
     "extends": [
