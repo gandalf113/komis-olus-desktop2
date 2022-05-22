@@ -71,7 +71,6 @@ ipcMain.handle("get/version", async (event, args) => {
 
 ipcMain.handle("get/clients", async (event, args) => {
     const query = "SELECT * FROM klienci";
-    console.log("hello?")
     
     const response = await db.all(query, [], (err, rows) => {
         if (err) return err.message;
@@ -91,4 +90,3 @@ ipcMain.handle("create/client", async (event, args) => {
         console.log("a new row has been appended")
     });
 })
-
