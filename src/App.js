@@ -1,24 +1,32 @@
 import { useState } from 'react';
-import DataTable from './components/DataTable';
+import { ClientDataTable, SalesDataTable } from './components/DataTable';
 
 function App() {
-  const [version, setVersion] = useState(0)
+  const [currentTable, setCurrentTable] = useState('klienci')
+
+
+  function renderDataTable(currentTable) {
+    switch (currentTable) {
+      case 'klienci':
+        return <ClientDataTable />
+      case 'sprzedaz':
+        return <SalesDataTable />
+      default:
+        return null
+    }
+  }
 
   return (
     <div>
-      <button onClick={() => window.api.greet("hello from the renderer process")}>Greet</button>
-      <button onClick={async () => {
-        await window.api.GetVersion()
-        .then(res => setVersion(res))
-      }}>Get Version</button>
-      <button onClick={async () => {
-        await window.api.getClients()
-        .then(res => console.log(res))
-      }}>Get clients</button>
-      <p>{version}</p>
+      <button onClick={() => setCurrentTable('klienci')}>Klienci</button>
+      <button onClick={() => setCurrentTable('sprzedaz')}>Sprzedaż</button>
+      <button>Umowy</button>
+      <button>Przedmioty</button>
+      <br />
+      <br />
 
-
-      <DataTable />
+      {renderDataTable(currentTable)}
+      {/* <SalesDataTable /> */}
     </div>
   );
 }
