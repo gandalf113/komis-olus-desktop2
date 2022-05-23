@@ -2,13 +2,19 @@
 const { app, BrowserWindow, ipcMain } = require('electron')
 const path = require('path')
 const isDev = require('electron-is-dev')
-const sqlite3 = require('sqlite3').verbose()
 
-let db;
+var knex = require("knex")({
+    client: "sqlite3",
+    connection: {
+        filename: path.join(__dirname, 'databse.sqlite')
+    }
+});
+
+let mainWindow;
 
 const createWindow = () => {
     // Create the browser window.
-    const mainWindow = new BrowserWindow({
+    mainWindow = new BrowserWindow({
         width: 800,
         height: 600,
         webPreferences: {
@@ -22,12 +28,6 @@ const createWindow = () => {
         'http://localhost:3000/' :
         `file://${path.join(__dirname, "../build/index.html")}`
     )
-
-    db = new sqlite3.Database(path.join(__dirname, "../src/testdb.db"), sqlite3.OPEN_READWRITE, (err) => {
-        if (err) return console.error(err.message);
-
-        console.log("connection successful")
-    })
 
     // Open the DevTools.
     mainWindow.webContents.openDevTools()
@@ -50,9 +50,6 @@ app.whenReady().then(() => {
 // for applications and their menu bar to stay active until the user quits
 // explicitly with Cmd + Q.
 app.on('window-all-closed', () => {
-    db.close((err) => {
-        if (err) return console.error(err.message);
-    })
     if (process.platform !== 'darwin') app.quit()
 })
 
@@ -68,17 +65,26 @@ ipcMain.handle("get/version", async (event, args) => {
     return app.getVersion();
 })
 
+// ipcMain.on("get/clients", async (event, args) => {
+//     let result = knex.select("FirstName").from("User")
+//     result.then(function (rows) {
+//         console.log(rows)
+//         mainWindow.webContents.send("resultSent", rows);
+//     }).catch(err => {
+//         console.error(err)
+//     })
+// })
 
 ipcMain.handle("get/clients", async (event, args) => {
-    const query = "SELECT * FROM klienci";
-    
-    const response = await db.all(query, [], (err, rows) => {
-        if (err) return err.message;
-        console.log(rows)
-        return rows
-    })
-
-    return response
+    return knex.select("FirstName").from("User")
+    // result.then(function (rows) {
+    //     console.log(rows)
+    //     mainWindow.webContents.send("resultSent", rows);
+    //     return rows
+    // }).catch(err => {
+    //     console.error(err)
+    //     return err
+    // })
 })
 
 ipcMain.handle("create/client", async (event, args) => {

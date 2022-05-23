@@ -16,6 +16,8 @@ function App() {
         .then(res => console.log(res))
       }}>Get clients</button>
       <p>{version}</p>
+
+
       <DataTable />
     </div>
   );
