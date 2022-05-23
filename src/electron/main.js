@@ -1,14 +1,7 @@
 // Modules to control application life and create native browser window
 const { app, BrowserWindow, ipcMain } = require('electron')
 const path = require('path')
-const isDev = require('electron-is-dev')
-
-var knex = require("knex")({
-    client: "sqlite3",
-    connection: {
-        filename: path.join(__dirname, 'databse.sqlite')
-    }
-});
+const isDev = require('electron-is-dev');
 
 let mainWindow;
 
@@ -26,7 +19,7 @@ const createWindow = () => {
     //   mainWindow.loadFile('index.html')
     mainWindow.loadURL(isDev ?
         'http://localhost:3000/' :
-        `file://${path.join(__dirname, "../build/index.html")}`
+        `file://${path.join(__dirname, "../../build/index.html")}`
     )
 
     // Open the DevTools.
@@ -65,34 +58,4 @@ ipcMain.handle("get/version", async (event, args) => {
     return app.getVersion();
 })
 
-// ipcMain.on("get/clients", async (event, args) => {
-//     let result = knex.select("FirstName").from("User")
-//     result.then(function (rows) {
-//         console.log(rows)
-//         mainWindow.webContents.send("resultSent", rows);
-//     }).catch(err => {
-//         console.error(err)
-//     })
-// })
-
-ipcMain.handle("get/clients", async (event, args) => {
-    return knex.select("FirstName").from("User")
-    // result.then(function (rows) {
-    //     console.log(rows)
-    //     mainWindow.webContents.send("resultSent", rows);
-    //     return rows
-    // }).catch(err => {
-    //     console.error(err)
-    //     return err
-    // })
-})
-
-ipcMain.handle("create/client", async (event, args) => {
-    const sql = 'INSERT INTO users (first_name, last_name, phone_num, id) \
-    VALUES(?,?,?,?)';
-
-    db.run(sql, ['Jan', 'Kowalski', '123123123, 1'], (err) => {
-        if (err) return console.error(err.message);
-        console.log("a new row has been appended")
-    });
-})
+const { getClients } = require('./db_handlers');
