@@ -5,7 +5,7 @@ const ContractsScreen = () => {
     const columns = React.useMemo(
         () => [
             {
-                Header: 'id',
+                Header: 'Id',
                 accessor: 'id_umowy',
             },
             {
@@ -17,8 +17,8 @@ const ContractsScreen = () => {
                 accessor: 'data',
             },
             {
-                Header: 'Przedmioty',
-                Cell: props => <button onClick={() => alert(props.row.original.id_umowy)}>Pokaż</button>
+                Header: 'Otwórz',
+                Cell: props => <button onClick={() => alert(props.row.original.id_umowy)}>Otwórz umowę</button>
             },
         ],
         []

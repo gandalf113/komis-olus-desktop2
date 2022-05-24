@@ -8,6 +8,7 @@ const WINDOW_API = {
     getContracts: () => ipcRenderer.invoke("get/contracts"),
     getContractsWithClients: () => ipcRenderer.invoke("get/contracts-clients"),
     getSalesWithItems: () => ipcRenderer.invoke("get/sales-items"),
+    getItemsWithContracts: (contractId) => ipcRenderer.invoke("get/items-contracts", {contractId: contractId}),
 }
 
 contextBridge.exposeInMainWorld("api", WINDOW_API)

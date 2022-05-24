@@ -58,4 +58,4 @@ ipcMain.handle("get/version", async (event, args) => {
     return app.getVersion();
 })
 
-const { getClients, getSales, getContracts, getContractsWithClients } = require('./db-manager');
+require('./db-manager');

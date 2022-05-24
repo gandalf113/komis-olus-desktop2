@@ -9,27 +9,27 @@ var knex = require("knex")({
     }
 });
 
-const getClients = ipcMain.handle("get/clients", async (event, args) => {
+getClients = ipcMain.handle("get/clients", async (event, args) => {
     return knex.select().from("klienci")
 })
 
-const getSales = ipcMain.handle("get/sales", async (event, args) => {
+getSales = ipcMain.handle("get/sales", async (event, args) => {
     return knex.select().from("sprzedaz")
 })
 
-const getContracts = ipcMain.handle("get/contracts", async (event, args) => {
+getContracts = ipcMain.handle("get/contracts", async (event, args) => {
     return knex.select().from("umowy")
 })
 
-const getContractsWithClients = ipcMain.handle("get/contracts-clients", async (event, args) => {
+getContractsWithClients = ipcMain.handle("get/contracts-clients", async (event, args) => {
     return knex.select('*').from('umowy').leftOuterJoin('klienci', 'klienci.id_klienta', 'umowy.id_klienta')
 })
 
-const getSalesWithItems = ipcMain.handle("get/sales-items", async (event, args) => {
+getSalesWithItems = ipcMain.handle("get/sales-items", async (event, args) => {
     return knex.select('*').from('sprzedaz').leftOuterJoin('przedmioty', 'przedmioty.id_przedmiotu', 'sprzedaz.id_przedmiotu')
 })
 
-exports.getClients = getClients
-exports.getSales = getSales
-exports.getContracts = getContracts
-exports.getContractsWithClients = getContractsWithClients
+getItemsWithContracts = ipcMain.handle("get/items-contracts", async (event, args) => {
+    const { contractId } = args
+    return knex.select('*').from('przedmioty').leftOuterJoin('umowy', 'umowy.id_umowy', 'przedmioty.id_umowy').where('przedmioty.id_umowy', contractId)
+})

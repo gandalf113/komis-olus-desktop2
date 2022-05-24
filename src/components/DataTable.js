@@ -5,7 +5,7 @@ import Modal from 'react-modal'
 
 Modal.setAppElement('#root');
 
-export const DataTable = ({ apiCallback, columns }) => {
+export const DataTable = ({ apiCallback, columns, apiArgs = {} }) => {
     const [tableData, setTableData] = useState([])
 
     const data = React.useMemo(
@@ -18,7 +18,7 @@ export const DataTable = ({ apiCallback, columns }) => {
     }, [])
 
     const getData = async () => {
-        await apiCallback()
+        await apiCallback(apiArgs)
             .then(res => {
                 setTableData(res)
                 console.log(res)
