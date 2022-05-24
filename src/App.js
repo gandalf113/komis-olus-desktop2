@@ -1,5 +1,8 @@
 import { useState } from 'react';
 import { ClientDataTable, SalesDataTable } from './components/DataTable';
+import ClientsScreen from './screens/ClientsScreen';
+import ContractsScreen from './screens/ContractsScreen';
+import SalesScreen from './screens/SalesScreen';
 
 function App() {
   const [currentTable, setCurrentTable] = useState('klienci')
@@ -8,9 +11,12 @@ function App() {
   function renderDataTable(currentTable) {
     switch (currentTable) {
       case 'klienci':
-        return <ClientDataTable />
+        return <ClientsScreen />
+      // return <ClientDataTable />
       case 'sprzedaz':
-        return <SalesDataTable />
+        return <SalesScreen />
+      case 'umowy':
+        return <ContractsScreen />
       default:
         return null
     }
@@ -20,7 +26,7 @@ function App() {
     <div>
       <button onClick={() => setCurrentTable('klienci')}>Klienci</button>
       <button onClick={() => setCurrentTable('sprzedaz')}>Sprzedaż</button>
-      <button>Umowy</button>
+      <button onClick={() => setCurrentTable('umowy')}>Umowy</button>
       <br />
       <br />
 
