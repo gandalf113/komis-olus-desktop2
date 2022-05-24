@@ -5,6 +5,7 @@ const WINDOW_API = {
     GetVersion: () => ipcRenderer.invoke("get/version"),
     getClients: () => ipcRenderer.invoke("get/clients"),
     getSales: () => ipcRenderer.invoke("get/sales"),
+    getSalesInnerJoin: () => ipcRenderer.invoke("get/sales_clients"),
 }
 
 contextBridge.exposeInMainWorld("api", WINDOW_API)

@@ -21,7 +21,6 @@ function App() {
       <button onClick={() => setCurrentTable('klienci')}>Klienci</button>
       <button onClick={() => setCurrentTable('sprzedaz')}>Sprzedaż</button>
       <button>Umowy</button>
-      <button>Przedmioty</button>
       <br />
       <br />
 

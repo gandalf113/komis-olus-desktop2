@@ -116,7 +116,7 @@ export const SalesDataTable = () => {
     }, [])
 
     const getData = async () => {
-        await window.api.getSales()
+        await window.api.getSalesInnerJoin()
             .then(res => {
                 setTableData(res)
                 console.log(res)
@@ -126,12 +126,19 @@ export const SalesDataTable = () => {
     const columns = React.useMemo(
         () => [
             {
-                Header: 'ID',
-                accessor: 'id', // accessor is the "key" in the data
+                Header: 'Dzień sprzedaży',
+                accessor: 'data',
             },
             {
-                Header: 'IdKlienta',
-                accessor: 'idKlienta',
+                Header: 'Umowa',
+                accessor: 'idPrzedmiotu',
+            },
+            {
+                Header: 'Nabywca',
+                accessor: 'nazwisko',
+                Cell: ({ value, row }) => (
+                    <p>{row.original.imie} {row.original.nazwisko} </p>
+                ),
             },
             {
                 Header: 'Kwota dla komitenta',
@@ -144,10 +151,6 @@ export const SalesDataTable = () => {
             {
                 Header: 'Obrót',
                 accessor: 'obrot',
-            },
-            {
-                Header: 'Dzień sprzedaży',
-                accessor: 'data',
             },
         ],
         []
@@ -166,13 +169,6 @@ export const SalesDataTable = () => {
 
     return (
         <div>
-            {/* <button onClick={async () => {
-                await window.api.getSales()
-                    .then(res => {
-                        setTableData(res)
-                        console.log(res)
-                    })
-            }}>Odśwież</button> */}
             <table {...getTableProps()}>
                 <thead>
                     {// Loop over the header rows
