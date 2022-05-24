@@ -1,7 +1,7 @@
 import React from 'react'
 import { DataTable } from '../components/DataTable'
 
-const ContractsScreen = () => {
+const ContractsScreen = ({ openContractCallback }) => {
     const columns = React.useMemo(
         () => [
             {
@@ -18,7 +18,7 @@ const ContractsScreen = () => {
             },
             {
                 Header: 'Otwórz',
-                Cell: props => <button onClick={() => alert(props.row.original.id_umowy)}>Otwórz umowę</button>
+                Cell: props => <button onClick={() => openContractCallback(props.row.original.id_umowy)}>Otwórz umowę</button>
             },
         ],
         []

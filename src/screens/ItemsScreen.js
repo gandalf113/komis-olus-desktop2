@@ -1,16 +1,12 @@
 import React from 'react'
 import { DataTable } from '../components/DataTable'
 
-const ItemsScreen = () => {
+const ItemsScreen = ({ contract }) => {
     const columns = React.useMemo(
         () => [
             {
-                Header: 'Id',
+                Header: 'ID Przedmiotu',
                 accessor: 'id_przedmiotu',
-            },
-            {
-                Header: 'ID Umowy',
-                accessor: 'id_umowy',
             },
             {
                 Header: 'Nazwa',
@@ -35,7 +31,7 @@ const ItemsScreen = () => {
     return (
         <div>
             <h2>Umowa z dnia xx-xx-xxxx zawarta z komitentem xxxxn</h2>
-            <DataTable apiCallback={window.api.getItemsWithContracts} columns={columns} apiArgs={3} />
+            <DataTable apiCallback={window.api.getItemsWithContracts} columns={columns} apiArgs={contract} />
         </div>
     )
 }

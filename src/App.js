@@ -6,6 +6,12 @@ import SalesScreen from './screens/SalesScreen';
 
 function App() {
   const [currentTable, setCurrentTable] = useState('klienci')
+  const [currentContract, setCurrentContract] = useState()
+
+  const openContract = (contractId) => {
+    setCurrentContract(contractId)
+    setCurrentTable('przedmioty')
+  }
 
   function renderDataTable(currentTable) {
     switch (currentTable) {
@@ -14,9 +20,9 @@ function App() {
       case 'sprzedaz':
         return <SalesScreen />
       case 'umowy':
-        return <ContractsScreen />
+        return <ContractsScreen openContractCallback={openContract} />
       case 'przedmioty':
-        return <ItemsScreen />
+        return <ItemsScreen contract={currentContract} />
       default:
         return null
     }
