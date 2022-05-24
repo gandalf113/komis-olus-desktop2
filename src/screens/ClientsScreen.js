@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react'
+import React from 'react'
 import { DataTable } from '../components/DataTable'
 
 const ClientsScreen = () => {
@@ -7,7 +7,7 @@ const ClientsScreen = () => {
         () => [
             {
                 Header: 'ID',
-                accessor: 'id', // accessor is the "key" in the data
+                accessor: 'id_klienta', // accessor is the "key" in the data
             },
             {
                 Header: 'Skrót',
@@ -26,7 +26,7 @@ const ClientsScreen = () => {
     )
     return (
         <div>
-            ClientsScreen
+            <button>Nowy klient</button>
             <DataTable apiCallback={window.api.getClients} columns={columns} />
         </div>
     )
