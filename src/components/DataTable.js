@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import { useTable } from 'react-table'
 import "../table.css"
 import Modal from 'react-modal'
@@ -13,17 +13,20 @@ export const DataTable = ({ apiCallback, columns, apiArgs = {} }) => {
         [tableData]
     )
 
+    const getData = useCallback(
+        async () => {
+            await apiCallback(apiArgs)
+                .then(res => {
+                    setTableData(res)
+                    console.log(res)
+                })
+        }, [apiArgs, apiCallback]
+    )
+
     useEffect(() => {
         getData()
-    }, [])
+    }, [getData])
 
-    const getData = async () => {
-        await apiCallback(apiArgs)
-            .then(res => {
-                setTableData(res)
-                console.log(res)
-            })
-    }
 
     const tableInstance = useTable({ columns, data })
 
