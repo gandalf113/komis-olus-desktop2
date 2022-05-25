@@ -8,8 +8,8 @@ function App() {
   const [currentTable, setCurrentTable] = useState('klienci')
   const [currentContract, setCurrentContract] = useState()
 
-  const openContract = (contractId) => {
-    setCurrentContract(contractId)
+  const openContract = (contract) => {
+    setCurrentContract(contract)
     setCurrentTable('przedmioty')
   }
 
@@ -33,7 +33,6 @@ function App() {
       <button onClick={() => setCurrentTable('klienci')}>Klienci</button>
       <button onClick={() => setCurrentTable('sprzedaz')}>Sprzedaż</button>
       <button onClick={() => setCurrentTable('umowy')}>Umowy</button>
-      <button onClick={() => setCurrentTable('przedmioty')}>Przedmioty</button>
       <br />
       <br />
 

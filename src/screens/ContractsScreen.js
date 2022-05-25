@@ -18,10 +18,10 @@ const ContractsScreen = ({ openContractCallback }) => {
             },
             {
                 Header: 'Otwórz',
-                Cell: props => <button onClick={() => openContractCallback(props.row.original.id_umowy)}>Otwórz umowę</button>
+                Cell: props => <button onClick={() => openContractCallback(props.row.original)}>Otwórz umowę</button>
             },
         ],
-        []
+        [openContractCallback]
     )
     return (
         <div>
