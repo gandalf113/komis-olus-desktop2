@@ -13,19 +13,19 @@ export const DataTable = ({ apiCallback, columns, apiArgs = {} }) => {
         [tableData]
     )
 
-    const getData = useCallback(
+    const getData =
         async () => {
             await apiCallback(apiArgs)
                 .then(res => {
                     setTableData(res)
                     console.log(res)
                 })
-        }, [apiArgs, apiCallback]
-    )
+        }
+
 
     useEffect(() => {
         getData()
-    }, [getData])
+    }, [])
 
 
     const tableInstance = useTable({ columns, data })

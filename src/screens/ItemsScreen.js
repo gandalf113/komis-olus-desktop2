@@ -6,9 +6,7 @@ const ItemsScreen = ({ contract }) => {
         () => [
             {
                 Header: 'ID przedmiotu',
-                accessor: 'id_przedmiotu',
-                Cell: props => <div>{contract.skrot} {contract.id_umowy} {props.value}</div>
-
+                accessor: 'sciezka',
             },
             {
                 Header: 'Nazwa',

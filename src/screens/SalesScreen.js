@@ -1,7 +1,18 @@
 import React from 'react'
 import { DataTable } from '../components/DataTable'
+import { NewSaleModal } from '../components/Modals';
 
 const SalesScreen = () => {
+    const [modalIsOpen, setIsOpen] = React.useState(false);
+
+    function openModal() {
+        setIsOpen(true);
+    }
+
+    function closeModal() {
+        setIsOpen(false);
+    }
+
     const columns = React.useMemo(
         () => [
             {
@@ -20,10 +31,12 @@ const SalesScreen = () => {
         ],
         []
     )
+
     return (
         <div>
-            <button>Nowa sprzedaż</button>
+            <button onClick={openModal}>Nowa sprzedaż</button>
             <DataTable apiCallback={window.api.getSalesWithItems} columns={columns} />
+            <NewSaleModal isOpen={modalIsOpen} openModalCallback={openModal} closeModalCallback={closeModal} />
         </div>
     )
 }
