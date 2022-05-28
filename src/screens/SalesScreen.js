@@ -2,6 +2,7 @@ import { Button } from '@mui/material';
 import React from 'react'
 import { DataTable } from '../components/DataTable'
 import { NewSaleModal } from '../components/Modals';
+import { NewSaleModalMUI } from '../components/MuiModals';
 
 const SalesScreen = () => {
     const [modalIsOpen, setIsOpen] = React.useState(false);
@@ -37,7 +38,8 @@ const SalesScreen = () => {
         <div>
             <Button onClick={openModal} variant="contained" color="success" style={{ marginBottom: 10 }}>Nowa sprzedaż</Button>
             <DataTable apiCallback={window.api.getSalesWithItems} columns={columns} />
-            <NewSaleModal isOpen={modalIsOpen} openModalCallback={openModal} closeModalCallback={closeModal} />
+            <NewSaleModalMUI isOpen={modalIsOpen} handleClose={closeModal} />
+            {/* <NewSaleModalMUI isOpen={modalIsOpen} openModalCallback={openModal} closeModalCallback={() =>closeModal} /> */}
         </div>
     )
 }

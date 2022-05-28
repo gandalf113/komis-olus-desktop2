@@ -1,6 +1,6 @@
-import { Button } from '@mui/material'
 import React from 'react'
 import { DataTable } from '../components/DataTable'
+import { Button } from '@mui/material'
 
 const ClientsScreen = () => {
 
@@ -27,7 +27,7 @@ const ClientsScreen = () => {
     )
     return (
         <div>
-            {/* <Button variant='contained'>Nowy klient</Button> */}
+            <Button variant="contained" color="success" style={{ marginBottom: 10 }}>Nowy klient</Button>
             <DataTable apiCallback={window.api.getClients} columns={columns} />
         </div>
     )
