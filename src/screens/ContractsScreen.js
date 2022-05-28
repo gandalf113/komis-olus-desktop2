@@ -1,6 +1,7 @@
 import React from 'react'
 import { DataTable } from '../components/DataTable'
 import { NewContractModal } from '../components/Modals';
+import { Button } from '@mui/material';
 
 const ContractsScreen = ({ openContractCallback }) => {
     const [modalIsOpen, setIsOpen] = React.useState(false);
@@ -29,14 +30,15 @@ const ContractsScreen = ({ openContractCallback }) => {
             },
             {
                 Header: 'Otwórz',
-                Cell: props => <button onClick={() => openContractCallback(props.row.original)}>Otwórz umowę</button>
+                Cell: props => <Button onClick={() => openContractCallback(props.row.original)}
+                color="secondary">Otwórz umowę</Button>
             },
         ],
         [openContractCallback]
     )
     return (
         <div>
-            <button onClick={openModal}>Nowa umowa</button>
+            <Button onClick={openModal} variant="contained" color="success" style={{ marginBottom: 10 }}>Nowa umowa</Button>
             <DataTable apiCallback={window.api.getContractsWithClients} columns={columns} />
             <NewContractModal isOpen={modalIsOpen} openModalCallback={openModal} closeModalCallback={closeModal} />
         </div>

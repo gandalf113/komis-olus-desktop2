@@ -1,5 +1,6 @@
 import React from 'react'
 import { DataTable } from '../components/DataTable'
+import { Button } from '@mui/material';
 
 const ItemsScreen = ({ contract }) => {
     const decToHex = (dec) => {
@@ -35,10 +36,10 @@ const ItemsScreen = ({ contract }) => {
     )
     return (
         <div>
-            <button onClick={() => console.log(contract)}>Drukuj PDF</button>
             <h1>{contract.skrot} {contract.id_umowy} </h1>
             <h3>Data zawarcia: {contract.data}</h3>
             <DataTable apiCallback={window.api.getItemsWithContracts} columns={columns} apiArgs={contract.id_umowy} />
+            <Button onClick={() => console.log(contract)} variant="contained" color="secondary" style={{ marginTop: 20 }}>Drukuj PDF</Button>
         </div>
     )
 }

@@ -97,7 +97,7 @@ export default function PersistentDrawerLeft() {
             case 'umowy':
                 return <ContractsScreen openContractCallback={openContract} />
             case 'przedmioty':
-                return <ItemsScreen />
+                return <ItemsScreen contract={currentContract}/>
             default:
                 return null
         }
