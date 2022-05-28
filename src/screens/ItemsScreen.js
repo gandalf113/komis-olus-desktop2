@@ -2,11 +2,17 @@ import React from 'react'
 import { DataTable } from '../components/DataTable'
 
 const ItemsScreen = ({ contract }) => {
+    const decToHex = (dec) => {
+        let hexStr = dec.toString(16);
+        return hexStr
+    }
+
     const columns = React.useMemo(
         () => [
             {
                 Header: 'ID przedmiotu',
-                accessor: 'sciezka',
+                accessor: 'id_przedmiotu',
+                Cell: props => <div>{decToHex(props.value)}</div>
             },
             {
                 Header: 'Nazwa',

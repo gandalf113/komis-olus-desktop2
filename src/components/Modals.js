@@ -23,7 +23,7 @@ export const NewSaleModal = ({ isOpen, closeModalCallback }) => {
 
 
     const getItems = async () => {
-        if(serachValue === ""){
+        if (serachValue === "") {
             setItems([])
             return
         }
@@ -39,12 +39,15 @@ export const NewSaleModal = ({ isOpen, closeModalCallback }) => {
                 isOpen={isOpen}
                 onRequestClose={() => closeModalCallback()}
                 style={customStyles}
-                contentLabel="Example Modal"
+                contentLabel="Nowa sprzedaż"
             >
                 <button onClick={() => closeModalCallback()}>Zamknij</button>
                 <div>Wprowadź kod z metki</div>
-                <form>
-                    <input placeholder='seda1 4 5'
+                <form onSubmit={(e) => {
+                    e.preventDefault()
+                    getItems()
+                }}>
+                    <input placeholder='35A2F3'
                         value={serachValue}
                         onChange={(e) => {
                             // getItems()
