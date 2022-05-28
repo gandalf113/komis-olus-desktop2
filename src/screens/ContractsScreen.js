@@ -1,7 +1,18 @@
 import React from 'react'
 import { DataTable } from '../components/DataTable'
+import { NewContractModal } from '../components/Modals';
 
 const ContractsScreen = ({ openContractCallback }) => {
+    const [modalIsOpen, setIsOpen] = React.useState(false);
+
+    function openModal() {
+        setIsOpen(true);
+    }
+
+    function closeModal() {
+        setIsOpen(false);
+    }
+
     const columns = React.useMemo(
         () => [
             {
@@ -25,8 +36,9 @@ const ContractsScreen = ({ openContractCallback }) => {
     )
     return (
         <div>
-            <button>Nowa umowa</button>
+            <button onClick={openModal}>Nowa umowa</button>
             <DataTable apiCallback={window.api.getContractsWithClients} columns={columns} />
+            <NewContractModal isOpen={modalIsOpen} openModalCallback={openModal} closeModalCallback={closeModal} />
         </div>
     )
 }

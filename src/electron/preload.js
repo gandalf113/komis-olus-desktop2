@@ -11,6 +11,8 @@ const WINDOW_API = {
     getSalesWithItems: () => ipcRenderer.invoke("get/sales-items"),
     getItemsWithContracts: (contractId) => ipcRenderer.invoke("get/items-contracts", { contractId: contractId }),
     getClientsWithContractsAndItems: (search) => ipcRenderer.invoke("get/clients-contracts-items", { search: search }),
+    searchClients: (search) => ipcRenderer.invoke("search/clients", { search: search }),
+    createContract: (clientId, date) => ipcRenderer.invoke("create/contract", { clientId: clientId, date: date }),
 }
 
 contextBridge.exposeInMainWorld("api", WINDOW_API)
