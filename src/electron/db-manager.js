@@ -67,3 +67,22 @@ createContract = ipcMain.handle("create/contract", async (event, args) => {
             data: date
         })
 })
+
+createSale = ipcMain.handle("create/sale", async (event, args) => {
+    const { itemId, date } = args
+
+    return knex('sprzedaz')
+        .insert({
+            id_przedmiotu: itemId,
+            data: date
+        })
+})
+
+incrementSoldAmount = ipcMain.handle('increment/soldAmount', async (event, args) => {
+    const { itemId } = args
+
+    return knex('przedmioty')
+        .where('id_przedmiotu', '=', itemId)
+        .increment('sprzedanaIlosc', 1)
+})
+

@@ -12,6 +12,16 @@ import { InputAdornment } from '@mui/material';
 import { ListItemText } from '@mui/material';
 import { List } from '@mui/material';
 
+const getToday = () => {
+    var today = new Date();
+    var dd = String(today.getDate()).padStart(2, '0');
+    var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+    var yyyy = today.getFullYear();
+
+    today = yyyy + '-' + mm + '-' + dd;
+    return today
+}
+
 export const NewSaleModalMUI = ({ isOpen, handleClose }) => {
     const [items, setItems] = useState([])
     const [searchValue, setSearchValue] = useState()
@@ -21,6 +31,17 @@ export const NewSaleModalMUI = ({ isOpen, handleClose }) => {
         setSearchValue('')
     }, [setItems])
 
+    const createSale = async (itemId) => {
+        if (itemId === -1) return
+
+        await window.api.createSale(itemId, getToday()).then(res => {
+            alert('Pomyślnie dodano sprzedaż')
+
+            window.api.incrementSoldAmount(itemId).then(_ => {
+                alert('Pomyślnie zwiększono ilość sprzedanych sztuk')
+            })
+        })
+    }
 
     const getItems = async () => {
         if (searchValue === "") {
@@ -51,7 +72,9 @@ export const NewSaleModalMUI = ({ isOpen, handleClose }) => {
                     />
                     <List>
                         {items.map(item => (
-                            <ListItem key={item.id_przedmiotu}>
+                            <ListItem key={item.id_przedmiotu} secondaryAction={
+                                <Button onClick={() => createSale(item.id_przedmiotu)}>Wybierz</Button>
+                            } disablePadding>
                                 <ListItemButton>
                                     <ListItemText primary={`${item.nazwa} - ${item.skrot}`} />
                                 </ListItemButton>

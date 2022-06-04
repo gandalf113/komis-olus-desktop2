@@ -13,6 +13,8 @@ const WINDOW_API = {
     getClientsWithContractsAndItems: (search) => ipcRenderer.invoke("get/clients-contracts-items", { search: search }),
     searchClients: (search) => ipcRenderer.invoke("search/clients", { search: search }),
     createContract: (clientId, date) => ipcRenderer.invoke("create/contract", { clientId: clientId, date: date }),
+    createSale: (itemId, date) => ipcRenderer.invoke("create/sale", { itemId: itemId, date: date }),
+    incrementSoldAmount: (itemId) => ipcRenderer.invoke("increment/soldAmount", { itemId: itemId }),
 }
 
 contextBridge.exposeInMainWorld("api", WINDOW_API)
