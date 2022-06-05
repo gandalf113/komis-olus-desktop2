@@ -18,7 +18,6 @@ export const DataTable = ({ apiCallback, columns, apiArgs = {} }) => {
             await apiCallback(apiArgs)
                 .then(res => {
                     setTableData(res)
-                    console.log(res)
                 })
         }
 

@@ -4,10 +4,11 @@ import TextField from '@mui/material/TextField';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
-import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import Autocomplete from '@mui/material/Autocomplete';
-import { ListItem, ListItemButton, OutlinedInput } from '@mui/material';
+import { IconButton, ListItem, ListItemButton, ListItemIcon, OutlinedInput } from '@mui/material';
+import SearchIcon from '@mui/icons-material/Search';
+import InfoIcon from '@mui/icons-material/Info';
 import { InputAdornment } from '@mui/material';
 import { ListItemText } from '@mui/material';
 import { List } from '@mui/material';
@@ -24,26 +25,35 @@ const getToday = () => {
 
 export const NewSaleModalMUI = ({ isOpen, handleClose }) => {
     const [items, setItems] = useState([])
-    const [searchValue, setSearchValue] = useState()
+    const [currentItem, setCurrentItem] = useState()
+    const [detailModalOpen, setDetailModalOpen] = React.useState(false);
+
+    function openModal() {
+        setDetailModalOpen(true);
+    }
+
+    function closeModal() {
+        setDetailModalOpen(false);
+    }
 
     useEffect(() => {
         setItems([])
-        setSearchValue('')
     }, [setItems])
 
     const createSale = async (itemId) => {
-        if (itemId === -1) return
-
         await window.api.createSale(itemId, getToday()).then(res => {
-            alert('Pomyślnie dodano sprzedaż')
+            console.log('Pomyślnie dodano sprzedaż')
 
             window.api.incrementSoldAmount(itemId).then(_ => {
-                alert('Pomyślnie zwiększono ilość sprzedanych sztuk')
+                console.log('Pomyślnie zwiększono ilość sprzedanych sztuk')
             })
+        }).catch(error => {
+            alert('Wystąpił błąd')
+            console.log(error)
         })
     }
 
-    const getItems = async () => {
+    const getItems = async (searchValue) => {
         if (searchValue === "") {
             setItems([])
             return
@@ -54,38 +64,57 @@ export const NewSaleModalMUI = ({ isOpen, handleClose }) => {
         })
     }
 
+    const showInfo = async (item) => {
+        setCurrentItem(item)
+        console.log(item)
+        openModal()
+    }
+
+    const checkIfSoldOut = (item) => {
+        const initAmount = item.przyjetaIlosc
+        const soldAmount = item.sprzedanaIlosc
+        const remainingAmount = initAmount - soldAmount
+
+        return remainingAmount <= 0
+    }
+
     return (
         <div>
             <Dialog open={isOpen} onClose={handleClose}>
                 <DialogTitle>Nowa sprzedaż</DialogTitle>
                 <DialogContent>
-                    <DialogContentText>
-                        {/* To subscribe to this website, please enter your email address here. We
-                        will send updates occasionally. */}
-                    </DialogContentText>
                     <OutlinedInput
-                        id="outlined-adornment-weight"
-                        endAdornment={<InputAdornment position="end">
-                            <Button onClick={getItems}>Szukaj</Button>
-                        </InputAdornment>}
-                        onChange={(e) => setSearchValue(e.target.value)}
+                        endAdornment={
+                            <InputAdornment position='end'>
+                                <IconButton>
+                                    <SearchIcon />
+                                </IconButton>
+                            </InputAdornment>}
+
+                        onChange={(e) => {
+                            getItems(e.target.value)
+
+                        }}
                     />
                     <List>
                         {items.map(item => (
-                            <ListItem key={item.id_przedmiotu} secondaryAction={
-                                <Button onClick={() => createSale(item.id_przedmiotu)}>Wybierz</Button>
-                            } disablePadding>
-                                <ListItemButton>
-                                    <ListItemText primary={`${item.nazwa} - ${item.skrot}`} />
+                            <ListItem key={item.id_przedmiotu} disablePadding>
+                                    <ListItemIcon>
+                                        <IconButton onClick={() => showInfo(item)}>
+                                            <InfoIcon color='primary' />
+                                        </IconButton>
+                                    </ListItemIcon>
+                                <ListItemButton dense disabled={checkIfSoldOut(item) ? true : false}>
+                                    <ListItemText
+                                        onClick={() => createSale(item.id_przedmiotu)} primary={`${item.nazwa} - ${item.skrot}`}
+                                        secondary={checkIfSoldOut(item) ? 'WYPRZEDANO' : ''} />
                                 </ListItemButton>
                             </ListItem>
                         ))}
                     </List>
                 </DialogContent>
-                {/* <DialogActions>
-                    <Button onClick={handleClose} variant='contained'>Zatwierdź</Button>
-                </DialogActions> */}
             </Dialog>
+            <ItemDetailModalMUI isOpen={detailModalOpen} handleClose={closeModal} item={currentItem} />
         </div>
     );
 }
@@ -95,7 +124,7 @@ export const NewContractModalMUI = ({ isOpen, handleClose }) => {
 
     useEffect(() => {
         getClients()
-    })
+    }, [])
 
     const getClients = async () => {
         await window.api.getClients().then(res => {
@@ -103,17 +132,11 @@ export const NewContractModalMUI = ({ isOpen, handleClose }) => {
         })
     }
 
-    // if (!clients) return null
-
     return (
         <div>
             <Dialog open={isOpen} onClose={handleClose}>
                 <DialogTitle>Nowa umowa</DialogTitle>
                 <DialogContent style={{ mt: 2, minWidth: 560 }}>
-                    <DialogContentText>
-                        {/* To subscribe to this website, please enter your email address here. We
-                        will send updates occasionally. */}
-                    </DialogContentText>
                     <Autocomplete
                         id="szukaj-klienta"
                         freeSolo
@@ -123,6 +146,30 @@ export const NewContractModalMUI = ({ isOpen, handleClose }) => {
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={handleClose}>Zatwierdź</Button>
+                </DialogActions>
+            </Dialog>
+        </div>
+    );
+}
+
+export const ItemDetailModalMUI = ({ isOpen, handleClose, item }) => {
+    if (!item) return null
+
+    return (
+        <div>
+            <Dialog open={isOpen} onClose={handleClose}>
+                <DialogTitle>Szczegóły</DialogTitle>
+                <DialogContent style={{ mt: 2, minWidth: 560 }}>
+                    <p><b>ID:</b> {item.id_przedmiotu}</p>
+                    <p><b>Nazwa:</b> {item.nazwa}</p>
+                    <p><b>Komitent:</b> {item.imie} {item.nazwisko}</p>
+                    <p><b>Skrót:</b> {item.skrot}</p>
+                    <p><b>Przyjęta ilość:</b> {item.przyjetaIlosc}</p>
+                    <p><b>Sprzedana ilość:</b> {item.sprzedanaIlosc}</p>
+                    <p><b>Ilość w komisie:</b> {parseInt(item.przyjetaIlosc) - parseInt(item.sprzedanaIlosc)}</p>
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={handleClose} variant='contained'>Zamknij</Button>
                 </DialogActions>
             </Dialog>
         </div>
