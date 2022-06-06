@@ -6,11 +6,15 @@ import {
 import SearchIcon from '@mui/icons-material/Search';
 import InfoIcon from '@mui/icons-material/Info';
 import ItemDetailModal from './ItemDetailModal';
+import { openNotification as showNotification } from '../../redux/notificationSlice';
+import { useDispatch } from 'react-redux';
 
 export const NewSaleModal = ({ isOpen, handleClose }) => {
     const [items, setItems] = useState([])
     const [currentItem, setCurrentItem] = useState()
     const [detailModalOpen, setDetailModalOpen] = React.useState(false);
+
+    const dispatch = useDispatch()
 
     useEffect(() => {
         setItems([])
@@ -40,6 +44,7 @@ export const NewSaleModal = ({ isOpen, handleClose }) => {
 
             window.api.incrementSoldAmount(itemId).then(_ => {
                 console.log('Pomyślnie zwiększono ilość sprzedanych sztuk')
+                dispatch(showNotification('Pomyślnie sprzedano przedmiot'))
             })
         }).catch(error => {
             alert('Wystąpił błąd')

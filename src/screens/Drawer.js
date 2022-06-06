@@ -20,6 +20,8 @@ import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import PointOfSaleIcon from '@mui/icons-material/PointOfSale';
+import { useDispatch } from 'react-redux';
+import { toggleNewContractModal, toggleNewSaleModal } from '../redux/modalSlice';
 
 const drawerWidth = 240;
 
@@ -71,6 +73,8 @@ const DrawerHeader = styled('div')(({ theme }) => ({
 export default function PersistentDrawerLeft({ renderScreen, changeScreen }) {
     const theme = useTheme();
     const [open, setOpen] = React.useState(false);
+
+    const dispatch = useDispatch()
 
     const handleDrawerOpen = () => {
         setOpen(true);
@@ -158,7 +162,7 @@ export default function PersistentDrawerLeft({ renderScreen, changeScreen }) {
                     </ListItem>
 
                     <ListItem disablePadding>
-                        <ListItemButton>
+                        <ListItemButton onClick={() => dispatch(toggleNewContractModal(true))}>
                             <ListItemIcon>
                                 <ReceiptIcon />
                             </ListItemIcon>
@@ -167,7 +171,7 @@ export default function PersistentDrawerLeft({ renderScreen, changeScreen }) {
                     </ListItem>
 
                     <ListItem disablePadding>
-                        <ListItemButton>
+                        <ListItemButton onClick={() => dispatch(toggleNewSaleModal(true))}>
                             <ListItemIcon>
                                 <PointOfSaleIcon />
                             </ListItemIcon>
