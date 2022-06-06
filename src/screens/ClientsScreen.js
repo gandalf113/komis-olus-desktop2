@@ -1,9 +1,10 @@
 import React from 'react'
 import { DataTable } from '../components/DataTable'
 import { Button } from '@mui/material'
+import { useDispatch, useSelector } from 'react-redux'
+import { increment } from '../redux/counter'
 
 const ClientsScreen = () => {
-
     const columns = React.useMemo(
         () => [
             {
