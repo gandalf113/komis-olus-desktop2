@@ -1,8 +1,8 @@
 import { configureStore } from '@reduxjs/toolkit';
-import counterReducer from './counter';
+import notificationReducer from './notificationSlice';
 
 export default configureStore({
     reducer: {
-        counter: counterReducer
+        notification: notificationReducer
     }
 })

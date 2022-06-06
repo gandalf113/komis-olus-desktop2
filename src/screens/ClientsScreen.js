@@ -1,10 +1,12 @@
 import React from 'react'
 import { DataTable } from '../components/DataTable'
 import { Button } from '@mui/material'
-import { useDispatch, useSelector } from 'react-redux'
-import { increment } from '../redux/counter'
+import { useDispatch } from 'react-redux'
+import { openNotification } from '../redux/notificationSlice'
 
 const ClientsScreen = () => {
+    const dispatch = useDispatch()
+
     const columns = React.useMemo(
         () => [
             {
@@ -28,7 +30,8 @@ const ClientsScreen = () => {
     )
     return (
         <div>
-            <Button variant="contained" color="success" style={{ marginBottom: 10 }}>Nowy klient</Button>
+            <Button variant="contained" color="success" style={{ marginBottom: 10 }}
+                onClick={() => dispatch(openNotification('Dodano klienta'))}>Nowy klient</Button>
             <DataTable apiCallback={window.api.getClients} columns={columns} />
         </div>
     )

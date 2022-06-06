@@ -1,9 +1,13 @@
+import * as React from 'react';
 import PersistentDrawerLeft from './screens/Drawer';
+import Notification from './components/Notification';
 
 function App() {
-
   return (
-    <PersistentDrawerLeft />
+    <div>
+      <Notification />
+      <PersistentDrawerLeft />
+    </div>
   );
 }
 
