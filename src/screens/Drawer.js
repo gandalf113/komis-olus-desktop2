@@ -21,11 +21,6 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import PointOfSaleIcon from '@mui/icons-material/PointOfSale';
 
-import ClientsScreen from './ClientsScreen';
-import SalesScreen from './SalesScreen';
-import ItemsScreen from './ItemsScreen';
-import ContractsScreen from './ContractsScreen';
-
 const drawerWidth = 240;
 
 const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })(
@@ -73,12 +68,9 @@ const DrawerHeader = styled('div')(({ theme }) => ({
     justifyContent: 'flex-end',
 }));
 
-export default function PersistentDrawerLeft() {
+export default function PersistentDrawerLeft({ renderScreen, changeScreen }) {
     const theme = useTheme();
     const [open, setOpen] = React.useState(false);
-
-    const [currentScreen, setCurrentScreen] = useState('klienci')
-    const [currentContract, setCurrentContract] = useState()
 
     const handleDrawerOpen = () => {
         setOpen(true);
@@ -87,26 +79,6 @@ export default function PersistentDrawerLeft() {
     const handleDrawerClose = () => {
         setOpen(false);
     };
-
-    const renderScreen = (currentScreen) => {
-        switch (currentScreen) {
-            case 'klienci':
-                return <ClientsScreen />
-            case 'sprzedaz':
-                return <SalesScreen />
-            case 'umowy':
-                return <ContractsScreen openContractCallback={openContract} />
-            case 'przedmioty':
-                return <ItemsScreen contract={currentContract}/>
-            default:
-                return null
-        }
-    }
-
-    const openContract = (contract) => {
-        setCurrentContract(contract)
-        setCurrentScreen('przedmioty')
-    }
 
     return (
         <Box sx={{ display: 'flex' }}>
@@ -148,7 +120,7 @@ export default function PersistentDrawerLeft() {
                 <Divider />
                 <List>
                     <ListItem disablePadding>
-                        <ListItemButton onClick={() => setCurrentScreen('klienci')}>
+                        <ListItemButton onClick={() => changeScreen('klienci')}>
                             <ListItemIcon>
                                 <PersonIcon />
                             </ListItemIcon>
@@ -157,7 +129,7 @@ export default function PersistentDrawerLeft() {
                     </ListItem>
 
                     <ListItem disablePadding>
-                        <ListItemButton onClick={() => setCurrentScreen('umowy')}>
+                        <ListItemButton onClick={() => changeScreen('umowy')}>
                             <ListItemIcon>
                                 <ReceiptIcon />
                             </ListItemIcon>
@@ -166,7 +138,7 @@ export default function PersistentDrawerLeft() {
                     </ListItem>
 
                     <ListItem disablePadding>
-                        <ListItemButton onClick={() => setCurrentScreen('sprzedaz')}>
+                        <ListItemButton onClick={() => changeScreen('sprzedaz')}>
                             <ListItemIcon>
                                 <PointOfSaleIcon />
                             </ListItemIcon>
@@ -206,7 +178,7 @@ export default function PersistentDrawerLeft() {
             </Drawer>
             <Main open={open}>
                 <DrawerHeader />
-                {renderScreen(currentScreen)}
+                {renderScreen()}
             </Main>
         </Box>
     );

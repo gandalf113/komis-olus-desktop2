@@ -1,18 +1,14 @@
 import { Button } from '@mui/material';
 import React from 'react'
+import { useDispatch } from 'react-redux';
 import { DataTable } from '../components/DataTable'
-import { NewSaleModal } from '../components/Modals';
-import { NewSaleModalMUI } from '../components/MuiModals';
+import { toggleNewSaleModal } from '../redux/modalSlice';
 
 const SalesScreen = () => {
-    const [modalIsOpen, setIsOpen] = React.useState(false);
+    const dispatch = useDispatch()
 
     function openModal() {
-        setIsOpen(true);
-    }
-
-    function closeModal() {
-        setIsOpen(false);
+        dispatch(toggleNewSaleModal(true))
     }
 
     const columns = React.useMemo(
@@ -38,8 +34,6 @@ const SalesScreen = () => {
         <div>
             <Button onClick={openModal} variant="contained" color="success" style={{ marginBottom: 10 }}>Nowa sprzedaż</Button>
             <DataTable apiCallback={window.api.getSalesWithItems} columns={columns} />
-            <NewSaleModalMUI isOpen={modalIsOpen} handleClose={closeModal} />
-            {/* <NewSaleModalMUI isOpen={modalIsOpen} openModalCallback={openModal} closeModalCallback={() =>closeModal} /> */}
         </div>
     )
 }

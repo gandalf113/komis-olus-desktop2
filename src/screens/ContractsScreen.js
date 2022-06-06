@@ -1,18 +1,14 @@
 import React from 'react'
 import { DataTable } from '../components/DataTable'
-import { NewContractModal } from '../components/Modals';
 import { Button } from '@mui/material';
-import { NewContractModalMUI } from '../components/MuiModals';
+import { useDispatch } from 'react-redux';
+import { toggleNewContractModal } from '../redux/modalSlice';
 
 const ContractsScreen = ({ openContractCallback }) => {
-    const [modalIsOpen, setIsOpen] = React.useState(false);
+    const dispatch = useDispatch()
 
     function openModal() {
-        setIsOpen(true);
-    }
-
-    function closeModal() {
-        setIsOpen(false);
+        dispatch(toggleNewContractModal(true))
     }
 
     const columns = React.useMemo(
@@ -41,8 +37,6 @@ const ContractsScreen = ({ openContractCallback }) => {
         <div>
             <Button onClick={openModal} variant="contained" color="success" style={{ marginBottom: 10 }}>Nowa umowa</Button>
             <DataTable apiCallback={window.api.getContractsWithClients} columns={columns} />
-            {/* <NewContractModal isOpen={modalIsOpen} openModalCallback={openModal} closeModalCallback={closeModal} /> */}
-            <NewContractModalMUI isOpen={modalIsOpen} handleClose={closeModal} />
         </div>
     )
 }
