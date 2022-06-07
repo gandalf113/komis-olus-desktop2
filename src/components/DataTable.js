@@ -5,26 +5,26 @@ import Modal from 'react-modal'
 
 Modal.setAppElement('#root');
 
-export const DataTable = ({ apiCallback, columns, apiArgs = {} }) => {
-    const [tableData, setTableData] = useState([])
+export const DataTable = ({ tableData, columns = {} }) => {
+    // const [tableData, setTableData] = useState([])
 
     const data = React.useMemo(
         () => tableData,
         [tableData]
     )
 
-    const getData =
-        async () => {
-            await apiCallback(apiArgs)
-                .then(res => {
-                    setTableData(res)
-                })
-        }
+    // const getData =
+    //     async () => {
+    //         await apiCallback(apiArgs)
+    //             .then(res => {
+    //                 setTableData(res)
+    //             })
+    //     }
 
 
-    useEffect(() => {
-        getData()
-    }, [])
+    // useEffect(() => {
+    //     getData()
+    // })
 
 
     const tableInstance = useTable({ columns, data })

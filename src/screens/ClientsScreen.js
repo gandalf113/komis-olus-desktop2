@@ -32,7 +32,7 @@ const ClientsScreen = () => {
         <div>
             <Button variant="contained" color="success" style={{ marginBottom: 10 }}
                 onClick={() => dispatch(openNotification('Dodano klienta'))}>Nowy klient</Button>
-            <DataTable apiCallback={window.api.getClients} columns={columns} />
+            {/* <DataTable apiCallback={window.api.getClients} columns={columns} /> */}
         </div>
     )
 }

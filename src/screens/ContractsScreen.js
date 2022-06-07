@@ -36,7 +36,7 @@ const ContractsScreen = ({ openContractCallback }) => {
     return (
         <div>
             <Button onClick={openModal} variant="contained" color="success" style={{ marginBottom: 10 }}>Nowa umowa</Button>
-            <DataTable apiCallback={window.api.getContractsWithClients} columns={columns} />
+            {/* <DataTable apiCallback={window.api.getContractsWithClients} columns={columns} /> */}
         </div>
     )
 }

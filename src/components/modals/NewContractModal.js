@@ -8,8 +8,11 @@ export const NewContractModal = ({ isOpen, handleClose }) => {
     const [clients, setClients] = useState([])
 
     useEffect(() => {
-        getClients()
-    }, [])
+        // Get clients on open
+        if (isOpen) {
+            getClients()
+        }
+    }, [isOpen])
 
     const getClients = async () => {
         await window.api.getClients().then(res => {

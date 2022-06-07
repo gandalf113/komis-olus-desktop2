@@ -1,15 +1,23 @@
 import { Button } from '@mui/material';
-import React from 'react'
-import { useDispatch } from 'react-redux';
+import React, { useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux';
 import { DataTable } from '../components/DataTable'
+import { getSalesData } from '../redux/databaseSlice';
 import { toggleNewSaleModal } from '../redux/modalSlice';
 
 const SalesScreen = () => {
     const dispatch = useDispatch()
 
+    const { salesData } = useSelector(state => state.database)
+
     function openModal() {
         dispatch(toggleNewSaleModal(true))
     }
+
+    useEffect(() => {
+        dispatch(getSalesData())
+    }, [dispatch])
+
 
     const columns = React.useMemo(
         () => [
@@ -33,7 +41,7 @@ const SalesScreen = () => {
     return (
         <div>
             <Button onClick={openModal} variant="contained" color="success" style={{ marginBottom: 10 }}>Nowa sprzedaż</Button>
-            <DataTable apiCallback={window.api.getSalesWithItems} columns={columns} />
+            <DataTable tableData={salesData} columns={columns} />
         </div>
     )
 }
