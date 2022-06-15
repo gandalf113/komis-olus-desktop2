@@ -1,11 +1,33 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 
 export const getSalesData = createAsyncThunk(
-    'sales/get', async () => {
+    'get/sales', async () => {
         const res = await window.api.getSalesWithItems()
         return res
     }
 )
+
+export const getItemsDetailed = createAsyncThunk(
+    'get/items/detailed', async (searchValue) => {
+        const res = await window.api.getItemsDetailed(searchValue)
+        return res
+    }
+)
+
+export const getContractsData = createAsyncThunk(
+    'get/contracts', async () => {
+        const res = await window.api.getContractsWithClients()
+        return res
+    }
+)
+export const getClientsData = createAsyncThunk(
+    'get/clients', async () => {
+        const res = await window.api.getClients()
+        return res
+    }
+)
+
+
 
 export const databaseSlice = createSlice({
     name: "database",
@@ -14,10 +36,23 @@ export const databaseSlice = createSlice({
         clientsData: [],
         contractsData: [],
         salesData: [],
+        detailedItemsData: [],
         itemsData: []
     },
     reducers: {},
     extraReducers: {
+        // Clients data
+        [getClientsData.pending]: (state, action) => {
+            state.loading = true
+        },
+        [getClientsData.fulfilled]: (state, action) => {
+            state.clientsData = action.payload
+            state.loading = false
+        },
+        [getClientsData.rejected]: (state, action) => {
+            state.loading = false
+        },
+        // Sales data
         [getSalesData.pending]: (state, action) => {
             state.loading = true
         },
@@ -28,9 +63,30 @@ export const databaseSlice = createSlice({
         [getSalesData.rejected]: (state, action) => {
             state.loading = false
         },
+        // Contracts data
+        [getContractsData.pending]: (state, action) => {
+            state.loading = true
+        },
+        [getContractsData.fulfilled]: (state, action) => {
+            state.contractsData = action.payload
+            state.loading = false
+        },
+        [getContractsData.rejected]: (state, action) => {
+            state.loading = false
+        },
+        // Get sales detailed
+        [getItemsDetailed.pending]: (state, action) => {
+            state.loading = true
+        },
+        [getItemsDetailed.fulfilled]: (state, action) => {
+            state.detailedItemsData = action.payload
+            state.loading = false
+        },
+        [getItemsDetailed.rejected]: (state, action) => {
+            state.loading = false
+        },
     }
 })
 
-export const { toggleNewClientModal, toggleNewContractModal, toggleNewSaleModal, closeAllModals } = databaseSlice.actions
 
 export default databaseSlice.reducer

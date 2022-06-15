@@ -10,14 +10,13 @@ const SalesScreen = () => {
 
     const { salesData } = useSelector(state => state.database)
 
-    function openModal() {
-        dispatch(toggleNewSaleModal(true))
-    }
-
     useEffect(() => {
         dispatch(getSalesData())
     }, [dispatch])
 
+    function openModal() {
+        dispatch(toggleNewSaleModal(true))
+    }
 
     const columns = React.useMemo(
         () => [

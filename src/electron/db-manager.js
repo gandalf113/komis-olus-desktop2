@@ -30,7 +30,9 @@ getContractsWithClients = ipcMain.handle("get/contracts-clients", async (event, 
 })
 
 getSalesWithItems = ipcMain.handle("get/sales-items", async (event, args) => {
-    return knex.select('*').from('sprzedaz').leftOuterJoin('przedmioty', 'przedmioty.id_przedmiotu', 'sprzedaz.id_przedmiotu')
+    return knex.select('*').from('sprzedaz')
+        .leftJoin('przedmioty', 'przedmioty.id_przedmiotu', 'sprzedaz.id_przedmiotu')
+        .orderBy('id_sprzedazy', 'desc')
 })
 
 getItemsWithContracts = ipcMain.handle("get/items-contracts", async (event, args) => {
@@ -86,3 +88,15 @@ incrementSoldAmount = ipcMain.handle('increment/soldAmount', async (event, args)
         .increment('sprzedanaIlosc', 1)
 })
 
+getItemsDetailed = ipcMain.handle('get/items/detailed', async (event, args) => {
+    const { search } = args
+
+    const hexToDec = (hex) => {
+        return parseInt(hex, 16);
+    }
+
+    return knex.select('*').from('klienci')
+        .leftJoin('umowy', 'umowy.id_klienta', 'klienci.id_klienta')
+        .leftJoin('przedmioty', 'przedmioty.id_umowy', 'umowy.id_umowy')
+        .whereLike('id_przedmiotu', `%${hexToDec(search)}%`)
+})

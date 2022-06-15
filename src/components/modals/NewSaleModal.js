@@ -1,28 +1,26 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import {
     Dialog, DialogTitle, DialogContent, OutlinedInput, InputAdornment,
     IconButton, List, ListItem, ListItemIcon, ListItemButton, ListItemText
 } from '@mui/material';
+import { useSelector } from 'react-redux';
 import SearchIcon from '@mui/icons-material/Search';
 import InfoIcon from '@mui/icons-material/Info';
 import ItemDetailModal from './ItemDetailModal';
 import { openNotification as showNotification } from '../../redux/notificationSlice';
 import { useDispatch } from 'react-redux';
-import { getSalesData } from '../../redux/databaseSlice';
+import { getSalesData, getItemsDetailed } from '../../redux/databaseSlice';
 
 export const NewSaleModal = ({ isOpen, handleClose }) => {
-    const [items, setItems] = useState([])
+    // Local state
     const [currentItem, setCurrentItem] = useState()
-    const [detailModalOpen, setDetailModalOpen] = React.useState(false);
+    const [detailModalOpen, setDetailModalOpen] = useState(false);
+    const [searchValue, setSearchValue] = useState('');
+
+    // Redux
+    const items = useSelector(state => state.database.detailedItemsData)
 
     const dispatch = useDispatch()
-
-    useEffect(() => {
-        // Clear the items onOpen
-        if (isOpen) {
-            setItems([])
-        }
-    }, [setItems, isOpen])
 
     function openModal() {
         setDetailModalOpen(true);
@@ -50,6 +48,7 @@ export const NewSaleModal = ({ isOpen, handleClose }) => {
                 console.log('Pomyślnie zwiększono ilość sprzedanych sztuk')
                 dispatch(showNotification('Pomyślnie sprzedano przedmiot'))
                 dispatch(getSalesData())
+                dispatch(getItemsDetailed(searchValue))
             })
         }).catch(error => {
             alert('Wystąpił błąd')
@@ -59,13 +58,11 @@ export const NewSaleModal = ({ isOpen, handleClose }) => {
 
     const getItems = async (searchValue) => {
         if (searchValue === "") {
-            setItems([])
+            // setItems([])
             return
         }
 
-        await window.api.getClientsWithContractsAndItems(searchValue).then(res => {
-            setItems(res)
-        })
+        dispatch(getItemsDetailed(searchValue))
     }
 
     const showInfo = async (item) => {
@@ -97,11 +94,11 @@ export const NewSaleModal = ({ isOpen, handleClose }) => {
 
                         onChange={(e) => {
                             getItems(e.target.value)
-
+                            setSearchValue(e.target.value)
                         }}
                     />
                     <List>
-                        {items.map(item => (
+                        {searchValue.trim() !== "" && items.map(item => (
                             <ListItem key={item.id_przedmiotu} disablePadding>
                                 <ListItemIcon>
                                     <IconButton onClick={() => showInfo(item)}>

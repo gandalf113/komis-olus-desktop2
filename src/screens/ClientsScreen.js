@@ -1,11 +1,19 @@
-import React from 'react'
+import React, { useEffect } from 'react'
+import { useSelector } from 'react-redux';
 import { DataTable } from '../components/DataTable'
 import { Button } from '@mui/material'
 import { useDispatch } from 'react-redux'
 import { openNotification } from '../redux/notificationSlice'
+import { getClientsData } from '../redux/databaseSlice'
 
 const ClientsScreen = () => {
     const dispatch = useDispatch()
+
+    const { clientsData } = useSelector(state => state.database)
+
+    useEffect(() => {
+        dispatch(getClientsData())
+    }, [dispatch])
 
     const columns = React.useMemo(
         () => [
@@ -32,7 +40,7 @@ const ClientsScreen = () => {
         <div>
             <Button variant="contained" color="success" style={{ marginBottom: 10 }}
                 onClick={() => dispatch(openNotification('Dodano klienta'))}>Nowy klient</Button>
-            {/* <DataTable apiCallback={window.api.getClients} columns={columns} /> */}
+            <DataTable tableData={clientsData} columns={columns} />
         </div>
     )
 }
