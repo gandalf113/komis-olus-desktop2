@@ -40,13 +40,13 @@ export const NewSaleModal = ({ isOpen, handleClose }) => {
         return today
     }
 
-    const createSale = async (itemId) => {
+    const createSale = async (itemId, itemName) => {
         await window.api.createSale(itemId, getToday()).then(res => {
             console.log('Pomyślnie dodano sprzedaż')
 
             window.api.incrementSoldAmount(itemId).then(_ => {
                 console.log('Pomyślnie zwiększono ilość sprzedanych sztuk')
-                dispatch(showNotification('Pomyślnie sprzedano przedmiot'))
+                dispatch(showNotification(`Pomyślnie sprzedano przedmiot: "${itemName}"`))
                 dispatch(getSalesData())
                 dispatch(getItemsDetailed(searchValue))
             })
@@ -106,7 +106,7 @@ export const NewSaleModal = ({ isOpen, handleClose }) => {
                                     </IconButton>
                                 </ListItemIcon>
                                 <ListItemButton dense disabled={checkIfSoldOut(item) ? true : false}
-                                    onClick={() => createSale(item.id_przedmiotu)} >
+                                    onClick={() => createSale(item.id_przedmiotu, item.nazwa)} >
                                     <ListItemText
                                         primary={`${item.nazwa} - ${item.skrot}`}
                                         secondary={checkIfSoldOut(item) ? 'WYPRZEDANO' : ''} />

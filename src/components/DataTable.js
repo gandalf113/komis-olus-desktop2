@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react'
+import React from 'react'
 import { useTable } from 'react-table'
 import "../table.css"
 import Modal from 'react-modal'

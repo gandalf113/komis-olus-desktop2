@@ -26,6 +26,13 @@ export const getClientsData = createAsyncThunk(
         return res
     }
 )
+export const getContractDetail = createAsyncThunk(
+    'get/contract/detailed', async (contractId) => {
+        const res = await window.api.getItemsWithContracts(contractId)
+        return res
+    }
+)
+
 
 
 
@@ -35,6 +42,7 @@ export const databaseSlice = createSlice({
         loading: false,
         clientsData: [],
         contractsData: [],
+        detailedContractData: [],
         salesData: [],
         detailedItemsData: [],
         itemsData: []
@@ -83,6 +91,17 @@ export const databaseSlice = createSlice({
             state.loading = false
         },
         [getItemsDetailed.rejected]: (state, action) => {
+            state.loading = false
+        },
+        // Get single contract detailed
+        [getContractDetail.pending]: (state, action) => {
+            state.loading = true
+        },
+        [getContractDetail.fulfilled]: (state, action) => {
+            state.detailedContractData = action.payload
+            state.loading = false
+        },
+        [getContractDetail.rejected]: (state, action) => {
             state.loading = false
         },
     }
