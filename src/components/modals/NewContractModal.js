@@ -2,9 +2,10 @@ import { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import {
     Dialog, DialogTitle, DialogContent, DialogActions,
-    Autocomplete, TextField, Button, createFilterOptions
+    Autocomplete, TextField, Button
 } from '@mui/material';
 import { openNotification as showNotification } from '../../redux/notificationSlice';
+import { loadContract, setScreen } from '../../redux/screenSlice';
 
 
 export const NewContractModal = ({ isOpen, handleClose }) => {
@@ -36,12 +37,36 @@ export const NewContractModal = ({ isOpen, handleClose }) => {
         })
     }
 
+    const openContract = (contract) => {
+        console.log(contract)
+        dispatch(loadContract(contract))
+        dispatch(setScreen('przedmioty'))
+    }
+
     const createContract = async (client) => {
-        await window.api.createContract(client.id_klienta, getToday()).then(_ => {
-            dispatch(
-                showNotification(`Pomyślnie utworzono umowa dla: ${client.skrot}`)
-            )
-        })
+
+        await window.api.createContract(client.id_klienta, getToday())
+            .then(res => {
+                const contractId = res[0]
+
+                // Get contract object
+                window.api.getContractsWithClients(contractId).then(res => {
+                    const contract = res[0]
+                    // Open the contract
+                    openContract(contract)
+                })
+
+                // Show the notification
+                dispatch(
+                    showNotification(`Pomyślnie utworzono umowa dla: ${client.skrot}`)
+                )
+
+                // Close the modal
+                handleClose();
+            }).catch(error => {
+                console.log(error)
+                alert('fuck')
+            })
     }
 
     return (

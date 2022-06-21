@@ -5,9 +5,10 @@ import { Button } from '@mui/material';
 import { getContractDetail } from '../redux/databaseSlice';
 
 // Contract detail screen
-const ItemsScreen = ({ contract }) => {
+const ContractDetailScreen = () => {
     // Redux
-    const { detailedContractData } = useSelector(state => state.database)
+    const { detailedContractData: items } = useSelector(state => state.database)
+    const { currentContract: contract } = useSelector(state => state.screen)
 
     const dispatch = useDispatch()
 
@@ -50,10 +51,10 @@ const ItemsScreen = ({ contract }) => {
         <div>
             <h1>{contract.skrot} {contract.id_umowy} </h1>
             <h3>Data zawarcia: {contract.data}</h3>
-            <DataTable tableData={detailedContractData} apiCallback={window.api.getItemsWithContracts} columns={columns} apiArgs={contract.id_umowy} />
+            <DataTable tableData={items} apiCallback={window.api.getItemsWithContracts} columns={columns} apiArgs={contract.id_umowy} />
             <Button onClick={() => console.log(contract)} variant="contained" color="secondary" style={{ marginTop: 20 }}>Drukuj PDF</Button>
         </div>
     )
 }
 
-export default ItemsScreen
+export default ContractDetailScreen

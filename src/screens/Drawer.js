@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { styled, useTheme } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import Drawer from '@mui/material/Drawer';
@@ -21,6 +21,7 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import PointOfSaleIcon from '@mui/icons-material/PointOfSale';
 import { useDispatch } from 'react-redux';
+import { setScreen } from '../redux/screenSlice';
 import { toggleNewContractModal, toggleNewSaleModal } from '../redux/modalSlice';
 
 const drawerWidth = 240;
@@ -70,7 +71,7 @@ const DrawerHeader = styled('div')(({ theme }) => ({
     justifyContent: 'flex-end',
 }));
 
-export default function PersistentDrawerLeft({ renderScreen, changeScreen }) {
+export default function PersistentDrawerLeft({ renderScreen }) {
     const theme = useTheme();
     const [open, setOpen] = React.useState(false);
 
@@ -83,6 +84,10 @@ export default function PersistentDrawerLeft({ renderScreen, changeScreen }) {
     const handleDrawerClose = () => {
         setOpen(false);
     };
+
+    const changeScreen = (screenName) => {
+        dispatch(setScreen(screenName))
+    }
 
     return (
         <Box sx={{ display: 'flex' }}>

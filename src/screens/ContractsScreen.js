@@ -1,13 +1,14 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useCallback } from 'react'
 import { useSelector } from 'react-redux';
 import { DataTable } from '../components/DataTable'
 import { Button } from '@mui/material';
 import { useDispatch } from 'react-redux';
 import { toggleNewContractModal } from '../redux/modalSlice';
 import { getContractsData } from '../redux/databaseSlice';
+import { loadContract, setScreen } from '../redux/screenSlice';
 
 
-const ContractsScreen = ({ openContractCallback }) => {
+const ContractsScreen = () => {
     const dispatch = useDispatch()
 
     const { contractsData } = useSelector(state => state.database)
@@ -19,6 +20,14 @@ const ContractsScreen = ({ openContractCallback }) => {
     function openModal() {
         dispatch(toggleNewContractModal(true))
     }
+
+    const openContract = useCallback(
+        (contract) => {
+            dispatch(loadContract(contract))
+            dispatch(setScreen('przedmioty'))
+        },
+        [dispatch],
+    )
 
     const columns = React.useMemo(
         () => [
@@ -36,11 +45,11 @@ const ContractsScreen = ({ openContractCallback }) => {
             },
             {
                 Header: 'Otwórz',
-                Cell: props => <Button onClick={() => openContractCallback(props.row.original)}
+                Cell: props => <Button onClick={() => openContract(props.row.original)}
                     color="secondary">Otwórz umowę</Button>
             },
         ],
-        [openContractCallback]
+        [openContract]
     )
     return (
         <div>

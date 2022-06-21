@@ -21,12 +21,26 @@ getContracts = ipcMain.handle("get/contracts", async (event, args) => {
     return knex.select().from("umowy")
 })
 
+getContract = ipcMain.handle("get/contract", async (event, args) => {
+    const { contractId } = args
+
+    return knex.select().from("umowy").where('id_umowy', contractId)
+})
+
 getItems = ipcMain.handle("get/items", async (event, args) => {
     return knex.select().from("przedmioty")
 })
 
 getContractsWithClients = ipcMain.handle("get/contracts-clients", async (event, args) => {
-    return knex.select('*').from('umowy').leftOuterJoin('klienci', 'klienci.id_klienta', 'umowy.id_klienta')
+    const { contractId } = args
+
+    let query = knex.select('*').from('umowy').leftOuterJoin('klienci', 'klienci.id_klienta', 'umowy.id_klienta')
+
+    if (contractId === undefined){
+        return query
+    } else {
+        return query.where('umowy.id_umowy', contractId)
+    }
 })
 
 getSalesWithItems = ipcMain.handle("get/sales-items", async (event, args) => {

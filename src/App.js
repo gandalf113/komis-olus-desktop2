@@ -1,25 +1,17 @@
-import React, { useState } from 'react';
+import React from 'react';
+import { useSelector } from 'react-redux';
 import PersistentDrawerLeft from './screens/Drawer';
 import Notification from './components/Notification';
 import Modals from './components/Modals';
 
 import ClientsScreen from './screens/ClientsScreen';
 import SalesScreen from './screens/SalesScreen';
-import ItemsScreen from './screens/ItemsScreen';
+import ContractDetailScreen from './screens/ContractDetailScreen';
 import ContractsScreen from './screens/ContractsScreen';
 
 function App() {
-  const [currentScreen, setCurrentScreen] = useState('klienci')
-  const [currentContract, setCurrentContract] = useState()
-
-  const openContract = (contract) => {
-    setCurrentContract(contract)
-    setCurrentScreen('przedmioty')
-  }
-
-  const changeScreen = (screen) => {
-    setCurrentScreen(screen)
-  }
+  // Redux
+  const { currentScreen } = useSelector(state => state.screen)
 
   const renderScreen = (currentScreen) => {
     switch (currentScreen) {
@@ -28,9 +20,9 @@ function App() {
       case 'sprzedaz':
         return <SalesScreen />
       case 'umowy':
-        return <ContractsScreen openContractCallback={openContract} />
+        return <ContractsScreen />
       case 'przedmioty':
-        return <ItemsScreen contract={currentContract} />
+        return <ContractDetailScreen />
       default:
         return null
     }
@@ -39,8 +31,7 @@ function App() {
   return (
     <div>
       <Notification />
-      <PersistentDrawerLeft renderScreen={() => renderScreen(currentScreen)} changeScreen={changeScreen} />
-
+      <PersistentDrawerLeft renderScreen={() => renderScreen(currentScreen)} />
       <Modals />
     </div>
   );
