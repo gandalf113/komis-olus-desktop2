@@ -12,6 +12,7 @@ export const NewItemModal = ({ isOpen, handleClose }) => {
     // Local state
     const [name, setName] = useState('')
     const [amount, setAmount] = useState(1)
+    const [price, setPrice] = useState(0)
 
     // Redux
     const { currentContract: contract } = useSelector(state => state.screen)
@@ -19,14 +20,15 @@ export const NewItemModal = ({ isOpen, handleClose }) => {
     // Reset the values on open
     useEffect(() => {
         setName('')
+        setPrice(0)
         setAmount(1)
     }, [isOpen])
 
     const dispatch = useDispatch()
 
-    const createSale = async (name, amount) => {
+    const createSale = async (name, price, amount) => {
         const contractId = contract.id_umowy
-        window.api.createItem(name, amount, contractId)
+        window.api.createItem(name, amount, price, contractId)
             .then(_ => {
                 // Close the modal
                 dispatch(toggleNewItemModal(false))
@@ -57,6 +59,20 @@ export const NewItemModal = ({ isOpen, handleClose }) => {
                             }}
                         />
                         <TextField
+                            id="item-price-input"
+                            label="Kwota dla komitenta [zł]"
+                            type="number"
+                            defaultValue={'0.00'}
+                            onChange={(e) => setPrice(e.target.value)}
+                            InputLabelProps={{
+                                shrink: true,
+                            }}
+                            inputProps={{
+                                step: 0.01
+                            }}
+                            variant="filled"
+                        />
+                        <TextField
                             id="item-amount-input"
                             label="Ilość"
                             type="number"
@@ -70,7 +86,7 @@ export const NewItemModal = ({ isOpen, handleClose }) => {
                     </Box>
                     <DialogActions>
                         <Button onClick={() => {
-                            createSale(name, amount)
+                            createSale(name, price, amount)
                         }}>Przyjmij</Button>
                     </DialogActions>
 

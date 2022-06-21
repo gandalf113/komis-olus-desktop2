@@ -18,6 +18,11 @@ const ContractDetailScreen = () => {
         return hexStr
     }
 
+    const toCurrency = (value) => {
+        let price = parseFloat(value);
+        return price.toFixed(2) + " zł"
+    }
+
     useEffect(() => {
         dispatch(getContractDetail(contract.id_umowy))
     }, [dispatch, contract.id_umowy])
@@ -44,6 +49,15 @@ const ContractDetailScreen = () => {
             {
                 Header: 'Ilość w komisie',
                 Cell: props => <div>{props.row.original.przyjetaIlosc - props.row.original.sprzedanaIlosc}</div>
+            },
+            {
+                Header: 'Kwota dla komitenta',
+                accessor: 'kwotaDlaKomitenta',
+                Cell: props => <div> {toCurrency(props.value)} </div>
+            },
+            {
+                Header: 'Do wypłaty',
+                Cell: props => <div> {toCurrency(props.row.original.kwotaDlaKomitenta * props.row.original.sprzedanaIlosc)} </div>
             },
         ],
         []

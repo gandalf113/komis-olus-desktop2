@@ -95,12 +95,13 @@ createSale = ipcMain.handle("create/sale", async (event, args) => {
 })
 
 createItem = ipcMain.handle("create/item", async (event, args) => {
-    const { contractId, name, amount } = args
+    const { contractId, name, price, amount } = args
 
     return knex('przedmioty')
         .insert({
             id_umowy: contractId,
             nazwa: name,
+            kwotaDlaKomitenta: price,
             przyjetaIlosc: amount,
             sprzedanaIlosc: 0
         })
