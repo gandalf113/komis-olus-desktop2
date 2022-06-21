@@ -6,6 +6,7 @@ export const modalSlice = createSlice({
         newClientIsOpen: false,
         newContractIsOpen: false,
         newSaleIsOpen: false,
+        newItemIsOpen: false
         // Item detail modal is handled from within NewSaleModal
     },
     reducers: {
@@ -18,14 +19,24 @@ export const modalSlice = createSlice({
         toggleNewSaleModal: (state, action) => {
             state.newSaleIsOpen = action.payload
         },
+        toggleNewItemModal: (state, action) => {
+            state.newItemIsOpen = action.payload
+        },
         closeAllModals: (state) => {
             state.newClientIsOpen = false
             state.newContractIsOpen = false
             state.newSaleIsOpen = false
+            state.newItemIsOpen = false
         }
     }
 })
 
-export const { toggleNewClientModal, toggleNewContractModal, toggleNewSaleModal, closeAllModals } = modalSlice.actions
+export const {
+    toggleNewClientModal,
+    toggleNewContractModal,
+    toggleNewSaleModal,
+    closeAllModals,
+    toggleNewItemModal
+} = modalSlice.actions
 
 export default modalSlice.reducer

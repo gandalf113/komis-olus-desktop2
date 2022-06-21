@@ -1,8 +1,9 @@
 import React, { useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux';
 import { DataTable } from '../components/DataTable'
-import { Button } from '@mui/material';
+import { Box, Button, Typography } from '@mui/material';
 import { getContractDetail } from '../redux/databaseSlice';
+import { toggleNewItemModal } from '../redux/modalSlice';
 
 // Contract detail screen
 const ContractDetailScreen = () => {
@@ -49,10 +50,28 @@ const ContractDetailScreen = () => {
     )
     return (
         <div>
-            <h1>{contract.skrot} {contract.id_umowy} </h1>
-            <h3>Data zawarcia: {contract.data}</h3>
+            <Box sx={{ display: 'flex', alignItems: 'end', gap: 2 }}>
+                <Typography align='justify' variant="h4">
+                    {contract.skrot} {contract.id_umowy}
+                </Typography>
+                {/* <Typography sx={{ mb: 1 }}>{contract.data}</Typography> */}
+            </Box>
+            <Box sx={{ mb: 2, display: 'flex', alignItems: 'end', gap: 1 }}>
+                <Button
+                    onClick={() => dispatch(toggleNewItemModal(true))} variant="contained" color="secondary" style={{ marginTop: 20 }}>
+                    Przyjmij towar
+                </Button>
+                <Button
+                    onClick={() => console.log(contract)} variant="contained" color="inherit" style={{ marginTop: 20 }}>
+                    Drukuj PDF
+                </Button>
+                <Button
+                    onClick={() => console.log(contract)} variant="contained" color="inherit" style={{ marginTop: 20 }}>
+                    Generuj metki
+                </Button>
+            </Box>
+
             <DataTable tableData={items} apiCallback={window.api.getItemsWithContracts} columns={columns} apiArgs={contract.id_umowy} />
-            <Button onClick={() => console.log(contract)} variant="contained" color="secondary" style={{ marginTop: 20 }}>Drukuj PDF</Button>
         </div>
     )
 }
