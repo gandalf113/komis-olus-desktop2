@@ -3,19 +3,24 @@ const { ipcRenderer, contextBridge, ipcMain } = require('electron')
 const WINDOW_API = {
     greet: (message) => ipcRenderer.send("greet", message),
     GetVersion: () => ipcRenderer.invoke("get/version"),
+    // Get list
     getClients: () => ipcRenderer.invoke("get/clients"),
     getSales: () => ipcRenderer.invoke("get/sales"),
     getContracts: () => ipcRenderer.invoke("get/contracts"),
-    getContract: (contractId) => ipcRenderer.invoke("get/contract", { contractId: contractId }),
     getItems: () => ipcRenderer.invoke("get/items"),
-    getItemsDetailed: (search) => ipcRenderer.invoke("get/items/detailed", { search: search }),
-    getContractsWithClients: (contractId = undefined) => ipcRenderer.invoke("get/contracts-clients", { contractId: contractId }),
     getSalesWithItems: () => ipcRenderer.invoke("get/sales-items"),
+    // Search
+    getContract: (contractId) => ipcRenderer.invoke("get/contract", { contractId: contractId }),
+    getContractsWithClients: (contractId = undefined) => ipcRenderer.invoke("get/contracts-clients", { contractId: contractId }),
     getItemsWithContracts: (contractId) => ipcRenderer.invoke("get/items-contracts", { contractId: contractId }),
     getClientsWithContractsAndItems: (search) => ipcRenderer.invoke("get/clients-contracts-items", { search: search }),
+    getItemsDetailed: (search) => ipcRenderer.invoke("get/items/detailed", { search: search }),
     searchClients: (search) => ipcRenderer.invoke("search/clients", { search: search }),
+    // Create
     createContract: (clientId, date) => ipcRenderer.invoke("create/contract", { clientId: clientId, date: date }),
     createSale: (itemId, date) => ipcRenderer.invoke("create/sale", { itemId: itemId, date: date }),
+    createItem: (name, amount, contractId) => ipcRenderer.invoke("create/item", { name: name, amount: amount, contractId: contractId }),
+    // Increment
     incrementSoldAmount: (itemId) => ipcRenderer.invoke("increment/soldAmount", { itemId: itemId }),
 }
 

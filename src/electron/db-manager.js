@@ -36,7 +36,7 @@ getContractsWithClients = ipcMain.handle("get/contracts-clients", async (event, 
 
     let query = knex.select('*').from('umowy').leftOuterJoin('klienci', 'klienci.id_klienta', 'umowy.id_klienta')
 
-    if (contractId === undefined){
+    if (contractId === undefined) {
         return query
     } else {
         return query.where('umowy.id_umowy', contractId)
@@ -91,6 +91,18 @@ createSale = ipcMain.handle("create/sale", async (event, args) => {
         .insert({
             id_przedmiotu: itemId,
             data: date
+        })
+})
+
+createItem = ipcMain.handle("create/item", async (event, args) => {
+    const { contractId, name, amount } = args
+
+    return knex('przedmioty')
+        .insert({
+            id_umowy: contractId,
+            nazwa: name,
+            przyjetaIlosc: amount,
+            sprzedanaIlosc: 0
         })
 })
 
