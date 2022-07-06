@@ -3,8 +3,8 @@ import { useSelector } from 'react-redux';
 import { DataTable } from '../components/DataTable'
 import { Button } from '@mui/material'
 import { useDispatch } from 'react-redux'
-import { openNotification } from '../redux/notificationSlice'
 import { getClientsData } from '../redux/databaseSlice'
+import { toggleNewClientModal } from '../redux/modalSlice';
 
 const ClientsScreen = () => {
     const dispatch = useDispatch()
@@ -39,7 +39,7 @@ const ClientsScreen = () => {
     return (
         <div>
             <Button variant="contained" color="success" style={{ marginBottom: 10 }}
-                onClick={() => dispatch(openNotification('Dodano klienta'))}>Nowy klient</Button>
+                onClick={() => dispatch(toggleNewClientModal(true))}>Nowy klient</Button>
             <DataTable tableData={clientsData} columns={columns} />
         </div>
     )

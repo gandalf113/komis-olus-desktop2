@@ -74,6 +74,25 @@ searchClients = ipcMain.handle("search/clients", async (event, args) => {
         .whereLike('skrot', `%${search}%`)
 })
 
+searchClientExact = ipcMain.handle("search/clients/exact", async (event, args) => {
+    const { search } = args
+
+    return knex.select('*').from('klienci')
+        .whereLike('skrot', `${search}%`)
+})
+
+
+createClient = ipcMain.handle("create/client", async (event, args) => {
+    const { firstName, lastName, short } = args
+
+    return knex('klienci')
+        .insert({
+            imie: firstName,
+            nazwisko: lastName,
+            skrot: short
+        })
+})
+
 createContract = ipcMain.handle("create/contract", async (event, args) => {
     const { clientId, date } = args
 

@@ -59,6 +59,17 @@ export const NewItemModal = ({ isOpen, handleClose }) => {
                             }}
                         />
                         <TextField
+                            id="item-amount-input"
+                            label="Ilość"
+                            type="number"
+                            defaultValue={1}
+                            onChange={(e) => setAmount(e.target.value)}
+                            InputLabelProps={{
+                                shrink: true,
+                            }}
+                            variant="filled"
+                        />
+                        <TextField
                             id="item-price-input"
                             label="Kwota dla komitenta [zł]"
                             type="number"
@@ -73,16 +84,20 @@ export const NewItemModal = ({ isOpen, handleClose }) => {
                             variant="filled"
                         />
                         <TextField
-                            id="item-amount-input"
-                            label="Ilość"
+                            id="item-price-input"
+                            label="Marża"
                             type="number"
-                            defaultValue={1}
-                            onChange={(e) => setAmount(e.target.value)}
+                            defaultValue={'0.00'}
+                            // onChange={(e) => setPrice(e.target.value)}
                             InputLabelProps={{
                                 shrink: true,
                             }}
+                            inputProps={{
+                                step: 0.01
+                            }}
                             variant="filled"
                         />
+
                     </Box>
                     <DialogActions>
                         <Button onClick={() => {
