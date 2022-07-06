@@ -12,6 +12,8 @@ export const NewItemModal = ({ isOpen, handleClose }) => {
     // Local state
     const [name, setName] = useState('')
     const [amount, setAmount] = useState(1)
+    const [commiterValue, setCommiterValue] = useState(0)
+    const [margin, setMargin] = useState(0)
     const [price, setPrice] = useState(0)
 
     // Redux
@@ -20,15 +22,36 @@ export const NewItemModal = ({ isOpen, handleClose }) => {
     // Reset the values on open
     useEffect(() => {
         setName('')
-        setPrice(0)
+        setCommiterValue(0)
         setAmount(1)
     }, [isOpen])
 
     const dispatch = useDispatch()
 
-    const createSale = async (name, price, amount) => {
+    const calculatePrice = (commiterValue, margin) => {
+        commiterValue = Number.parseFloat(commiterValue)
+        margin = Number.parseFloat(margin)
+
+        const price =  commiterValue + margin + (commiterValue + margin) * 0.23
+        return price.toFixed(2)
+    }
+
+    useEffect(() => {
+        const newPrice = calculatePrice(commiterValue, margin)
+        setPrice(`${newPrice} zł`)
+    }, [commiterValue, margin])
+
+    /**
+     *
+     * @param {string} name - item name
+     * @param {number} commiterValue - amount of money for the commiter
+     * @param {number} margin - profit for the company
+     * @param {number} price - commiterValue + margin + tax
+     * @param {int} amount - how many items of this kind has the commiter brought
+     */
+    const createSale = async (name, commiterValue, margin, price, amount) => {
         const contractId = contract.id_umowy
-        window.api.createItem(name, amount, price, contractId)
+        window.api.createItem(name, amount, commiterValue, margin, price, contractId)
             .then(_ => {
                 // Close the modal
                 dispatch(toggleNewItemModal(false))
@@ -70,11 +93,11 @@ export const NewItemModal = ({ isOpen, handleClose }) => {
                             variant="filled"
                         />
                         <TextField
-                            id="item-price-input"
+                            id="item-committer-value-input"
                             label="Kwota dla komitenta [zł]"
                             type="number"
                             defaultValue={'0.00'}
-                            onChange={(e) => setPrice(e.target.value)}
+                            onChange={(e) => setCommiterValue(e.target.value)}
                             InputLabelProps={{
                                 shrink: true,
                             }}
@@ -84,11 +107,11 @@ export const NewItemModal = ({ isOpen, handleClose }) => {
                             variant="filled"
                         />
                         <TextField
-                            id="item-price-input"
+                            id="item-margin-input"
                             label="Marża"
                             type="number"
                             defaultValue={'0.00'}
-                            // onChange={(e) => setPrice(e.target.value)}
+                            onChange={(e) => setMargin(e.target.value)}
                             InputLabelProps={{
                                 shrink: true,
                             }}
@@ -97,11 +120,22 @@ export const NewItemModal = ({ isOpen, handleClose }) => {
                             }}
                             variant="filled"
                         />
+                        <TextField
+                            id="item-price-input-noneditable"
+                            label="Cena"
+                            type="text"
+                            value={price}
+                            InputLabelProps={{
+                                shrink: true,
+                            }}
+                            variant="filled"
+                        />
 
                     </Box>
                     <DialogActions>
                         <Button onClick={() => {
-                            createSale(name, price, amount)
+                            const price = calculatePrice(commiterValue, margin)
+                            createSale(name, commiterValue, margin, price, amount)
                         }}>Przyjmij</Button>
                     </DialogActions>
 

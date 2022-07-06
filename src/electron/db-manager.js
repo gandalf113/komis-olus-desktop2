@@ -10,7 +10,7 @@ var knex = require("knex")({
 });
 
 getClients = ipcMain.handle("get/clients", async (event, args) => {
-    return knex.select().from("klienci")
+    return knex.select().from("klienci").orderBy('skrot', 'asc')
 })
 
 getSales = ipcMain.handle("get/sales", async (event, args) => {
@@ -114,13 +114,15 @@ createSale = ipcMain.handle("create/sale", async (event, args) => {
 })
 
 createItem = ipcMain.handle("create/item", async (event, args) => {
-    const { contractId, name, price, amount } = args
+    const { contractId, name, commiterValue, margin, price, amount } = args
 
     return knex('przedmioty')
         .insert({
             id_umowy: contractId,
             nazwa: name,
-            kwotaDlaKomitenta: price,
+            kwotaDlaKomitenta: commiterValue,
+            marza: margin,
+            cena: price,
             przyjetaIlosc: amount,
             sprzedanaIlosc: 0
         })

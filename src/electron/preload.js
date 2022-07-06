@@ -21,7 +21,7 @@ const WINDOW_API = {
     createClient: (firstName, lastName, short) => ipcRenderer.invoke("create/client", { firstName: firstName, lastName: lastName, short: short }),
     createContract: (clientId, date) => ipcRenderer.invoke("create/contract", { clientId: clientId, date: date }),
     createSale: (itemId, date) => ipcRenderer.invoke("create/sale", { itemId: itemId, date: date }),
-    createItem: (name, amount, price, contractId) => ipcRenderer.invoke("create/item", { name: name, amount: amount, price: price, contractId: contractId }),
+    createItem: (name, amount, commiterValue, margin, price, contractId) => ipcRenderer.invoke("create/item", { name: name, amount: amount, commiterValue: commiterValue, margin: margin, price: price, contractId: contractId }),
     // Increment
     incrementSoldAmount: (itemId) => ipcRenderer.invoke("increment/soldAmount", { itemId: itemId }),
 }

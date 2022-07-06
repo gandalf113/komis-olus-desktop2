@@ -22,7 +22,7 @@ import ListItemText from '@mui/material/ListItemText';
 import PointOfSaleIcon from '@mui/icons-material/PointOfSale';
 import { useDispatch } from 'react-redux';
 import { setScreen } from '../redux/screenSlice';
-import { toggleNewContractModal, toggleNewSaleModal } from '../redux/modalSlice';
+import { toggleNewClientModal, toggleNewContractModal, toggleNewSaleModal } from '../redux/modalSlice';
 
 const drawerWidth = 240;
 
@@ -158,7 +158,7 @@ export default function PersistentDrawerLeft({ renderScreen }) {
                 <Divider />
                 <List>
                     <ListItem disablePadding>
-                        <ListItemButton>
+                        <ListItemButton onClick={() => dispatch(toggleNewClientModal(true))}>
                             <ListItemIcon>
                                 <PersonAddIcon />
                             </ListItemIcon>
