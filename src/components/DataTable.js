@@ -1,33 +1,26 @@
 import React from 'react'
-import { useTable } from 'react-table'
+import { useTable, useSortBy } from 'react-table'
 import "../table.css"
 import Modal from 'react-modal'
+import Box from '@mui/material/Box';
+import Table from '@mui/material/Table';
+import TableBody from '@mui/material/TableBody';
+import TableCell from '@mui/material/TableCell';
+import TableContainer from '@mui/material/TableContainer';
+import TableHead from '@mui/material/TableHead';
+import TableRow from '@mui/material/TableRow';
+import ArrowDropUpIcon from '@mui/icons-material/ArrowDropUp';
+import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 
 Modal.setAppElement('#root');
 
 export const DataTable = ({ tableData, columns = {} }) => {
-    // const [tableData, setTableData] = useState([])
-
     const data = React.useMemo(
         () => tableData,
         [tableData]
     )
 
-    // const getData =
-    //     async () => {
-    //         await apiCallback(apiArgs)
-    //             .then(res => {
-    //                 setTableData(res)
-    //             })
-    //     }
-
-
-    // useEffect(() => {
-    //     getData()
-    // })
-
-
-    const tableInstance = useTable({ columns, data })
+    const tableInstance = useTable({ columns, data }, useSortBy)
 
     const {
         getTableProps,
@@ -38,50 +31,58 @@ export const DataTable = ({ tableData, columns = {} }) => {
     } = tableInstance
 
 
+
     return (
-        <div>
-            <table {...getTableProps()}>
-                <thead>
+        <TableContainer>
+            <Table  {...getTableProps()}>
+                <TableHead>
                     {// Loop over the header rows
                         headerGroups.map(headerGroup => (
                             // Apply the header row props
-                            <tr {...headerGroup.getHeaderGroupProps()}>
+                            <TableRow {...headerGroup.getHeaderGroupProps()}>
                                 {// Loop over the headers in each row
                                     headerGroup.headers.map(column => (
                                         // Apply the header cell props
-                                        <th {...column.getHeaderProps()}>
-                                            {// Render the header
-                                                column.render('Header')}
-                                        </th>
+                                        <TableCell {...column.getHeaderProps(column.getSortByToggleProps)}>
+                                            <Box sx={{ display: 'flex', alignItems: 'end' }}>
+                                                {column.isSorted ? (column.isSortedDesc ?
+                                                    <ArrowDropUpIcon />
+                                                    :
+                                                    <ArrowDropDownIcon />
+                                                ) : ""}
+                                                {column.render('Header')}
+
+                                            </Box>
+                                        </TableCell>
                                     ))}
-                            </tr>
+                            </TableRow>
                         ))}
-                </thead>
+                </TableHead>
                 {/* Apply the table body props */}
-                <tbody {...getTableBodyProps()}>
+                <TableBody {...getTableBodyProps()}>
                     {// Loop over the table rows
                         rows.map(row => {
                             // Prepare the row for display
                             prepareRow(row)
                             return (
                                 // Apply the row props
-                                <tr {...row.getRowProps()}>
+                                <TableRow {...row.getRowProps()}>
                                     {// Loop over the rows cells
                                         row.cells.map(cell => {
                                             // Apply the cell props
                                             return (
-                                                <td {...cell.getCellProps()}>
+                                                <TableCell {...cell.getCellProps()}>
                                                     {// Render the cell contents
                                                         cell.render('Cell')}
-                                                </td>
+                                                </TableCell>
                                             )
                                         })}
-                                </tr>
+                                </TableRow>
                             )
                         })}
-                </tbody>
-            </table>
-        </div>
+                </TableBody>
+            </Table>
+        </TableContainer>
 
     )
 }

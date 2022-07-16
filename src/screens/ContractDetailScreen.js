@@ -4,6 +4,7 @@ import { DataTable } from '../components/DataTable'
 import { Box, Button, Typography } from '@mui/material';
 import { getContractDetail } from '../redux/databaseSlice';
 import { toggleNewItemModal } from '../redux/modalSlice';
+import { toCurrency, decToHex } from '../utils/miscUtils';
 
 // Contract detail screen
 const ContractDetailScreen = () => {
@@ -12,16 +13,6 @@ const ContractDetailScreen = () => {
     const { currentContract: contract } = useSelector(state => state.screen)
 
     const dispatch = useDispatch()
-
-    const decToHex = (dec) => {
-        let hexStr = dec.toString(16);
-        return hexStr
-    }
-
-    const toCurrency = (value) => {
-        let price = parseFloat(value);
-        return price.toFixed(2) + " zł"
-    }
 
     useEffect(() => {
         dispatch(getContractDetail(contract.id_umowy))

@@ -3,12 +3,16 @@ table {
     width: 100%;
 }
 
-th,
-td {
+th {
+    background-color: #ffffff;
     text-align: left;
     padding: 8px;
 }
 
-tr:nth-child(even) {
+tr {
     background-color: #f2f2f2;
+}
+
+tr:nth-child(even) {
+    background-color: #ffffff;
 }

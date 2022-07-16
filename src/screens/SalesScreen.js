@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { DataTable } from '../components/DataTable'
 import { getSalesData } from '../redux/databaseSlice';
 import { toggleNewSaleModal } from '../redux/modalSlice';
+import { toCurrency } from '../utils/miscUtils';
 
 const SalesScreen = () => {
     const dispatch = useDispatch()
@@ -28,6 +29,21 @@ const SalesScreen = () => {
                 Header: 'Przedmiot',
                 accessor: 'nazwa',
 
+            },
+            {
+                Header: 'Kwota dla komitenta',
+                accessor: 'kwotaDlaKomitenta',
+                Cell: props => <div> {toCurrency(props.value)} </div>
+            },
+            {
+                Header: 'Marża',
+                accessor: 'marza',
+                Cell: props => <div> {toCurrency(props.value)} </div>
+            },
+            {
+                Header: 'Cena',
+                accessor: 'cena',
+                Cell: props => <div> {toCurrency(props.value)} </div>
             },
             {
                 Header: 'Data sprzedaży',
