@@ -2,6 +2,7 @@ import React, { useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux';
 import { DataTable } from '../components/DataTable'
 import { Box, Button, Typography } from '@mui/material';
+import EditIcon from '@mui/icons-material/Edit';
 import { getContractDetail } from '../redux/databaseSlice';
 import { toggleNewItemModal } from '../redux/modalSlice';
 import { toCurrency, decToHex } from '../utils/miscUtils';
@@ -59,6 +60,10 @@ const ContractDetailScreen = () => {
             {
                 Header: 'Do wypłaty',
                 Cell: props => <div> {toCurrency(props.row.original.kwotaDlaKomitenta * props.row.original.sprzedanaIlosc)} </div>
+            },
+            {
+                Header: 'Edytuj',
+                Cell: props => <EditIcon sx={{cursor: 'pointer'}} />
             },
         ],
         []

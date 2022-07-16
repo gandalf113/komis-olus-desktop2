@@ -45,13 +45,12 @@ export const DataTable = ({ tableData, columns = {} }) => {
                                         // Apply the header cell props
                                         <TableCell {...column.getHeaderProps(column.getSortByToggleProps)}>
                                             <Box sx={{ display: 'flex', alignItems: 'end' }}>
+                                                {column.render('Header')}
                                                 {column.isSorted ? (column.isSortedDesc ?
                                                     <ArrowDropUpIcon />
                                                     :
                                                     <ArrowDropDownIcon />
                                                 ) : ""}
-                                                {column.render('Header')}
-
                                             </Box>
                                         </TableCell>
                                     ))}

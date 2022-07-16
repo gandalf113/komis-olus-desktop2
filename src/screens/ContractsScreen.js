@@ -1,7 +1,7 @@
 import React, { useEffect, useCallback } from 'react'
 import { useSelector } from 'react-redux';
 import { DataTable } from '../components/DataTable'
-import { Button } from '@mui/material';
+import { Button, Typography } from '@mui/material';
 import { useDispatch } from 'react-redux';
 import { toggleNewContractModal } from '../redux/modalSlice';
 import { getContractsData } from '../redux/databaseSlice';
@@ -45,8 +45,9 @@ const ContractsScreen = () => {
             },
             {
                 Header: 'Otwórz',
-                Cell: props => <Button onClick={() => openContract(props.row.original)}
-                    color="secondary">Otwórz umowę</Button>
+                Cell: props => <Typography sx={{ cursor: 'pointer' }} onClick={() => openContract(props.row.original)}
+                        color="secondary">Otwórz umowę</Typography>
+
             },
         ],
         [openContract]
