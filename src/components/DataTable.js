@@ -1,5 +1,5 @@
 import React from 'react'
-import { useTable, useSortBy } from 'react-table'
+import { useTable, useSortBy, useGlobalFilter } from 'react-table'
 import "../table.css"
 import Modal from 'react-modal'
 import Box from '@mui/material/Box';
@@ -11,6 +11,7 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import ArrowDropUpIcon from '@mui/icons-material/ArrowDropUp';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
+import SearchBar from './modals/SearchBar';
 
 Modal.setAppElement('#root');
 
@@ -20,7 +21,10 @@ export const DataTable = ({ tableData, columns = {} }) => {
         [tableData]
     )
 
-    const tableInstance = useTable({ columns, data }, useSortBy)
+    const tableInstance = useTable({ columns, data },
+        useGlobalFilter,
+        useSortBy
+    )
 
     const {
         getTableProps,
@@ -28,12 +32,18 @@ export const DataTable = ({ tableData, columns = {} }) => {
         headerGroups,
         rows,
         prepareRow,
+        preGlobalFilteredRows,
+        setGlobalFilter,
+        state
     } = tableInstance
 
 
 
     return (
         <TableContainer>
+            <SearchBar preGlobalFilteredRows={preGlobalFilteredRows}
+                globalFilter={state.globalFilter}
+                setGlobalFilter={setGlobalFilter} />
             <Table  {...getTableProps()}>
                 <TableHead>
                     {// Loop over the header rows
