@@ -10,7 +10,7 @@ import { loadContract, setScreen, setNavbarTitle } from '../redux/screenSlice';
 const ContractsScreen = () => {
     const dispatch = useDispatch()
 
-    const { contractsData } = useSelector(state => state.database)
+    const { contractsData, loading } = useSelector(state => state.database)
 
     useEffect(() => {
         dispatch(setNavbarTitle('umowy'))
@@ -63,7 +63,7 @@ const ContractsScreen = () => {
     return (
         <div>
             {/* <Button onClick={openModal} variant="contained" color="success" style={{ marginBottom: 10 }}>Nowa umowa</Button> */}
-            <DataTable tableData={contractsData} columns={columns} />
+            <DataTable loading={loading} tableData={contractsData} columns={columns} />
         </div>
     )
 }

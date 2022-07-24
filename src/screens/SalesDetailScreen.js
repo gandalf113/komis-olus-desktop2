@@ -12,7 +12,7 @@ const SalesDetailScreen = () => {
     const dispatch = useDispatch()
 
     const { salesData } = useSelector(state => state.database)
-    const { currentSalesDay } = useSelector(state => state.screen)
+    const { currentSalesDay, loading } = useSelector(state => state.screen)
 
     useEffect(() => {
         dispatch(setNavbarTitle(`sprzedaż z dnia ${currentSalesDay}`))
@@ -62,7 +62,7 @@ const SalesDetailScreen = () => {
             <Typography align='justify' variant="h5" sx={{marginBottom: 4}}>
                 {currentSalesDay}
             </Typography>
-            <DataTable tableData={salesData} columns={columns} />
+            <DataTable loading={loading} tableData={salesData} columns={columns} />
         </div>
     )
 }

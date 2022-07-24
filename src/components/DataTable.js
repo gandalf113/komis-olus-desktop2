@@ -1,7 +1,8 @@
-import React from 'react'
-import { useTable, useSortBy, useGlobalFilter } from 'react-table'
-import "../table.css"
-import Modal from 'react-modal'
+import React from 'react';
+import { useTable, useSortBy, useGlobalFilter } from 'react-table';
+import "../table.css";
+import Modal from 'react-modal';
+import LoadingSpinner from './LoadingSpinner';
 import Box from '@mui/material/Box';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -15,7 +16,7 @@ import SearchBar from './modals/SearchBar';
 
 Modal.setAppElement('#root');
 
-export const DataTable = ({ tableData, columns = {} }) => {
+export const DataTable = ({ loading, tableData, columns = {} }) => {
     const data = React.useMemo(
         () => tableData,
         [tableData]
@@ -37,7 +38,9 @@ export const DataTable = ({ tableData, columns = {} }) => {
         state
     } = tableInstance
 
-
+    if (loading) {
+        return <LoadingSpinner />
+    }
 
     return (
         <TableContainer>

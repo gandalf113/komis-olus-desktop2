@@ -41,12 +41,10 @@ export const getContractDetail = createAsyncThunk(
 )
 
 
-
-
 export const databaseSlice = createSlice({
     name: "database",
     initialState: {
-        loading: false,
+        loading: true,
         clientsData: [],
         contractsData: [],
         detailedContractData: [],
@@ -75,11 +73,21 @@ export const databaseSlice = createSlice({
             state.salesData = action.payload
             state.loading = false
         },
-        [getSalesData.rejected]: (state, action) => {
+        // Sales data by date
+        [getSalesDataByDate.pending]: (state, action) => {
+            state.salesData = []
+            state.loading = true
+        },
+        [getSalesDataByDate.fulfilled]: (state, action) => {
+            state.salesData = action.payload
+            state.loading = false
+        },
+        [getSalesDataByDate.rejected]: (state, action) => {
             state.loading = false
         },
         // Contracts data
         [getContractsData.pending]: (state, action) => {
+            state.contractsData = []
             state.loading = true
         },
         [getContractsData.fulfilled]: (state, action) => {

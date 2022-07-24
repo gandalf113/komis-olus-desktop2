@@ -10,7 +10,7 @@ import { setNavbarTitle } from '../redux/screenSlice';
 const ClientsScreen = () => {
     const dispatch = useDispatch()
 
-    const { clientsData } = useSelector(state => state.database)
+    const { clientsData, loading } = useSelector(state => state.database)
 
     useEffect(() => {
         dispatch(setNavbarTitle('klienci'))
@@ -42,7 +42,7 @@ const ClientsScreen = () => {
         <div>
             {/* <Button variant="contained" color="success" style={{ marginBottom: 10 }}
                 onClick={() => dispatch(toggleNewClientModal(true))}>Nowy klient</Button> */}
-            <DataTable tableData={clientsData} columns={columns} />
+            <DataTable loading={loading} tableData={clientsData} columns={columns} />
         </div>
     )
 }

@@ -9,7 +9,7 @@ import { loadSalesDay, setScreen, setNavbarTitle } from '../redux/screenSlice';
 const SalesScreen = () => {
     const dispatch = useDispatch()
 
-    const { salesData } = useSelector(state => state.database)
+    const { salesData, loading } = useSelector(state => state.database)
 
     const [days, setDays] = useState([])
 
@@ -58,7 +58,7 @@ const SalesScreen = () => {
     return (
         <div>
             {/* <Button onClick={openModal} variant="contained" color="success" style={{ marginBottom: 10 }}>Nowa sprzedaż</Button> */}
-            <DataTable tableData={days} columns={columns} />
+            <DataTable loading={loading} tableData={days} columns={columns} />
         </div>
     )
 }

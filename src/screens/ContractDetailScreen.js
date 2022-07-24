@@ -13,7 +13,7 @@ import { setNavbarTitle } from '../redux/screenSlice';
 const ContractDetailScreen = () => {
     // Redux
     const { detailedContractData: items } = useSelector(state => state.database)
-    const { currentContract: contract } = useSelector(state => state.screen)
+    const { currentContract: contract, loading } = useSelector(state => state.screen)
 
     const dispatch = useDispatch()
 
@@ -66,7 +66,7 @@ const ContractDetailScreen = () => {
             },
             {
                 Header: 'Edytuj',
-                Cell: props => <EditIcon sx={{cursor: 'pointer'}} />
+                Cell: props => <EditIcon sx={{ cursor: 'pointer' }} />
             },
         ],
         []
@@ -94,7 +94,8 @@ const ContractDetailScreen = () => {
                 </Button>
             </Box>
 
-            <DataTable tableData={items} apiCallback={window.api.getItemsWithContracts} columns={columns} apiArgs={contract.id_umowy} />
+            <DataTable loading={loading} tableData={items} apiCallback={window.api.getItemsWithContracts}
+                columns={columns} apiArgs={contract.id_umowy} />
         </div>
     )
 }
