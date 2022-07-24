@@ -49,6 +49,14 @@ getSalesWithItems = ipcMain.handle("get/sales-items", async (event, args) => {
         .orderBy('id_sprzedazy', 'desc')
 })
 
+getSalesWithItemsByDate = ipcMain.handle("get/sales-items/date", async (event, args) => {
+    const { date } = args
+
+    return knex.select('*').from('sprzedaz')
+        .leftJoin('przedmioty', 'przedmioty.id_przedmiotu', 'sprzedaz.id_przedmiotu')
+        .orderBy('id_sprzedazy', 'desc').where('sprzedaz.data', date)
+})
+
 getItemsWithContracts = ipcMain.handle("get/items-contracts", async (event, args) => {
     const { contractId } = args
     return knex.select('*').from('przedmioty').leftOuterJoin('umowy', 'umowy.id_umowy', 'przedmioty.id_umowy').where('przedmioty.id_umowy', contractId)
@@ -80,6 +88,10 @@ searchClientExact = ipcMain.handle("search/clients/exact", async (event, args) =
     return knex.select('*').from('klienci')
         .whereLike('skrot', `${search}%`)
 })
+
+
+
+
 
 
 createClient = ipcMain.handle("create/client", async (event, args) => {

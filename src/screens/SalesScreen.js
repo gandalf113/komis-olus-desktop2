@@ -1,19 +1,35 @@
-import { Button } from '@mui/material';
-import React, { useEffect } from 'react'
+import { Typography } from '@mui/material';
+import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { DataTable } from '../components/DataTable'
 import { getSalesData } from '../redux/databaseSlice';
 import { toggleNewSaleModal } from '../redux/modalSlice';
-import { toCurrency } from '../utils/miscUtils';
+import { loadSalesDay, setScreen, setNavbarTitle } from '../redux/screenSlice';
 
 const SalesScreen = () => {
     const dispatch = useDispatch()
 
     const { salesData } = useSelector(state => state.database)
 
+    const [days, setDays] = useState([])
+
     useEffect(() => {
+        dispatch(setNavbarTitle('sprzedaż'))
+        // dispatch(getSalesDataByDate('2022-07-23'))
         dispatch(getSalesData())
     }, [dispatch])
+
+    useEffect(() => {
+        // Pobierz unikalną listę dni handlowych
+        let dayList = [...new Set(salesData.map(sale => sale.data))]
+
+        // Przekonwertuj ją na listę obiektów
+        var dayObjects = dayList.map(day => ({
+            "data": day
+        }))
+
+        setDays(dayObjects)
+    }, [salesData])
 
     function openModal() {
         dispatch(toggleNewSaleModal(true))
@@ -22,41 +38,27 @@ const SalesScreen = () => {
     const columns = React.useMemo(
         () => [
             {
-                Header: 'id',
-                accessor: 'id_sprzedazy',
-            },
-            {
-                Header: 'Przedmiot',
-                accessor: 'nazwa',
-
-            },
-            {
-                Header: 'Kwota dla komitenta',
-                accessor: 'kwotaDlaKomitenta',
-                Cell: props => <div> {toCurrency(props.value)} </div>
-            },
-            {
-                Header: 'Marża',
-                accessor: 'marza',
-                Cell: props => <div> {toCurrency(props.value)} </div>
-            },
-            {
-                Header: 'Cena',
-                accessor: 'cena',
-                Cell: props => <div> {toCurrency(props.value)} </div>
-            },
-            {
-                Header: 'Data sprzedaży',
+                Header: 'Dzień',
                 accessor: 'data',
             },
+            {
+                Header: 'Otwórz',
+                Cell: props => <Typography sx={{ cursor: 'pointer' }}
+                    onClick={() => {
+                        dispatch(loadSalesDay(props.row.original.data))
+                        dispatch(setScreen('sprzedaz'))
+                    }}
+                    color="secondary">Zobacz sprzedaż</Typography>
+
+            },
         ],
-        []
+        [dispatch]
     )
 
     return (
         <div>
-            <Button onClick={openModal} variant="contained" color="success" style={{ marginBottom: 10 }}>Nowa sprzedaż</Button>
-            <DataTable tableData={salesData} columns={columns} />
+            {/* <Button onClick={openModal} variant="contained" color="success" style={{ marginBottom: 10 }}>Nowa sprzedaż</Button> */}
+            <DataTable tableData={days} columns={columns} />
         </div>
     )
 }

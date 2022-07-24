@@ -5,8 +5,7 @@ import { Button, Typography } from '@mui/material';
 import { useDispatch } from 'react-redux';
 import { toggleNewContractModal } from '../redux/modalSlice';
 import { getContractsData } from '../redux/databaseSlice';
-import { loadContract, setScreen } from '../redux/screenSlice';
-
+import { loadContract, setScreen, setNavbarTitle } from '../redux/screenSlice';
 
 const ContractsScreen = () => {
     const dispatch = useDispatch()
@@ -14,6 +13,7 @@ const ContractsScreen = () => {
     const { contractsData } = useSelector(state => state.database)
 
     useEffect(() => {
+        dispatch(setNavbarTitle('umowy'))
         dispatch(getContractsData())
     }, [dispatch])
 
@@ -40,13 +40,21 @@ const ContractsScreen = () => {
                 accessor: 'skrot',
             },
             {
+                Header: 'Imię',
+                accessor: 'imie',
+            },
+            {
+                Header: 'Nazwisko',
+                accessor: 'nazwisko',
+            },
+            {
                 Header: 'Data zawarcia umowy',
                 accessor: 'data',
             },
             {
                 Header: 'Otwórz',
                 Cell: props => <Typography sx={{ cursor: 'pointer' }} onClick={() => openContract(props.row.original)}
-                        color="secondary">Otwórz umowę</Typography>
+                    color="secondary">Otwórz umowę</Typography>
 
             },
         ],
@@ -54,7 +62,7 @@ const ContractsScreen = () => {
     )
     return (
         <div>
-            <Button onClick={openModal} variant="contained" color="success" style={{ marginBottom: 10 }}>Nowa umowa</Button>
+            {/* <Button onClick={openModal} variant="contained" color="success" style={{ marginBottom: 10 }}>Nowa umowa</Button> */}
             <DataTable tableData={contractsData} columns={columns} />
         </div>
     )

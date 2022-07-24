@@ -6,6 +6,7 @@ import Modals from './components/Modals';
 
 import ClientsScreen from './screens/ClientsScreen';
 import SalesScreen from './screens/SalesScreen';
+import SalesDetailScreen from './screens/SalesDetailScreen';
 import ContractDetailScreen from './screens/ContractDetailScreen';
 import ContractsScreen from './screens/ContractsScreen';
 
@@ -17,8 +18,10 @@ function App() {
     switch (currentScreen) {
       case 'klienci':
         return <ClientsScreen />
-      case 'sprzedaz':
+      case 'dni_sprzedazy':
         return <SalesScreen />
+      case 'sprzedaz':
+        return <SalesDetailScreen />
       case 'umowy':
         return <ContractsScreen />
       case 'przedmioty':

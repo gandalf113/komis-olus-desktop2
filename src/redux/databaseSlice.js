@@ -7,6 +7,13 @@ export const getSalesData = createAsyncThunk(
     }
 )
 
+export const getSalesDataByDate = createAsyncThunk(
+    'get/sales', async (date) => {
+        const res = await window.api.getSalesWithItemsByDate(date)
+        return res
+    }
+)
+
 export const getItemsDetailed = createAsyncThunk(
     'get/items/detailed', async (searchValue) => {
         const res = await window.api.getItemsDetailed(searchValue)

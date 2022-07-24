@@ -6,6 +6,8 @@ import EditIcon from '@mui/icons-material/Edit';
 import { getContractDetail } from '../redux/databaseSlice';
 import { toggleNewItemModal } from '../redux/modalSlice';
 import { toCurrency, decToHex } from '../utils/miscUtils';
+import { setNavbarTitle } from '../redux/screenSlice';
+
 
 // Contract detail screen
 const ContractDetailScreen = () => {
@@ -16,13 +18,14 @@ const ContractDetailScreen = () => {
     const dispatch = useDispatch()
 
     useEffect(() => {
+        dispatch(setNavbarTitle(`umowa ${contract.skrot}`))
         dispatch(getContractDetail(contract.id_umowy))
     }, [dispatch, contract.id_umowy])
 
     const columns = React.useMemo(
         () => [
             {
-                Header: 'ID przedmiotu',
+                Header: 'Kod z metki',
                 accessor: 'id_przedmiotu',
                 Cell: props => <div>{decToHex(props.value)}</div>
             },
@@ -87,7 +90,7 @@ const ContractDetailScreen = () => {
                 </Button>
                 <Button
                     onClick={() => console.log(contract)} variant="contained" color="inherit" style={{ marginTop: 20 }}>
-                    Generuj metki
+                    Drukuj metki
                 </Button>
             </Box>
 

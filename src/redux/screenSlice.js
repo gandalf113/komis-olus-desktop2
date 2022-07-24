@@ -3,8 +3,10 @@ import { createSlice } from "@reduxjs/toolkit";
 export const screenSlice = createSlice({
     name: "screen",
     initialState: {
+        navbarTitle: 'Komis OLUŚ - klienci',
         currentScreen: 'klienci',
-        currentContract: {}
+        currentContract: {},
+        currentSalesDay: null,
     },
     reducers: {
         setScreen: (state, action) => {
@@ -12,10 +14,16 @@ export const screenSlice = createSlice({
         },
         loadContract: (state, action) => {
             state.currentContract = action.payload
-        }
+        },
+        loadSalesDay: (state, action) => {
+            state.currentSalesDay = action.payload
+        },
+        setNavbarTitle: (state, action) => {
+            state.navbarTitle = action.payload
+        },
     }
 })
 
-export const { setScreen, loadContract } = screenSlice.actions
+export const { setScreen, loadContract, loadSalesDay, setNavbarTitle } = screenSlice.actions
 
 export default screenSlice.reducer

@@ -5,6 +5,7 @@ import { Button } from '@mui/material'
 import { useDispatch } from 'react-redux'
 import { getClientsData } from '../redux/databaseSlice'
 import { toggleNewClientModal } from '../redux/modalSlice';
+import { setNavbarTitle } from '../redux/screenSlice';
 
 const ClientsScreen = () => {
     const dispatch = useDispatch()
@@ -12,6 +13,7 @@ const ClientsScreen = () => {
     const { clientsData } = useSelector(state => state.database)
 
     useEffect(() => {
+        dispatch(setNavbarTitle('klienci'))
         dispatch(getClientsData())
     }, [dispatch])
 
@@ -38,8 +40,8 @@ const ClientsScreen = () => {
     )
     return (
         <div>
-            <Button variant="contained" color="success" style={{ marginBottom: 10 }}
-                onClick={() => dispatch(toggleNewClientModal(true))}>Nowy klient</Button>
+            {/* <Button variant="contained" color="success" style={{ marginBottom: 10 }}
+                onClick={() => dispatch(toggleNewClientModal(true))}>Nowy klient</Button> */}
             <DataTable tableData={clientsData} columns={columns} />
         </div>
     )

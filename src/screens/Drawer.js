@@ -20,7 +20,7 @@ import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import PointOfSaleIcon from '@mui/icons-material/PointOfSale';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { setScreen } from '../redux/screenSlice';
 import { toggleNewClientModal, toggleNewContractModal, toggleNewSaleModal } from '../redux/modalSlice';
 
@@ -75,6 +75,9 @@ export default function PersistentDrawerLeft({ renderScreen }) {
     const theme = useTheme();
     const [open, setOpen] = React.useState(false);
 
+    const { navbarTitle } = useSelector(state => state.screen)
+
+
     const dispatch = useDispatch()
 
     const handleDrawerOpen = () => {
@@ -104,7 +107,7 @@ export default function PersistentDrawerLeft({ renderScreen }) {
                         <MenuIcon />
                     </IconButton>
                     <Typography variant="h6" noWrap component="div">
-                        Komis OLUŚ
+                        Komis OLUŚ - {navbarTitle}
                     </Typography>
                 </Toolbar>
             </AppBar>
@@ -147,7 +150,7 @@ export default function PersistentDrawerLeft({ renderScreen }) {
                     </ListItem>
 
                     <ListItem disablePadding>
-                        <ListItemButton onClick={() => changeScreen('sprzedaz')}>
+                        <ListItemButton onClick={() => changeScreen('dni_sprzedazy')}>
                             <ListItemIcon>
                                 <PointOfSaleIcon />
                             </ListItemIcon>
