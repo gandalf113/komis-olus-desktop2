@@ -9,6 +9,7 @@ import SalesScreen from './screens/SalesScreen';
 import SalesDetailScreen from './screens/SalesDetailScreen';
 import ContractDetailScreen from './screens/ContractDetailScreen';
 import ContractsScreen from './screens/ContractsScreen';
+import SalesSummaryScreen from './screens/SalesSummaryScreen';
 
 function App() {
   // Redux
@@ -22,6 +23,8 @@ function App() {
         return <SalesScreen />
       case 'sprzedaz':
         return <SalesDetailScreen />
+        case 'podsumowanie_sprzedazy':
+          return <SalesSummaryScreen />
       case 'umowy':
         return <ContractsScreen />
       case 'przedmioty':

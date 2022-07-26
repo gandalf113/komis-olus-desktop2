@@ -1,11 +1,11 @@
 import React, { useEffect } from 'react'
-import { Typography } from '@mui/material';
+import { Box, Button, Typography } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
 import { DataTable } from '../components/DataTable'
 import { getSalesDataByDate } from '../redux/databaseSlice';
 import { toggleNewSaleModal } from '../redux/modalSlice';
 import { toCurrency } from '../utils/miscUtils';
-import { setNavbarTitle } from '../redux/screenSlice';
+import { setNavbarTitle, setScreen } from '../redux/screenSlice';
 
 
 const SalesDetailScreen = () => {
@@ -59,9 +59,15 @@ const SalesDetailScreen = () => {
 
     return (
         <div>
-            <Typography align='justify' variant="h5" sx={{marginBottom: 4}}>
-                {currentSalesDay}
-            </Typography>
+            <Box sx={{ display: 'flex', alignItems: 'start', gap: 2, marginBottom: 4 }}>
+                <Typography align='justify' variant="h5">
+                    {currentSalesDay}
+                </Typography>
+                <Button variant='contained'
+                onClick={() => {
+                    dispatch(setScreen('podsumowanie_sprzedazy'))
+                }}>Podsumowanie</Button>
+            </Box>
             <DataTable loading={loading} tableData={salesData} columns={columns} />
         </div>
     )
