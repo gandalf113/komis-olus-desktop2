@@ -1,11 +1,9 @@
 import React, { useEffect, useState } from 'react'
-import { Box, Button, Typography } from '@mui/material';
+import { Typography } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
-import { DataTable } from '../components/DataTable'
-import { getSalesDataByDate } from '../redux/databaseSlice';
-import { toggleNewSaleModal } from '../redux/modalSlice';
-import { toCurrency } from '../utils/miscUtils';
-import { setNavbarTitle, setScreen } from '../redux/screenSlice';
+import { getSalesDataByDate } from '../../redux/databaseSlice';
+import { toCurrency } from '../../utils/miscUtils';
+import { setNavbarTitle, setScreen } from '../../redux/screenSlice';
 
 const SalesSummaryScreen = () => {
     const dispatch = useDispatch()

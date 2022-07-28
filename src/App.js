@@ -5,11 +5,11 @@ import Notification from './components/Notification';
 import Modals from './components/Modals';
 
 import ClientsScreen from './screens/ClientsScreen';
-import SalesScreen from './screens/SalesScreen';
-import SalesDetailScreen from './screens/SalesDetailScreen';
+import SalesScreen from './screens/sales/SalesScreen';
+import SalesDetailScreen from './screens/sales/SalesDetailScreen';
 import ContractDetailScreen from './screens/ContractDetailScreen';
 import ContractsScreen from './screens/ContractsScreen';
-import SalesSummaryScreen from './screens/SalesSummaryScreen';
+import SalesSummaryScreen from './screens/sales/SalesDailySummaryScreen';
 
 function App() {
   // Redux

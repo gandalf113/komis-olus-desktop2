@@ -1,10 +1,10 @@
 import { Typography } from '@mui/material';
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
-import { DataTable } from '../components/DataTable'
-import { getSalesData } from '../redux/databaseSlice';
-import { toggleNewSaleModal } from '../redux/modalSlice';
-import { loadSalesDay, setScreen, setNavbarTitle } from '../redux/screenSlice';
+import { DataTable } from '../../components/DataTable'
+import { getSalesData } from '../../redux/databaseSlice';
+import { toggleNewSaleModal } from '../../redux/modalSlice';
+import { loadSalesDay, setScreen, setNavbarTitle } from '../../redux/screenSlice';
 
 const SalesScreen = () => {
     const dispatch = useDispatch()
