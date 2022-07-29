@@ -5,6 +5,7 @@ import { DataTable } from '../../components/DataTable'
 import { getSalesData, getSalesDataByMonth } from '../../redux/databaseSlice';
 import { toggleNewSaleModal } from '../../redux/modalSlice';
 import { loadSalesDay, setScreen, setNavbarTitle } from '../../redux/screenSlice';
+import { fullDateToString } from '../../utils/dateUtils';
 
 const SalesMonthViewScreen = () => {
     const dispatch = useDispatch()
@@ -41,6 +42,7 @@ const SalesMonthViewScreen = () => {
             {
                 Header: 'Dzień',
                 accessor: 'data',
+                Cell: props => <>{fullDateToString(props.value)}</>
             },
             {
                 Header: 'Otwórz',

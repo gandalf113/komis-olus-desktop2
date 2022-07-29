@@ -6,6 +6,7 @@ import { getSalesDataByDate } from '../../redux/databaseSlice';
 import { toggleNewSaleModal } from '../../redux/modalSlice';
 import { toCurrency } from '../../utils/miscUtils';
 import { setNavbarTitle, setScreen } from '../../redux/screenSlice';
+import { fullDateToString } from '../../utils/dateUtils';
 
 
 const SalesDetailScreen = () => {
@@ -59,16 +60,17 @@ const SalesDetailScreen = () => {
 
     return (
         <div>
-            <Box sx={{ display: 'flex', alignItems: 'start', gap: 2, marginBottom: 4 }}>
+            <Box sx={{ display: 'flex', alignItems: 'start', gap: 2, marginBottom: 3 }}>
                 <Typography align='justify' variant="h5">
-                    {currentSalesDay}
+                    {fullDateToString(currentSalesDay)}
                 </Typography>
-                <Button variant='contained'
+            </Box>
+            <DataTable loading={loading} tableData={salesData} columns={columns} />
+            <Button variant='contained'
+                sx={{ marginTop: 3 }}
                 onClick={() => {
                     dispatch(setScreen('podsumowanie_sprzedazy'))
                 }}>Podsumowanie</Button>
-            </Box>
-            <DataTable loading={loading} tableData={salesData} columns={columns} />
         </div>
     )
 }

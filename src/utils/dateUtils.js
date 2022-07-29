@@ -38,3 +38,20 @@ export const yearAndMonthToString = (yearAndMonth) => {
 
     return monthStr + " " + year.toString()
 }
+
+/**
+ * Zamienia datę w formacie yyyy-mm-dd na czytelną dla człowieka nazwę
+ * @param {Date} date - data w formacie yyyy-mm-dd
+ * @returns data w czytelnym formacie np. 6 lipiec 2022
+ */
+export const fullDateToString = (date) => {
+    date = date.toString()
+
+    const year = date.split('-')[0]
+    const month = date.split('-')[1]
+    const day = date.split('-')[2]
+
+    const monthStr = monthDict[month.toString()]
+
+    return day + " " + monthStr + " " + year.toString()
+}

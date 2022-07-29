@@ -30,7 +30,7 @@ const SalesSummaryScreen = () => {
         return {
             "ilosc": salesData.length,
             "utarg": getSum('cena'),
-            "na_czysto": getSum('marza'),
+            "prowizja": getSum('marza'),
         }
     }
 
@@ -52,8 +52,8 @@ const SalesSummaryScreen = () => {
                 Cell: props => <div> {toCurrency(props.value)} </div>
             },
             {
-                Header: 'Na czysto',
-                accessor: 'na_czysto',
+                Header: 'Prowizja',
+                accessor: 'prowizja',
                 Cell: props => <div> {toCurrency(props.value)} </div>
             }
         ],
@@ -70,10 +70,10 @@ const SalesSummaryScreen = () => {
             <Typography sx={{fontSize: '2rem'}}>Podsumowanie {currentSalesDay}</Typography>
             <h3>Ilość sprzedanych:</h3>
             <p>{summary.ilosc}</p>
-            <h3>Utarg:</h3>
+            <h3>Sprzedaż:</h3>
             <p>{toCurrency(summary.utarg)}</p>
-            <h3>Na czysto:</h3>
-            <p>{toCurrency(summary.na_czysto)}</p>
+            <h3>Prowizja:</h3>
+            <p>{toCurrency(summary.prowizja)}</p>
             {/* <DataTable loading={loading} columns={columns} tableData={getSummary()} /> */}
         </div>
     )
