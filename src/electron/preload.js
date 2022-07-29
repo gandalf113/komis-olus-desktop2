@@ -9,6 +9,7 @@ const WINDOW_API = {
     getContracts: () => ipcRenderer.invoke("get/contracts"),
     getItems: () => ipcRenderer.invoke("get/items"),
     getSalesWithItems: () => ipcRenderer.invoke("get/sales-items"),
+    getSalesWithItemsByMonth: (month) => ipcRenderer.invoke("get/sales-items/month", { month: month }),
     getSalesWithItemsByDate: (date) => ipcRenderer.invoke("get/sales-items/date", { date: date }),
     // Search
     getContract: (contractId) => ipcRenderer.invoke("get/contract", { contractId: contractId }),

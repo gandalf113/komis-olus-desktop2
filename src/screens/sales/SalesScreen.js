@@ -3,52 +3,58 @@ import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { DataTable } from '../../components/DataTable'
 import { getSalesData } from '../../redux/databaseSlice';
-import { toggleNewSaleModal } from '../../redux/modalSlice';
-import { loadSalesDay, setScreen, setNavbarTitle } from '../../redux/screenSlice';
+import { loadSalesMonth, setScreen, setNavbarTitle } from '../../redux/screenSlice';
+import { yearAndMonthToString } from '../../utils/dateUtils';
 
 const SalesScreen = () => {
     const dispatch = useDispatch()
 
     const { salesData, loading } = useSelector(state => state.database)
 
-    const [days, setDays] = useState([])
+    const [months, setMonths] = useState([])
 
     useEffect(() => {
         dispatch(setNavbarTitle('sprzedaż'))
-        // dispatch(getSalesDataByDate('2022-07-23'))
         dispatch(getSalesData())
     }, [dispatch])
 
     useEffect(() => {
-        // Pobierz unikalną listę dni handlowych
-        let dayList = [...new Set(salesData.map(sale => sale.data))]
+        // Pobierz unikalną listę miesięcy połączonym z rokiem, np. [07-2022, 08-2022]
+        let monthList = [...new Set(salesData.map(sale => {
+            const date = new Date(sale.data)
+            const month = date.getMonth()
+            const year = date.getFullYear()
+
+            // Upewnij się, że miesiąc jest podany w formacie dwucyfrowym
+            const monthFormatted = ("0" + (month + 1)).slice(-2)
+
+            return year.toString() + "-" + monthFormatted
+        }))]
 
         // Przekonwertuj ją na listę obiektów
-        var dayObjects = dayList.map(day => ({
-            "data": day
+        var monthObjects = monthList.map(day => ({
+            "miesiac": day
         }))
 
-        setDays(dayObjects)
+        setMonths(monthObjects)
     }, [salesData])
 
-    function openModal() {
-        dispatch(toggleNewSaleModal(true))
-    }
 
     const columns = React.useMemo(
         () => [
             {
-                Header: 'Dzień',
-                accessor: 'data',
+                Header: 'Miesiąc',
+                accessor: 'miesiac',
+                Cell: props => <>{yearAndMonthToString(props.value)}</>
             },
             {
                 Header: 'Otwórz',
                 Cell: props => <Typography sx={{ cursor: 'pointer' }}
                     onClick={() => {
-                        dispatch(loadSalesDay(props.row.original.data))
-                        dispatch(setScreen('sprzedaz'))
+                        dispatch(loadSalesMonth(props.row.original.miesiac))
+                        dispatch(setScreen('sprzedaz_miesiac'))
                     }}
-                    color="secondary">Zobacz sprzedaż</Typography>
+                    color="secondary">Otwórz miesiąc</Typography>
 
             },
         ],
@@ -58,7 +64,7 @@ const SalesScreen = () => {
     return (
         <div>
             {/* <Button onClick={openModal} variant="contained" color="success" style={{ marginBottom: 10 }}>Nowa sprzedaż</Button> */}
-            <DataTable loading={loading} tableData={days} columns={columns} />
+            <DataTable loading={loading} tableData={months} columns={columns} />
         </div>
     )
 }

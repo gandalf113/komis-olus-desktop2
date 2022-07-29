@@ -150,7 +150,7 @@ export default function PersistentDrawerLeft({ renderScreen }) {
                     </ListItem>
 
                     <ListItem disablePadding>
-                        <ListItemButton onClick={() => changeScreen('dni_sprzedazy')}>
+                        <ListItemButton onClick={() => changeScreen('sprzedaz')}>
                             <ListItemIcon>
                                 <PointOfSaleIcon />
                             </ListItemIcon>

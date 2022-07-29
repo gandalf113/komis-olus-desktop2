@@ -49,6 +49,19 @@ getSalesWithItems = ipcMain.handle("get/sales-items", async (event, args) => {
         .orderBy('id_sprzedazy', 'desc')
 })
 
+
+/**
+ * Zwraca wszystkie pozycje sprzedaży dla danego miesiąca połączonego z rokiem
+ * Przykładowy argument month: 2022-07
+ */
+getSalesWithItemsByMonth = ipcMain.handle("get/sales-items/month", async (event, args) => {
+    const { month } = args
+
+    return knex.select('*').from('sprzedaz')
+        .leftJoin('przedmioty', 'przedmioty.id_przedmiotu', 'sprzedaz.id_przedmiotu')
+        .orderBy('id_sprzedazy', 'desc').whereLike('sprzedaz.data', `%${month}-%`)
+})
+
 getSalesWithItemsByDate = ipcMain.handle("get/sales-items/date", async (event, args) => {
     const { date } = args
 

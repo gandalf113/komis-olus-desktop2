@@ -7,8 +7,23 @@ export const getSalesData = createAsyncThunk(
     }
 )
 
+/**
+ * Pobierz z bazy danych sprzedaż z konkretnego miesiąca
+ * Ustawia salesData
+ */
+export const getSalesDataByMonth = createAsyncThunk(
+    'get/sales/month', async (date) => {
+        const res = await window.api.getSalesWithItemsByMonth(date)
+        return res
+    }
+)
+
+/**
+ * Pobierz z bazy danych sprzedaż z konkretnego dnia
+ * Ustawia salesData
+ */
 export const getSalesDataByDate = createAsyncThunk(
-    'get/sales', async (date) => {
+    'get/sales/day', async (date) => {
         const res = await window.api.getSalesWithItemsByDate(date)
         return res
     }
@@ -71,6 +86,18 @@ export const databaseSlice = createSlice({
         },
         [getSalesData.fulfilled]: (state, action) => {
             state.salesData = action.payload
+            state.loading = false
+        },
+        // Sales data by month
+        [getSalesDataByMonth.pending]: (state, action) => {
+            state.salesData = []
+            state.loading = true
+        },
+        [getSalesDataByMonth.fulfilled]: (state, action) => {
+            state.salesData = action.payload
+            state.loading = false
+        },
+        [getSalesDataByMonth.rejected]: (state, action) => {
             state.loading = false
         },
         // Sales data by date

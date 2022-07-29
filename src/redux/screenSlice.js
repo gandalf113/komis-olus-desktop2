@@ -5,7 +5,9 @@ export const screenSlice = createSlice({
     initialState: {
         navbarTitle: 'Komis OLUŚ - klienci',
         currentScreen: 'klienci',
+
         currentContract: {},
+        currentSalesMonth: null,
         currentSalesDay: null,
     },
     reducers: {
@@ -18,12 +20,15 @@ export const screenSlice = createSlice({
         loadSalesDay: (state, action) => {
             state.currentSalesDay = action.payload
         },
+        loadSalesMonth: (state, action) => {
+            state.currentSalesMonth = action.payload
+        },
         setNavbarTitle: (state, action) => {
             state.navbarTitle = action.payload
         },
     }
 })
 
-export const { setScreen, loadContract, loadSalesDay, setNavbarTitle } = screenSlice.actions
+export const { setScreen, loadContract, loadSalesMonth, loadSalesDay, setNavbarTitle } = screenSlice.actions
 
 export default screenSlice.reducer

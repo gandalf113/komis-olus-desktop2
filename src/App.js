@@ -6,6 +6,7 @@ import Modals from './components/Modals';
 
 import ClientsScreen from './screens/ClientsScreen';
 import SalesScreen from './screens/sales/SalesScreen';
+import SalesMonthViewScreen from './screens/sales/SalesMonthViewScreen';
 import SalesDetailScreen from './screens/sales/SalesDetailScreen';
 import ContractDetailScreen from './screens/ContractDetailScreen';
 import ContractsScreen from './screens/ContractsScreen';
@@ -19,9 +20,11 @@ function App() {
     switch (currentScreen) {
       case 'klienci':
         return <ClientsScreen />
-      case 'dni_sprzedazy':
-        return <SalesScreen />
       case 'sprzedaz':
+        return <SalesScreen />
+        case 'sprzedaz_miesiac':
+          return <SalesMonthViewScreen />
+      case 'sprzedaz_dzien':
         return <SalesDetailScreen />
         case 'podsumowanie_sprzedazy':
           return <SalesSummaryScreen />
