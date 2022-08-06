@@ -160,3 +160,15 @@ getItemsDetailed = ipcMain.handle('get/items/detailed', async (event, args) => {
         .leftJoin('przedmioty', 'przedmioty.id_umowy', 'umowy.id_umowy')
         .whereLike('id_przedmiotu', `%${hexToDec(search)}%`)
 })
+
+/**
+ * Zwraca wszystkie pozycje sprzedaży dla danego miesiąca połączonego z rokiem
+ * Przykładowy argument month: 2022-07
+ */
+ getMonthlySales = ipcMain.handle("get/sales/monthly", async (event, args) => {
+    const { month } = args
+
+    return knex.select('*').from('sprzedaz')
+        .leftJoin('przedmioty', 'przedmioty.id_przedmiotu', 'sprzedaz.id_przedmiotu')
+        .orderBy('id_sprzedazy', 'desc').whereLike('sprzedaz.data', `%${month}-%`)
+})

@@ -33,6 +33,7 @@ import SalesScreen from './SalesScreen';
 import ClientsScreen from './ClientsScreen';
 import ContractsScreen from './ContractsScreen';
 import ContractDetailScreen from './ContractDetailScreen';
+import MonthlySales from './MonthlySales';
 
 const drawerWidth = 240;
 
@@ -208,7 +209,9 @@ export default function PersistentDrawerLeft({ renderScreen }) {
                     <Route path="/clients" element={<ClientsScreen />} />
                     <Route path="/contracts" element={<ContractsScreen />} />
                     <Route path='/contracts/:id' element={<ContractDetailScreen />} />
+
                     <Route path="/sales" element={<SalesScreen />} />
+                    <Route path="/sales/:date" element={<MonthlySales />} />
                 </Routes>
             </Main>
         </Box>

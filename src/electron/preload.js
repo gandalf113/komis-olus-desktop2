@@ -1,6 +1,9 @@
 const { ipcRenderer, contextBridge, ipcMain } = require('electron')
 
 const WINDOW_API = {
+    // NEW API
+    getMonthlySales: (month) => ipcRenderer.invoke("get/sales/monthly", { month: month }),
+
     greet: (message) => ipcRenderer.send("greet", message),
     GetVersion: () => ipcRenderer.invoke("get/version"),
     // Get list
