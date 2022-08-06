@@ -1,4 +1,10 @@
 import React from 'react';
+import {
+    useLocation,
+    Routes,
+    Route,
+    useNavigate,
+} from "react-router-dom";
 import { styled, useTheme } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import Drawer from '@mui/material/Drawer';
@@ -23,6 +29,10 @@ import PointOfSaleIcon from '@mui/icons-material/PointOfSale';
 import { useDispatch, useSelector } from 'react-redux';
 import { setScreen } from '../redux/screenSlice';
 import { toggleNewClientModal, toggleNewContractModal, toggleNewSaleModal } from '../redux/modalSlice';
+import SalesScreen from './SalesScreen';
+import ClientsScreen from './ClientsScreen';
+import ContractsScreen from './ContractsScreen';
+import ContractDetailScreen from './ContractDetailScreen';
 
 const drawerWidth = 240;
 
@@ -75,10 +85,12 @@ export default function PersistentDrawerLeft({ renderScreen }) {
     const theme = useTheme();
     const [open, setOpen] = React.useState(false);
 
-    const { navbarTitle } = useSelector(state => state.screen)
+    const { navbarTitle } = useSelector(state => state.screen);
 
 
-    const dispatch = useDispatch()
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
+    const location = useLocation();
 
     const handleDrawerOpen = () => {
         setOpen(true);
@@ -107,7 +119,8 @@ export default function PersistentDrawerLeft({ renderScreen }) {
                         <MenuIcon />
                     </IconButton>
                     <Typography variant="h6" noWrap component="div">
-                        Komis OLUŚ - {navbarTitle}
+                        {/* Komis OLUŚ - {navbarTitle} */}
+                        {location.pathname}
                     </Typography>
                 </Toolbar>
             </AppBar>
@@ -132,7 +145,7 @@ export default function PersistentDrawerLeft({ renderScreen }) {
                 <Divider />
                 <List>
                     <ListItem disablePadding>
-                        <ListItemButton onClick={() => changeScreen('klienci')}>
+                        <ListItemButton onClick={() => navigate('/clients')}>
                             <ListItemIcon>
                                 <PersonIcon />
                             </ListItemIcon>
@@ -141,7 +154,7 @@ export default function PersistentDrawerLeft({ renderScreen }) {
                     </ListItem>
 
                     <ListItem disablePadding>
-                        <ListItemButton onClick={() => changeScreen('umowy')}>
+                        <ListItemButton onClick={() => navigate('/contracts')}>
                             <ListItemIcon>
                                 <ReceiptIcon />
                             </ListItemIcon>
@@ -150,7 +163,7 @@ export default function PersistentDrawerLeft({ renderScreen }) {
                     </ListItem>
 
                     <ListItem disablePadding>
-                        <ListItemButton onClick={() => changeScreen('dni_sprzedazy')}>
+                        <ListItemButton onClick={() => navigate('/sales')}>
                             <ListItemIcon>
                                 <PointOfSaleIcon />
                             </ListItemIcon>
@@ -190,7 +203,13 @@ export default function PersistentDrawerLeft({ renderScreen }) {
             </Drawer>
             <Main open={open}>
                 <DrawerHeader />
-                {renderScreen()}
+                <Routes>
+                    <Route path="/" element={<></>} exact />
+                    <Route path="/clients" element={<ClientsScreen />} />
+                    <Route path="/contracts" element={<ContractsScreen />} />
+                    <Route path='/contracts/:id' element={<ContractDetailScreen />} />
+                    <Route path="/sales" element={<SalesScreen />} />
+                </Routes>
             </Main>
         </Box>
     );

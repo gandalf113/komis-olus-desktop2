@@ -10,6 +10,7 @@ import SalesDetailScreen from './screens/SalesDetailScreen';
 import ContractDetailScreen from './screens/ContractDetailScreen';
 import ContractsScreen from './screens/ContractsScreen';
 import SalesSummaryScreen from './screens/SalesSummaryScreen';
+import { BrowserRouter } from 'react-router-dom';
 
 function App() {
   // Redux
@@ -23,8 +24,8 @@ function App() {
         return <SalesScreen />
       case 'sprzedaz':
         return <SalesDetailScreen />
-        case 'podsumowanie_sprzedazy':
-          return <SalesSummaryScreen />
+      case 'podsumowanie_sprzedazy':
+        return <SalesSummaryScreen />
       case 'umowy':
         return <ContractsScreen />
       case 'przedmioty':
@@ -37,7 +38,9 @@ function App() {
   return (
     <div>
       <Notification />
-      <PersistentDrawerLeft renderScreen={() => renderScreen(currentScreen)} />
+      <BrowserRouter>
+        <PersistentDrawerLeft renderScreen={() => renderScreen(currentScreen)} />
+      </BrowserRouter>
       <Modals />
     </div>
   );

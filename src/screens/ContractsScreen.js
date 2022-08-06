@@ -6,9 +6,11 @@ import { useDispatch } from 'react-redux';
 import { toggleNewContractModal } from '../redux/modalSlice';
 import { getContractsData } from '../redux/databaseSlice';
 import { loadContract, setScreen, setNavbarTitle } from '../redux/screenSlice';
+import { useNavigate } from 'react-router-dom';
 
 const ContractsScreen = () => {
-    const dispatch = useDispatch()
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
 
     const { contractsData, loading } = useSelector(state => state.database)
 
@@ -23,8 +25,7 @@ const ContractsScreen = () => {
 
     const openContract = useCallback(
         (contract) => {
-            dispatch(loadContract(contract))
-            dispatch(setScreen('przedmioty'))
+            navigate(`${contract.id_umowy}`)
         },
         [dispatch],
     )

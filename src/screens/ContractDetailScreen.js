@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux';
 import { DataTable } from '../components/DataTable'
 import { Box, Button, Typography } from '@mui/material';
@@ -7,20 +7,36 @@ import { getContractDetail } from '../redux/databaseSlice';
 import { toggleNewItemModal } from '../redux/modalSlice';
 import { toCurrency, decToHex } from '../utils/miscUtils';
 import { setNavbarTitle } from '../redux/screenSlice';
+import { useParams } from 'react-router-dom';
 
 
 // Contract detail screen
 const ContractDetailScreen = () => {
     // Redux
-    const { detailedContractData: items } = useSelector(state => state.database)
-    const { currentContract: contract, loading } = useSelector(state => state.screen)
+    // const { detailedContractData: items } = useSelector(state => state.database)
+    const { loading } = useSelector(state => state.screen)
+
+    const [items, setItems] = useState();
+    const [contract, setContract] = useState({});
+
+    const { id } = useParams()
 
     const dispatch = useDispatch()
 
     useEffect(() => {
-        dispatch(setNavbarTitle(`umowa ${contract.skrot}`))
-        dispatch(getContractDetail(contract.id_umowy))
-    }, [dispatch, contract.id_umowy])
+        console.log(id)
+        // Pobierz umowę
+        window.api.getContract(id).then(res => {
+            // setContract(res)
+            setContract(res[0])
+        })
+
+        // Pobierz przedmioty
+        window.api.getItemsWithContracts(id).then(res => {
+            // setContract(res)
+            setItems(res)
+        })
+    }, [dispatch, id])
 
     const columns = React.useMemo(
         () => [
@@ -71,11 +87,14 @@ const ContractDetailScreen = () => {
         ],
         []
     )
+
+    if (!contract || !items) return null
+
     return (
         <div>
             <Box sx={{ display: 'flex', alignItems: 'end', gap: 2 }}>
                 <Typography align='justify' variant="h4">
-                    {contract.skrot} {contract.id_umowy}
+                    {contract.id_umowy}. {contract.data}
                 </Typography>
                 {/* <Typography sx={{ mb: 1 }}>{contract.data}</Typography> */}
             </Box>
