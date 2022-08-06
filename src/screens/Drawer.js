@@ -34,6 +34,8 @@ import ClientsScreen from './ClientsScreen';
 import ContractsScreen from './ContractsScreen';
 import ContractDetailScreen from './ContractDetailScreen';
 import MonthlySales from './MonthlySales';
+import DailySales from './DailySales';
+import AllSales from './AllSales';
 
 const drawerWidth = 240;
 
@@ -171,6 +173,15 @@ export default function PersistentDrawerLeft({ renderScreen }) {
                             <ListItemText primary="Sprzedaż" />
                         </ListItemButton>
                     </ListItem>
+
+                    <ListItem disablePadding>
+                        <ListItemButton onClick={() => navigate('/sales/all')}>
+                            <ListItemIcon>
+                                <PointOfSaleIcon />
+                            </ListItemIcon>
+                            <ListItemText primary="Cała sprzedaż" />
+                        </ListItemButton>
+                    </ListItem>
                 </List>
                 <Divider />
                 <List>
@@ -210,8 +221,10 @@ export default function PersistentDrawerLeft({ renderScreen }) {
                     <Route path="/contracts" element={<ContractsScreen />} />
                     <Route path='/contracts/:id' element={<ContractDetailScreen />} />
 
+                    <Route path="/sales/all" element={<AllSales />} />
                     <Route path="/sales" element={<SalesScreen />} />
                     <Route path="/sales/:date" element={<MonthlySales />} />
+                    <Route path="/sales/:date/:day" element={<DailySales />} />
                 </Routes>
             </Main>
         </Box>

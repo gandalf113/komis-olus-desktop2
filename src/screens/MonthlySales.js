@@ -1,14 +1,16 @@
 import React, { useEffect, useState, useMemo } from 'react'
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import { DataTable } from '../components/DataTable';
 import { toCurrency } from '../utils/miscUtils';
-import { fullDateToString } from '../utils/date-utils';
+import { extractDay, fullDateToString } from '../utils/date-utils';
 import { Typography } from '@mui/material';
 
 const MonthlySales = () => {
     const { date } = useParams();
 
     const [days, setDays] = useState();
+
+    const navigate = useNavigate();
 
 
     useEffect(() => {
@@ -27,6 +29,7 @@ const MonthlySales = () => {
     }, [])
 
 
+
     const columns = React.useMemo(
         () => [
             {
@@ -38,7 +41,8 @@ const MonthlySales = () => {
                 Header: 'Otwórz',
                 Cell: props => <Typography sx={{ cursor: 'pointer' }}
                     onClick={() => {
-
+                        // navigate('`${}')
+                        navigate(`${extractDay(props.row.original.data)}`)
                     }}
                     color="secondary">Zobacz sprzedaż</Typography>
 

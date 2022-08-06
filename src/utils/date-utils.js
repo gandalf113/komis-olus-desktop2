@@ -3,7 +3,7 @@
  * @param {number} index - numer miesiąca np. 05
  * @returns {string} - nazwa miesiąca
  */
- export const monthIndexToString = (index) => {
+export const monthIndexToString = (index) => {
     const months = ['styczeń', 'luty', 'marzec', 'kwiecień', 'maj', 'czerwiec', 'lipiec',
         'sierpień', 'wrzesień', 'październik', 'listopad', 'grudzień']
 
@@ -24,6 +24,7 @@ const monthDict = {
     '11': 'listopad',
     '12': 'grudzień'
 }
+
 
 /**
  * Zamienia rok i miesiąc na czytelną dla człowieka nazwę
@@ -54,4 +55,14 @@ export const fullDateToString = (date) => {
     const monthStr = monthDict[month.toString()]
 
     return day + " " + monthStr + " " + year.toString()
+}
+
+/**
+ * Zwraca dzień z daty w formacie yyyy-mm-dd
+ * @param {Date} date - data w formacie yyyy-mm-dd
+ * @returns data dd
+ */
+export const extractDay = (date) => {
+    const day = date.split('-')[2]
+    return day
 }
