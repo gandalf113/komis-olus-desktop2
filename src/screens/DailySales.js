@@ -1,8 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react'
-import { Box, Button, Typography } from '@mui/material';
-import { useDispatch, useSelector } from 'react-redux';
+import { Button } from '@mui/material';
 import { DataTable } from '../components/DataTable'
-import { toggleNewSaleModal } from '../redux/modalSlice';
 import { toCurrency } from '../utils/miscUtils';
 import { useParams } from 'react-router-dom';
 import { SalesContext } from '../context/sales-context';
@@ -22,14 +20,12 @@ const getDailySales = (allSales, date) => {
 
 
 const DailySales = () => {
-    const dispatch = useDispatch()
 
     const [sales, setSales] = useState();
 
     const { date, day } = useParams();
 
     const { allSales } = useContext(SalesContext);
-
 
     const fullDate = () => {
         // return month + '-' + day
@@ -41,9 +37,6 @@ const DailySales = () => {
         setSales(dailySales);
     }, [allSales])
 
-    function openModal() {
-        dispatch(toggleNewSaleModal(true))
-    }
 
     const columns = React.useMemo(
         () => [

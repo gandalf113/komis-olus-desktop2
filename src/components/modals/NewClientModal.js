@@ -1,27 +1,28 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import {
     Dialog, DialogTitle, DialogContent, DialogActions, TextField, Box, Button
 } from '@mui/material';
 import { useDispatch } from 'react-redux';
 import { openNotification as showNotification } from '../../redux/notificationSlice';
 import { toggleNewClientModal } from '../../redux/modalSlice';
-import { getClientsData } from '../../redux/databaseSlice';
+import { ClientContext } from '../../context/client-context';
 
 
 export const NewClientModal = ({ isOpen, handleClose }) => {
     // Local state
-    const [firstName, setFirstName] = useState('')
-    const [lastName, setLastName] = useState('')
-    const [short, setShort] = useState('')
+    const [firstName, setFirstName] = useState('');
+    const [lastName, setLastName] = useState('');
+    const [short, setShort] = useState('');
 
     // Reset the values on open
     useEffect(() => {
-        setFirstName('')
-        setLastName('')
-        setShort('')
+        setFirstName('');
+        setLastName('');
+        setShort('');
     }, [isOpen])
 
-    const dispatch = useDispatch()
+    const dispatch = useDispatch();
+    const { reloadClients } = useContext(ClientContext);
 
     /**
      * Generates a abbreviation from customer's first and last name
@@ -64,9 +65,10 @@ export const NewClientModal = ({ isOpen, handleClose }) => {
                 // Close the modal
                 dispatch(toggleNewClientModal(false))
                 // Refresh the clients
-                dispatch(getClientsData())
+                reloadClients();
                 // Show success notification
                 showNotification(`Pomyślnie dodano klienta: ${short}`)
+
             })
             .catch(error => {
                 alert('Nie udało się dodać klienta! Informacje o błędzie w konsoli.')

@@ -2,7 +2,6 @@ import React, { useEffect, useCallback, useContext } from 'react'
 import { DataTable } from '../components/DataTable'
 import { Typography } from '@mui/material';
 import { useDispatch } from 'react-redux';
-import { toggleNewContractModal } from '../redux/modalSlice';
 import { setNavbarTitle } from '../redux/screenSlice';
 import { ContractContext } from '../context/contract-context';
 import { useNavigate } from 'react-router-dom';
@@ -11,22 +10,18 @@ const ContractsScreen = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
-    const { allContracts: contracts } = useContext(ContractContext);
+    const { allContracts: contracts, reloadContracts } = useContext(ContractContext);
 
     useEffect(() => {
         dispatch(setNavbarTitle('umowy'))
-
-    }, [dispatch])
-
-    function openModal() {
-        dispatch(toggleNewContractModal(true))
-    }
+        reloadContracts();
+    }, [dispatch, reloadContracts])
 
     const openContract = useCallback(
         (contract) => {
             navigate(`${contract.id_umowy}`)
         },
-        [dispatch],
+        [navigate],
     )
 
     const columns = React.useMemo(

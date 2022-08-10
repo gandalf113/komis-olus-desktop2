@@ -1,20 +1,17 @@
-import React, { useEffect } from 'react'
-import { useSelector } from 'react-redux';
+import React, { useContext, useEffect } from 'react'
 import { DataTable } from '../components/DataTable'
-import { Button } from '@mui/material'
 import { useDispatch } from 'react-redux'
-import { getClientsData } from '../redux/databaseSlice'
-import { toggleNewClientModal } from '../redux/modalSlice';
 import { setNavbarTitle } from '../redux/screenSlice';
+import { ClientContext } from '../context/client-context';
 
 const ClientsScreen = () => {
     const dispatch = useDispatch()
 
-    const { clientsData, loading } = useSelector(state => state.database)
+    const { allClients: clients, reloadClients } = useContext(ClientContext);
 
     useEffect(() => {
         dispatch(setNavbarTitle('klienci'))
-        dispatch(getClientsData())
+        reloadClients();
     }, [dispatch])
 
     const columns = React.useMemo(
@@ -42,7 +39,7 @@ const ClientsScreen = () => {
         <div>
             {/* <Button variant="contained" color="success" style={{ marginBottom: 10 }}
                 onClick={() => dispatch(toggleNewClientModal(true))}>Nowy klient</Button> */}
-            <DataTable loading={loading} tableData={clientsData} columns={columns} />
+            <DataTable loading={false} tableData={clients} columns={columns} />
         </div>
     )
 }
