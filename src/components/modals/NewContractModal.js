@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import { useDispatch } from 'react-redux';
 import {
     Dialog, DialogTitle, DialogContent, DialogActions,
@@ -6,18 +6,23 @@ import {
 } from '@mui/material';
 import { openNotification as showNotification } from '../../redux/notificationSlice';
 import { loadContract, setScreen } from '../../redux/screenSlice';
+import { ContractContext } from '../../context/contract-context';
+import { useNavigate } from 'react-router-dom';
 
 
 export const NewContractModal = ({ isOpen, handleClose }) => {
-    const [clients, setClients] = useState([])
-    const [selectedClient, setSelectedClient] = useState({})
+    const [clients, setClients] = useState([]);
+    const [selectedClient, setSelectedClient] = useState({});
 
-    const dispatch = useDispatch()
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
+
+    const { reloadContracts } = useContext(ContractContext);
 
     useEffect(() => {
         // Get clients on open
         if (isOpen) {
-            getClients()
+            getClients();
         }
     }, [isOpen])
 
@@ -33,28 +38,23 @@ export const NewContractModal = ({ isOpen, handleClose }) => {
 
     const getClients = async () => {
         await window.api.getClients().then(res => {
-            setClients(res)
+            setClients(res);
         })
     }
 
-    const openContract = (contract) => {
-        console.log(contract)
-        dispatch(loadContract(contract))
-        dispatch(setScreen('przedmioty'))
+    const openContract = (contractId) => {
+        navigate(`/contracts/${contractId}`)
     }
 
     const createContract = async (client) => {
-
         await window.api.createContract(client.id_klienta, getToday())
             .then(res => {
-                const contractId = res[0]
+                const contractId = res[0];
 
-                // Get contract object
-                window.api.getContractsWithClients(contractId).then(res => {
-                    const contract = res[0]
-                    // Open the contract
-                    openContract(contract)
-                })
+                reloadContracts();
+
+                // Open the contract
+                openContract(contractId);
 
                 // Show the notification
                 dispatch(
