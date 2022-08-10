@@ -1,25 +1,23 @@
 import { Typography } from '@mui/material';
 import React, { useContext, useEffect, useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { DataTable } from '../components/DataTable'
 import { SalesContext } from '../context/sales-context';
-import { getSalesData } from '../redux/databaseSlice';
-import { toggleNewSaleModal } from '../redux/modalSlice';
 import { yearAndMonthToString } from '../utils/date-utils';
 
 const SalesScreen = () => {
-    const dispatch = useDispatch();
     const navigate = useNavigate();
 
     const [months, setMonths] = useState([]);
 
-    const { allSales: sales } = useContext(SalesContext);
+    const { allSales: sales, reloadSales } = useContext(SalesContext);
 
     /**
      * Pogrupuj listę sprzedaży wg. miesiąca
      */
     useEffect(() => {
+        reloadSales();
+
         // Pobierz unikalną listę miesięcy połączonym z rokiem, np. [07-2022, 08-2022]
         let monthList = [...new Set(sales.map(sale => {
             const date = new Date(sale.data)
@@ -38,11 +36,7 @@ const SalesScreen = () => {
         }))
 
         setMonths(monthObjects)
-    }, [])
-
-    function openModal() {
-        dispatch(toggleNewSaleModal(true));
-    }
+    }, [sales, reloadSales])
 
     const columns = React.useMemo(
         () => [
@@ -61,7 +55,7 @@ const SalesScreen = () => {
 
             },
         ],
-        [dispatch]
+        [navigate]
     )
 
     return (
