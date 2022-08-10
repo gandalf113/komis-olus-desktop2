@@ -1,10 +1,24 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { Box, Button, Typography } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
 import { DataTable } from '../components/DataTable'
 import { toggleNewSaleModal } from '../redux/modalSlice';
 import { toCurrency } from '../utils/miscUtils';
 import { useParams } from 'react-router-dom';
+import { SalesContext } from '../context/sales-context';
+
+/**
+ * Zwraca listę sprzedaży dla danego dnia
+ * @param {Array} allSales - cała sprzedaż
+ * @param {String} date - data w formacie yyyy-mm-dd
+ * @returns {Array} - sprzedaż dla danego dnia
+ */
+const getDailySales = (allSales, date) => {
+    console.log(allSales)
+    console.log(date)
+    const dailySales = allSales.filter(sale => sale.data === date);
+    return dailySales
+}
 
 
 const DailySales = () => {
@@ -14,6 +28,8 @@ const DailySales = () => {
 
     const { date, day } = useParams();
 
+    const { allSales } = useContext(SalesContext);
+
 
     const fullDate = () => {
         // return month + '-' + day
@@ -21,16 +37,9 @@ const DailySales = () => {
     }
 
     useEffect(() => {
-        console.log(fullDate())
-        window.api.getDailySales(fullDate()).then(res => {
-            console.log(res)
-            setSales(res)
-        }).catch(error => {
-
-            alert('fuck');
-            console.log(error);
-        })
-    }, [])
+        const dailySales = getDailySales(allSales, fullDate());
+        setSales(dailySales);
+    }, [allSales])
 
     function openModal() {
         dispatch(toggleNewSaleModal(true))

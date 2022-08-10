@@ -1,9 +1,26 @@
-import React, { useEffect, useState, useMemo } from 'react'
+import React, { useEffect, useState, useMemo, useContext } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { DataTable } from '../components/DataTable';
 import { toCurrency } from '../utils/miscUtils';
 import { extractDay, fullDateToString } from '../utils/date-utils';
 import { Typography } from '@mui/material';
+import { SalesContext } from '../context/sales-context';
+
+
+/**
+ * Filtruje sprzedaż wg. roku i miesiąca
+ * @param {Array} allSales - cała sprzedaż
+ * @param {String} date - rok i miesiąc w formacie yyyy-mm
+ * @returns {Array} - sprzedaż dla danego miesiąca danego roku
+ */
+const getMonthlySales = (allSales, date) => {
+    const filteredSales = allSales.filter(sale => {
+        return sale.data.slice(0, -3) == date
+    })
+
+    return filteredSales
+}
+
 
 const MonthlySales = () => {
     const { date } = useParams();
@@ -12,21 +29,27 @@ const MonthlySales = () => {
 
     const navigate = useNavigate();
 
+    const { allSales } = useContext(SalesContext);
 
+    /**
+     * Pobierz listę sprzedaży dla danego miesiąca
+     * i pogrupuj tą sprzedaż wg. dnia
+     */
     useEffect(() => {
-        window.api.getMonthlySales(date).then(sales => {
-            // Pobierz unikalną listę dni handlowych
-            let dayList = [...new Set(sales.map(sale => sale.data))]
+        const sales = getMonthlySales(allSales, date);
 
-            // Przekonwertuj ją na listę obiektów
-            var dayObjects = dayList.map(day => ({
-                "data": day
-            }))
+        // Pobierz unikalną listę dni handlowych
+        let dayList = [...new Set(sales.map(sale => sale.data))]
 
-            setDays(dayObjects)
-        })
+        // Przekonwertuj ją na listę obiektów
+        var dayObjects = dayList.map(day => ({
+            "data": day
+        }))
 
-    }, [])
+        setDays(dayObjects)
+        // })
+
+    }, [allSales])
 
 
 

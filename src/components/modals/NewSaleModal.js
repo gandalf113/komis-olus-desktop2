@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import {
     Dialog, DialogTitle, DialogContent, OutlinedInput, InputAdornment,
     IconButton, List, ListItem, ListItemIcon, ListItemButton, ListItemText
@@ -10,6 +10,7 @@ import ItemDetailModal from './ItemDetailModal';
 import { openNotification as showNotification } from '../../redux/notificationSlice';
 import { useDispatch } from 'react-redux';
 import { getSalesData, getItemsDetailed } from '../../redux/databaseSlice';
+import { SalesContext } from '../../context/sales-context';
 
 export const NewSaleModal = ({ isOpen, handleClose }) => {
     // Local state
@@ -17,10 +18,12 @@ export const NewSaleModal = ({ isOpen, handleClose }) => {
     const [detailModalOpen, setDetailModalOpen] = useState(false);
     const [searchValue, setSearchValue] = useState('');
 
-    // Redux
-    const items = useSelector(state => state.database.detailedItemsData)
+    const { reloadSales } = useContext(SalesContext);
 
-    const dispatch = useDispatch()
+    // Redux
+    const items = useSelector(state => state.database.detailedItemsData);
+
+    const dispatch = useDispatch();
 
     function openModal() {
         setDetailModalOpen(true);
@@ -50,6 +53,8 @@ export const NewSaleModal = ({ isOpen, handleClose }) => {
                 dispatch(getSalesData())
                 dispatch(getItemsDetailed(searchValue))
             })
+
+            reloadSales();
         }).catch(error => {
             alert('Wystąpił błąd')
             console.log(error)

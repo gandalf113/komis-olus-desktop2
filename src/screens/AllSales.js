@@ -1,16 +1,15 @@
-import React, { useEffect, useState, useMemo } from 'react'
+import React, { useEffect, useState, useMemo, useContext } from 'react'
 import { DataTable } from '../components/DataTable';
+import { SalesContext } from '../context/sales-context';
 import { toCurrency } from '../utils/miscUtils';
 
 const AllSales = () => {
+    // const [sales, setSales] = useState();
 
-    const [sales, setSales] = useState();
+    const { allSales: sales, reloadSales } = useContext(SalesContext);
 
     useEffect(() => {
-        window.api.getSalesWithItems().then(sales => {
-            console.log(sales)
-            setSales(sales)
-        })
+        reloadSales();
     }, []);
 
     const columns = React.useMemo(

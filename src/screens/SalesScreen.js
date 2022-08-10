@@ -1,8 +1,9 @@
 import { Typography } from '@mui/material';
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { DataTable } from '../components/DataTable'
+import { SalesContext } from '../context/sales-context';
 import { getSalesData } from '../redux/databaseSlice';
 import { toggleNewSaleModal } from '../redux/modalSlice';
 import { yearAndMonthToString } from '../utils/date-utils';
@@ -13,27 +14,30 @@ const SalesScreen = () => {
 
     const [months, setMonths] = useState([]);
 
+    const { allSales: sales } = useContext(SalesContext);
+
+    /**
+     * Pogrupuj listę sprzedaży wg. miesiąca
+     */
     useEffect(() => {
-        window.api.getSalesWithItems().then(sales => {
-            // Pobierz unikalną listę miesięcy połączonym z rokiem, np. [07-2022, 08-2022]
-            let monthList = [...new Set(sales.map(sale => {
-                const date = new Date(sale.data)
-                const month = date.getMonth()
-                const year = date.getFullYear()
+        // Pobierz unikalną listę miesięcy połączonym z rokiem, np. [07-2022, 08-2022]
+        let monthList = [...new Set(sales.map(sale => {
+            const date = new Date(sale.data)
+            const month = date.getMonth()
+            const year = date.getFullYear()
 
-                // Upewnij się, że miesiąc jest podany w formacie dwucyfrowym
-                const monthFormatted = ("0" + (month + 1)).slice(-2)
+            // Upewnij się, że miesiąc jest podany w formacie dwucyfrowym
+            const monthFormatted = ("0" + (month + 1)).slice(-2)
 
-                return year.toString() + "-" + monthFormatted
-            }))]
+            return year.toString() + "-" + monthFormatted
+        }))]
 
-            // Przekonwertuj ją na listę obiektów
-            var monthObjects = monthList.map(day => ({
-                "miesiac": day
-            }))
+        // Przekonwertuj ją na listę obiektów
+        var monthObjects = monthList.map(day => ({
+            "miesiac": day
+        }))
 
-            setMonths(monthObjects)
-        })
+        setMonths(monthObjects)
     }, [])
 
     function openModal() {
