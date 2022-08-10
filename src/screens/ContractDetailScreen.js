@@ -21,7 +21,7 @@ const ContractDetailScreen = () => {
     const [contract, setContract] = useState({});
 
     const { id } = useParams()
-    const { setCurrentContractID } = useContext(ContractContext);
+    const { setCurrentContractID, allContracts } = useContext(ContractContext);
 
     const dispatch = useDispatch()
 
@@ -42,7 +42,7 @@ const ContractDetailScreen = () => {
         return () => {
             setCurrentContractID(null);
         }
-    }, [dispatch, id])
+    }, [dispatch, id, allContracts])
 
     const columns = React.useMemo(
         () => [

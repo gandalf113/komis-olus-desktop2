@@ -21,7 +21,7 @@ export const NewItemModal = ({ isOpen, handleClose }) => {
     // Redux
     const { currentContract: contract } = useSelector(state => state.screen)
 
-    const { currentContractID } = useContext(ContractContext);
+    const { currentContractID, reloadContracts } = useContext(ContractContext);
 
     const params = useParams();
 
@@ -63,7 +63,7 @@ export const NewItemModal = ({ isOpen, handleClose }) => {
                 // Close the modal
                 dispatch(toggleNewItemModal(false))
                 // Refresh the contract
-                // dispatch(getContractDetail(contractId))
+                reloadContracts();
                 // Show success notification
                 showNotification(`Pomyślnie dodano przedmiot do umowy ${contract.skrot}`)
             })
