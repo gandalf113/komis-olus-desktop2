@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux';
 import { DataTable } from '../components/DataTable'
 import { Box, Button, Typography } from '@mui/material';
@@ -8,6 +8,7 @@ import { toggleNewItemModal } from '../redux/modalSlice';
 import { toCurrency, decToHex } from '../utils/miscUtils';
 import { setNavbarTitle } from '../redux/screenSlice';
 import { useParams } from 'react-router-dom';
+import { ContractContext } from '../context/contract-context';
 
 
 // Contract detail screen
@@ -20,11 +21,12 @@ const ContractDetailScreen = () => {
     const [contract, setContract] = useState({});
 
     const { id } = useParams()
+    const { setCurrentContractID } = useContext(ContractContext);
 
     const dispatch = useDispatch()
 
     useEffect(() => {
-        console.log(id)
+        setCurrentContractID(id);
         // Pobierz umowę
         window.api.getContract(id).then(res => {
             // setContract(res)
@@ -36,6 +38,10 @@ const ContractDetailScreen = () => {
             // setContract(res)
             setItems(res)
         })
+
+        return () => {
+            setCurrentContractID(null);
+        }
     }, [dispatch, id])
 
     const columns = React.useMemo(

@@ -12,6 +12,7 @@ import ContractsScreen from './screens/ContractsScreen';
 import SalesSummaryScreen from './screens/SalesSummaryScreen';
 import { BrowserRouter } from 'react-router-dom';
 import SalesProvider from './context/sales-context';
+import ContractProvider from './context/contract-context';
 
 function App() {
   // Redux
@@ -40,10 +41,14 @@ function App() {
     <div>
       <Notification />
       <SalesProvider>
-        <BrowserRouter>
-          <PersistentDrawerLeft renderScreen={() => renderScreen(currentScreen)} />
-        </BrowserRouter>
-        <Modals />
+        <ContractProvider>
+
+          <BrowserRouter>
+            <PersistentDrawerLeft renderScreen={() => renderScreen(currentScreen)} />
+            <Modals />
+          </BrowserRouter>
+
+        </ContractProvider>
       </SalesProvider>
     </div>
   );

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useContext } from 'react'
 import {
     Dialog, DialogTitle, DialogContent, DialogActions, TextField, Box, Button
 } from '@mui/material';
@@ -7,6 +7,7 @@ import { openNotification as showNotification } from '../../redux/notificationSl
 import { toggleNewItemModal } from '../../redux/modalSlice';
 import { getContractDetail } from '../../redux/databaseSlice';
 import { useParams, useLocation } from 'react-router-dom';
+import { ContractContext } from '../../context/contract-context';
 
 
 export const NewItemModal = ({ isOpen, handleClose }) => {
@@ -19,6 +20,10 @@ export const NewItemModal = ({ isOpen, handleClose }) => {
 
     // Redux
     const { currentContract: contract } = useSelector(state => state.screen)
+
+    const { currentContractID } = useContext(ContractContext);
+
+    const params = useParams();
 
     // Reset the values on open
     useEffect(() => {
@@ -51,21 +56,21 @@ export const NewItemModal = ({ isOpen, handleClose }) => {
      * @param {int} amount - how many items of this kind has the commiter brought
      */
     const createSale = async (name, commiterValue, margin, price, amount) => {
-        alert("TODO: I need contract id")
-        // const contractId = contract.id_umowy
-        // window.api.createItem(name, amount, commiterValue, margin, price, contractId)
-        //     .then(_ => {
-        //         // Close the modal
-        //         dispatch(toggleNewItemModal(false))
-        //         // Refresh the contract
-        //         dispatch(getContractDetail(contractId))
-        //         // Show success notification
-        //         showNotification(`Pomyślnie dodano przedmiot do umowy ${contract.skrot}`)
-        //     })
-        //     .catch(error => {
-        //         alert('Nie udało się dodać przedmiotu! Informacje o błędzie w konsoli.')
-        //         console.error(error)
-        //     })
+        const contractId = currentContractID;
+
+        window.api.createItem(name, amount, commiterValue, margin, price, contractId)
+            .then(_ => {
+                // Close the modal
+                dispatch(toggleNewItemModal(false))
+                // Refresh the contract
+                // dispatch(getContractDetail(contractId))
+                // Show success notification
+                showNotification(`Pomyślnie dodano przedmiot do umowy ${contract.skrot}`)
+            })
+            .catch(error => {
+                alert('Nie udało się dodać przedmiotu! Informacje o błędzie w konsoli.')
+                console.error(error)
+            })
     }
 
     return (
