@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { DataTable } from '../components/DataTable'
 import { Box, Button, Typography } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
-import { toggleNewItemModal } from '../redux/modalSlice';
+import { toggleEditItemModal, toggleNewItemModal } from '../redux/modalSlice';
 import { toCurrency, decToHex } from '../utils/miscUtils';
 import { useParams } from 'react-router-dom';
 import { ContractContext } from '../context/contract-context';
@@ -86,7 +86,9 @@ const ContractDetailScreen = () => {
             },
             {
                 Header: 'Edytuj',
-                Cell: props => <EditIcon sx={{ cursor: 'pointer' }} />
+                Cell: props => <EditIcon
+                onClick={() => dispatch(toggleEditItemModal(true))}
+                sx={{ cursor: 'pointer' }} />
             },
         ],
         []
