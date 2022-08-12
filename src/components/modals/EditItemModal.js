@@ -21,18 +21,21 @@ export const EditItemModal = ({ isOpen, handleClose }) => {
     // Redux
     const { currentContract: contract } = useSelector(state => state.screen)
 
-    const { currentContractID, reloadContracts } = useContext(ContractContext);
+    const { currentContractID, reloadContracts,
+        currentlyEditedItem, setCurrentlyEditetItem } = useContext(ContractContext);
 
     const params = useParams();
 
-    // Reset the values on open
+    // Ustaw wartości pól
     useEffect(() => {
-        setName('')
-        setCommiterValue(0)
-        setAmount(1)
-    }, [isOpen])
-
-    const dispatch = useDispatch()
+        if(currentlyEditedItem){
+            setName(currentlyEditedItem.nazwa)
+            setCommiterValue(currentlyEditedItem.kwotaDlaKomitenta)
+            setAmount(currentlyEditedItem.ilosc)
+            setMargin(currentlyEditedItem.marza)
+            setPrice(currentlyEditedItem.cena)
+        }
+    }, [isOpen, currentlyEditedItem])
 
     const calculatePrice = (commiterValue, margin) => {
         commiterValue = Number.parseFloat(commiterValue)
@@ -55,20 +58,19 @@ export const EditItemModal = ({ isOpen, handleClose }) => {
      * @param {number} price - commiterValue + margin + tax
      * @param {int} amount - how many items of this kind has the commiter brought
      */
-    const createSale = async (name, commiterValue, margin, price, amount) => {
-        const contractId = currentContractID;
+    const updateItem = async (itemId, name, commiterValue, margin, price, amount) => {
 
-        window.api.createItem(name, amount, commiterValue, margin, price, contractId)
+        window.api.updateItem(itemId, name, amount, commiterValue, margin, price)
             .then(_ => {
-                // Close the modal
-                dispatch(toggleNewItemModal(false))
-                // Refresh the contract
+                // Zamknij okno
+                handleClose();
+                // Odśwież umowy
                 reloadContracts();
                 // Show success notification
-                showNotification(`Pomyślnie dodano przedmiot do umowy ${contract.skrot}`)
+                showNotification(`Pomyślnie zaktualizowano przedmiot ${contract.skrot}`)
             })
             .catch(error => {
-                alert('Nie udało się dodać przedmiotu! Informacje o błędzie w konsoli.')
+                alert('Nie udało się zaktualizować przedmiotu! Informacje o błędzie w konsoli.')
                 console.error(error)
             })
     }
@@ -83,6 +85,7 @@ export const EditItemModal = ({ isOpen, handleClose }) => {
                             id="item-name-input"
                             label="Nazwa przedmiotu"
                             variant="filled"
+                            value={name}
                             onChange={(e) => setName(e.target.value)}
                             InputLabelProps={{
                                 shrink: true,
@@ -93,6 +96,7 @@ export const EditItemModal = ({ isOpen, handleClose }) => {
                             label="Ilość"
                             type="number"
                             defaultValue={1}
+                            value={amount}
                             onChange={(e) => setAmount(e.target.value)}
                             InputLabelProps={{
                                 shrink: true,
@@ -104,6 +108,7 @@ export const EditItemModal = ({ isOpen, handleClose }) => {
                             label="Kwota dla komitenta [zł]"
                             type="number"
                             defaultValue={'0.00'}
+                            value={commiterValue}
                             onChange={(e) => setCommiterValue(e.target.value)}
                             InputLabelProps={{
                                 shrink: true,
@@ -118,6 +123,7 @@ export const EditItemModal = ({ isOpen, handleClose }) => {
                             label="Marża"
                             type="number"
                             defaultValue={'0.00'}
+                            value={margin}
                             onChange={(e) => setMargin(e.target.value)}
                             InputLabelProps={{
                                 shrink: true,
@@ -142,7 +148,7 @@ export const EditItemModal = ({ isOpen, handleClose }) => {
                     <DialogActions>
                         <Button onClick={() => {
                             const price = calculatePrice(commiterValue, margin)
-                            createSale(name, commiterValue, margin, price, amount)
+                            updateItem(currentlyEditedItem.id_przedmiotu, name, commiterValue, margin, price, amount)
                         }}>Przyjmij</Button>
                     </DialogActions>
 

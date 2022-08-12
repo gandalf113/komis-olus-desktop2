@@ -19,7 +19,8 @@ const ContractDetailScreen = () => {
     const [contract, setContract] = useState({});
 
     const { id } = useParams()
-    const { setCurrentContractID, allContracts } = useContext(ContractContext);
+    const { setCurrentContractID, allContracts,
+        currentlyEditedItem, setCurrentlyEditetItem } = useContext(ContractContext);
 
     const dispatch = useDispatch()
 
@@ -87,8 +88,11 @@ const ContractDetailScreen = () => {
             {
                 Header: 'Edytuj',
                 Cell: props => <EditIcon
-                onClick={() => dispatch(toggleEditItemModal(true))}
-                sx={{ cursor: 'pointer' }} />
+                    onClick={() => {
+                        setCurrentlyEditetItem(props.row.original);
+                        dispatch(toggleEditItemModal(true))
+                    }}
+                    sx={{ cursor: 'pointer' }} />
             },
         ],
         []

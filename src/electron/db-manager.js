@@ -140,6 +140,20 @@ createItem = ipcMain.handle("create/item", async (event, args) => {
         })
 })
 
+updateItem = ipcMain.handle("update/item", async (event, args) => {
+    const { itemId, name, commiterValue, margin, price, amount } = args
+
+    return knex('przedmioty')
+        .where({ id_przedmiotu: itemId })
+        .update({
+            nazwa: name,
+            kwotaDlaKomitenta: commiterValue,
+            marza: margin,
+            cena: price,
+            przyjetaIlosc: amount
+        })
+})
+
 incrementSoldAmount = ipcMain.handle('increment/soldAmount', async (event, args) => {
     const { itemId } = args
 
