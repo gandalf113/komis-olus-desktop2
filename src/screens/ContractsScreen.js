@@ -15,7 +15,7 @@ const ContractsScreen = () => {
     useEffect(() => {
         dispatch(setNavbarTitle('umowy'))
         reloadContracts();
-    }, [dispatch, reloadContracts])
+    }, [dispatch])
 
     const openContract = useCallback(
         (contract) => {
