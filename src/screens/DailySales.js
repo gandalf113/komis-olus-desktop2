@@ -76,16 +76,7 @@ const DailySales = () => {
 
     return (
         <div>
-            {/* <Box sx={{ display: 'flex', alignItems: 'start', gap: 2, marginBottom: 3 }}>
-                <Typography align='justify' variant="h5">
-                    {fullDateToString(currentSalesDay)}
-                </Typography>
-            </Box> */}
             <DataTable loading={false} tableData={sales} columns={columns} />
-            <Button variant='contained'
-                sx={{ marginTop: 3 }}
-                onClick={() => {
-                }}>Podsumowanie</Button>
         </div>
     )
 }
