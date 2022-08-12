@@ -36,6 +36,7 @@ import ContractDetailScreen from './ContractDetailScreen';
 import MonthlySales from './MonthlySales';
 import DailySales from './DailySales';
 import AllSales from './AllSales';
+import MonthlySummary from './MonthlySummary';
 
 const drawerWidth = 240;
 
@@ -224,6 +225,7 @@ export default function PersistentDrawerLeft({ renderScreen }) {
                     <Route path="/sales/all" element={<AllSales />} />
                     <Route path="/sales" element={<SalesScreen />} />
                     <Route path="/sales/:date" element={<MonthlySales />} />
+                    <Route path="/sales/:date/summary" element={<MonthlySummary />} />
                     <Route path="/sales/:date/:day" element={<DailySales />} />
                 </Routes>
             </Main>

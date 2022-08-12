@@ -1,26 +1,10 @@
-import React, { useEffect, useState, useMemo, useContext } from 'react'
+import React, { useEffect, useState, useContext } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { DataTable } from '../components/DataTable';
-import { toCurrency } from '../utils/miscUtils';
-import { extractDay, fullDateToString } from '../utils/date-utils';
 import { Typography } from '@mui/material';
 import { SalesContext } from '../context/sales-context';
-
-
-/**
- * Filtruje sprzedaż wg. roku i miesiąca
- * @param {Array} allSales - cała sprzedaż
- * @param {String} date - rok i miesiąc w formacie yyyy-mm
- * @returns {Array} - sprzedaż dla danego miesiąca danego roku
- */
-const getMonthlySales = (allSales, date) => {
-    const filteredSales = allSales.filter(sale => {
-        return sale.data.slice(0, -3) == date
-    })
-
-    return filteredSales
-}
-
+import { getMonthlySales } from '../utils/sale-utils';
+import { extractDay, fullDateToString } from '../utils/date-utils';
 
 const MonthlySales = () => {
     const { date } = useParams();
