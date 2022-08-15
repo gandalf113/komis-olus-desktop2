@@ -5,7 +5,8 @@ const { ipcMain } = require('electron')
 var knex = require("knex")({
     client: "sqlite3",
     connection: {
-        filename: path.join(__dirname, '../database.sqlite')
+        // filename: path.join(__dirname, '../database.sqlite').replace('/app.asar', '')
+        filename: 'C:/KOMIS_OLUS/database.sqlite'
     }
 });
 
@@ -90,10 +91,6 @@ searchClientExact = ipcMain.handle("search/clients/exact", async (event, args) =
 })
 
 
-
-
-
-
 createClient = ipcMain.handle("create/client", async (event, args) => {
     const { firstName, lastName, short } = args
 
@@ -172,5 +169,5 @@ getItemsDetailed = ipcMain.handle('get/items/detailed', async (event, args) => {
     return knex.select('*').from('klienci')
         .leftJoin('umowy', 'umowy.id_klienta', 'klienci.id_klienta')
         .leftJoin('przedmioty', 'przedmioty.id_umowy', 'umowy.id_umowy')
-        .whereLike('id_przedmiotu', `%${hexToDec(search)}%`)
+        .where('id_przedmiotu', hexToDec(search))
 })

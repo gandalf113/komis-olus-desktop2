@@ -87,7 +87,7 @@ const DrawerHeader = styled('div')(({ theme }) => ({
 
 export default function PersistentDrawerLeft({ renderScreen }) {
     const theme = useTheme();
-    const [open, setOpen] = React.useState(false);
+    const [open, setOpen] = React.useState(true);
 
     const { navbarTitle } = useSelector(state => state.screen);
 
@@ -217,7 +217,7 @@ export default function PersistentDrawerLeft({ renderScreen }) {
             <Main open={open}>
                 <DrawerHeader />
                 <Routes>
-                    <Route path="/" element={<></>} exact />
+                    <Route path="/" element={<>Komis Olus</>} exact />
                     <Route path="/clients" element={<ClientsScreen />} />
                     <Route path="/contracts" element={<ContractsScreen />} />
                     <Route path='/contracts/:id' element={<ContractDetailScreen />} />

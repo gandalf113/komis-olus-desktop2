@@ -1,12 +1,23 @@
 {
   "name": "komis-olus-desktop",
-  "version": "0.1.0",
+  "version": "0.2.7",
   "author": "Aleksander Szczepaniak",
   "description": "Program przechowujący bazę danych klientów i umów komisu odzieżowego",
   "main": "src/electron/main.js",
   "private": true,
   "build": {
-    "appId": "komis.olus"
+    "extends": null,
+    "appId": "komis.olus",
+    "files": [
+      "build/**/*",
+      "dist/**/*",
+      "src/**/*",
+      "public",
+      "node_modules"
+    ],
+    "directories": {
+      "buildResources": "build"
+    }
   },
   "homepage": "./",
   "dependencies": {

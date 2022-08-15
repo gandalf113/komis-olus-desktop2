@@ -31,7 +31,7 @@ export const EditItemModal = ({ isOpen, handleClose }) => {
         if(currentlyEditedItem){
             setName(currentlyEditedItem.nazwa)
             setCommiterValue(currentlyEditedItem.kwotaDlaKomitenta)
-            setAmount(currentlyEditedItem.ilosc)
+            setAmount(currentlyEditedItem.przyjetaIlosc)
             setMargin(currentlyEditedItem.marza)
             setPrice(currentlyEditedItem.cena)
         }
@@ -93,7 +93,7 @@ export const EditItemModal = ({ isOpen, handleClose }) => {
                         />
                         <TextField
                             id="item-amount-input"
-                            label="Ilość"
+                            label="Przyjęta ilość"
                             type="number"
                             defaultValue={1}
                             value={amount}

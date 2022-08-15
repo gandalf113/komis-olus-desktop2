@@ -45,7 +45,7 @@ function App() {
         <SalesProvider>
           <ContractProvider>
 
-            <BrowserRouter>
+            <BrowserRouter basename='/'>
               <PersistentDrawerLeft renderScreen={() => renderScreen(currentScreen)} />
               <Modals />
             </BrowserRouter>
