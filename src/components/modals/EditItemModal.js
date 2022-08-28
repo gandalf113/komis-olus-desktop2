@@ -10,6 +10,7 @@ import { useParams, useLocation } from 'react-router-dom';
 import { ContractContext } from '../../context/contract-context';
 
 
+
 export const EditItemModal = ({ isOpen, handleClose }) => {
     // Local state
     const [name, setName] = useState('')
@@ -28,7 +29,7 @@ export const EditItemModal = ({ isOpen, handleClose }) => {
 
     // Ustaw wartości pól
     useEffect(() => {
-        if(currentlyEditedItem){
+        if (currentlyEditedItem) {
             setName(currentlyEditedItem.nazwa)
             setCommiterValue(currentlyEditedItem.kwotaDlaKomitenta)
             setAmount(currentlyEditedItem.przyjetaIlosc)
@@ -50,30 +51,55 @@ export const EditItemModal = ({ isOpen, handleClose }) => {
         setPrice(`${newPrice} zł`)
     }, [commiterValue, margin])
 
-    /**
-     *
-     * @param {string} name - item name
-     * @param {number} commiterValue - amount of money for the commiter
-     * @param {number} margin - profit for the company
-     * @param {number} price - commiterValue + margin + tax
-     * @param {int} amount - how many items of this kind has the commiter brought
-     */
-    const updateItem = async (itemId, name, commiterValue, margin, price, amount) => {
+    const validateForm = () => {
+        return name.trim !== '' && amount >= 1 && commiterValue && commiterValue > 0 &&
+            price
+    }
 
+    /**
+ *
+ * @param {string} name - item name
+ * @param {number} commiterValue - amount of money for the commiter
+ * @param {number} margin - profit for the company
+ * @param {number} price - commiterValue + margin + tax
+ * @param {int} amount - how many items of this kind has the commiter brought
+ */
+    const updateItem = async (itemId, name, commiterValue, margin, price, amount) => {
         window.api.updateItem(itemId, name, amount, commiterValue, margin, price)
             .then(_ => {
-                // Zamknij okno
+                // Close
                 handleClose();
-                // Odśwież umowy
+                // Refresh the contracts
                 reloadContracts();
                 // Show success notification
-                showNotification(`Pomyślnie zaktualizowano przedmiot ${contract.skrot}`)
+                showNotification(`Pomyślnie zaktualizowano przedmiot: ${name}`)
             })
             .catch(error => {
                 alert('Nie udało się zaktualizować przedmiotu! Informacje o błędzie w konsoli.')
                 console.error(error)
             })
     }
+
+    /**
+     * Removes an item from the database
+     * @param {Number} itemId - id of the item to remove
+     */
+    const deleteItem = async (itemId) => {
+        window.api.deleteItem(itemId)
+            .then(_ => {
+                // Close the window
+                handleClose();
+                // Refresh the contracts
+                reloadContracts();
+                // Show success notification
+                showNotification(`Usunięto przedmiot: ${name}`)
+            })
+            .catch(error => {
+                alert('Nie udało się usunąć przedmiotu! Informacje o błędzie w konsoli.')
+                console.error(error)
+            })
+    }
+
 
     return (
         <div>
@@ -147,9 +173,15 @@ export const EditItemModal = ({ isOpen, handleClose }) => {
                     </Box>
                     <DialogActions>
                         <Button onClick={() => {
+                            deleteItem(currentlyEditedItem.id_przedmiotu);
+                        }} color='error'>Usuń</Button>
+                        <Button onClick={() => {
+                            handleClose()
+                        }}>Odrzuć</Button>
+                        <Button onClick={() => {
                             const price = calculatePrice(commiterValue, margin)
                             updateItem(currentlyEditedItem.id_przedmiotu, name, commiterValue, margin, price, amount)
-                        }}>Przyjmij</Button>
+                        }} disabled={!validateForm()}>Zapisz</Button>
                     </DialogActions>
 
                 </DialogContent>

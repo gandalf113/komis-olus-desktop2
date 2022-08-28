@@ -16,20 +16,21 @@ export const NewItemModal = ({ isOpen, handleClose }) => {
     const [amount, setAmount] = useState(1)
     const [commiterValue, setCommiterValue] = useState(0)
     const [margin, setMargin] = useState(0)
-    const [price, setPrice] = useState(0)
+    const [price, setPrice] = useState()
 
     // Redux
     const { currentContract: contract } = useSelector(state => state.screen)
 
     const { currentContractID, reloadContracts } = useContext(ContractContext);
 
-    const params = useParams();
 
     // Reset the values on open
     useEffect(() => {
         setName('')
         setCommiterValue(0)
+        setMargin(0)
         setAmount(1)
+        setPrice('0.00')
     }, [isOpen])
 
     const dispatch = useDispatch()
@@ -40,6 +41,11 @@ export const NewItemModal = ({ isOpen, handleClose }) => {
 
         const price = commiterValue + margin + (commiterValue + margin) * 0.23
         return price.toFixed(2)
+    }
+
+    const validateForm = () => {
+        return name.trim !== '' && amount >= 1 && commiterValue && commiterValue > 0 &&
+            price
     }
 
     useEffect(() => {
@@ -103,7 +109,7 @@ export const NewItemModal = ({ isOpen, handleClose }) => {
                             id="item-committer-value-input"
                             label="Kwota dla komitenta [zł]"
                             type="number"
-                            defaultValue={'0.00'}
+                            placeholder='0.00'
                             onChange={(e) => setCommiterValue(e.target.value)}
                             InputLabelProps={{
                                 shrink: true,
@@ -117,7 +123,7 @@ export const NewItemModal = ({ isOpen, handleClose }) => {
                             id="item-margin-input"
                             label="Marża"
                             type="number"
-                            defaultValue={'0.00'}
+                            placeholder='0.00'
                             onChange={(e) => setMargin(e.target.value)}
                             InputLabelProps={{
                                 shrink: true,
@@ -141,9 +147,12 @@ export const NewItemModal = ({ isOpen, handleClose }) => {
                     </Box>
                     <DialogActions>
                         <Button onClick={() => {
+                            handleClose()
+                        }}>Odrzuć</Button>
+                        <Button onClick={() => {
                             const price = calculatePrice(commiterValue, margin)
                             createSale(name, commiterValue, margin, price, amount)
-                        }}>Przyjmij</Button>
+                        }} disabled={!validateForm()}>Zapisz</Button>
                     </DialogActions>
 
                 </DialogContent>

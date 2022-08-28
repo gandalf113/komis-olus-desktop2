@@ -177,3 +177,11 @@ getItemsDetailed = ipcMain.handle('get/items/detailed', async (event, args) => {
         .leftJoin('przedmioty', 'przedmioty.id_umowy', 'umowy.id_umowy')
         .where('id_przedmiotu', hexToDec(search))
 })
+
+
+deleteItem = ipcMain.handle('delete/item', async (event, args) => {
+    const { itemId } = args
+
+    return knex.select('*').from('przedmioty')
+        .where('id_przedmiotu', itemId).del();
+})
