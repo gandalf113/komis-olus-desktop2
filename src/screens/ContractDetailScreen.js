@@ -114,23 +114,18 @@ const ContractDetailScreen = () => {
 
     return (
         <div>
-            <Box sx={{ display: 'flex', alignItems: 'end', gap: 6 }}>
+            <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'end', gap: 6 }}>
                 <Box>
                     <Typography align='justify' variant="body1" fontSize={21}>
-                        Umowa nr. {contract.id_umowy}
+                        Umowa nr. {contract.id_umowy} - {client.skrot}
                     </Typography>
                     <Typography align='justify' variant="body2" fontSize={21}>
-                        {fullDateToString(contract.data)}
                     </Typography>
                 </Box>
-                <Box>
-                    <Typography align='justify' variant="body1" fontSize={21}>
-                        {client.skrot}
-                    </Typography>
                     <Typography align='justify' variant="body2" fontSize={21}>
-                        {client.imie} {client.nazwisko}
+                        {client.imie} {client.nazwisko}, {fullDateToString(contract.data)}
+
                     </Typography>
-                </Box>
                 {/* <Typography sx={{ mb: 1 }}>{contract.data}</Typography> */}
             </Box>
             <Box sx={{ mb: 2, display: 'flex', alignItems: 'end', gap: 1 }}>

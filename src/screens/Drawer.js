@@ -16,6 +16,7 @@ import Typography from '@mui/material/Typography';
 import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
+import KeyboardReturnIcon from '@mui/icons-material/KeyboardReturn';
 import PersonIcon from '@mui/icons-material/Person';
 import ReceiptIcon from '@mui/icons-material/Receipt';
 import PersonAddIcon from '@mui/icons-material/PersonAdd';
@@ -104,8 +105,8 @@ export default function PersistentDrawerLeft({ renderScreen }) {
         setOpen(false);
     };
 
-    const changeScreen = (screenName) => {
-        dispatch(setScreen(screenName))
+    const handleGoBack = () => {
+        navigate(-1);
     }
 
     return (
@@ -118,13 +119,18 @@ export default function PersistentDrawerLeft({ renderScreen }) {
                         aria-label="open drawer"
                         onClick={handleDrawerOpen}
                         edge="start"
-                        sx={{ mr: 2, ...(open && { display: 'none' }) }}
+                        sx={{ mr: 0, ...(open && { display: 'none' }) }}
                     >
                         <MenuIcon />
                     </IconButton>
+                    <IconButton
+                        onClick={handleGoBack}
+                        color="inherit">
+                        <KeyboardReturnIcon />
+                    </IconButton>
                     <Typography variant="h6" noWrap component="div">
-                        {/* Komis OLUŚ - {navbarTitle} */}
-                        {location.pathname}
+                        Komis OLUŚ
+                        {/* {location.pathname} */}
                     </Typography>
                 </Toolbar>
             </AppBar>
