@@ -10,7 +10,7 @@ import SalesDetailScreen from './screens/SalesDetailScreen';
 import ContractDetailScreen from './screens/ContractDetailScreen';
 import ContractsScreen from './screens/ContractsScreen';
 import SalesSummaryScreen from './screens/SalesSummaryScreen';
-import { BrowserRouter } from 'react-router-dom';
+import { HashRouter } from 'react-router-dom';
 import SalesProvider from './context/sales-context';
 import ContractProvider from './context/contract-context';
 import ClientProvider from './context/client-context';
@@ -45,10 +45,10 @@ function App() {
         <SalesProvider>
           <ContractProvider>
 
-            <BrowserRouter basename='/'>
+            <HashRouter>
               <PersistentDrawerLeft renderScreen={() => renderScreen(currentScreen)} />
               <Modals />
-            </BrowserRouter>
+            </HashRouter>
 
           </ContractProvider>
         </SalesProvider>
