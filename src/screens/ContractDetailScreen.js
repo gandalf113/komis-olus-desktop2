@@ -75,9 +75,13 @@ const ContractDetailScreen = () => {
                 Cell: props => <div>{props.row.original.przyjetaIlosc - props.row.original.sprzedanaIlosc}</div>
             },
             {
-                Header: 'Kwota dla komitenta',
+                Header: 'Kwota dla komitenta (sztuka)',
                 accessor: 'kwotaDlaKomitenta',
                 Cell: props => <div> {toCurrency(props.value)} </div>
+            },
+            {
+                Header: 'Kwota dla komitenta (całość)',
+                Cell: props => <div> {toCurrency(props.row.original.kwotaDlaKomitenta * props.row.original.przyjetaIlosc)} </div>
             },
             {
                 Header: 'Marża',
