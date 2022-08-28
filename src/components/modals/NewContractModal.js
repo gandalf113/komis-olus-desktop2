@@ -78,7 +78,7 @@ export const NewContractModal = ({ isOpen, handleClose }) => {
                         id="szukaj-klienta"
                         freeSolo
                         options={clients}
-                        getOptionLabel={(clients) => clients.skrot}
+                        getOptionLabel={(client) => client.skrot + " -  " + client.imie + " " + client.nazwisko}
                         onChange={(event, client) => {
                             if (client)
                                 setSelectedClient(client)
@@ -87,7 +87,7 @@ export const NewContractModal = ({ isOpen, handleClose }) => {
                             setSelectedClient(undefined)
                         }}
                         renderInput={(params) => (
-                            <TextField {...params} label="Szukaj komitenta" />)
+                            <TextField {...params} label="Szukaj klienta" />)
                         }
                     />
                 </DialogContent>

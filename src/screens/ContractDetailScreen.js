@@ -7,6 +7,7 @@ import { toggleEditItemModal, toggleNewItemModal } from '../redux/modalSlice';
 import { toCurrency, decToHex } from '../utils/miscUtils';
 import { useParams } from 'react-router-dom';
 import { ContractContext } from '../context/contract-context';
+import { fullDateToString } from '../utils/date-utils';
 
 
 // Contract detail screen
@@ -17,6 +18,7 @@ const ContractDetailScreen = () => {
 
     const [items, setItems] = useState();
     const [contract, setContract] = useState({});
+    const [client, setClient] = useState();
 
     const { id } = useParams()
     const { setCurrentContractID, allContracts,
@@ -28,8 +30,13 @@ const ContractDetailScreen = () => {
         setCurrentContractID(id);
         // Pobierz umowę
         window.api.getContract(id).then(res => {
-            // setContract(res)
-            setContract(res[0])
+            const contract = res[0]
+            setContract(contract)
+
+            // Pobierz klienta
+            window.api.getClient(contract.id_klienta).then(res => {
+                setClient(res[0])
+            })
         })
 
         // Pobierz przedmioty
@@ -37,6 +44,7 @@ const ContractDetailScreen = () => {
             // setContract(res)
             setItems(res)
         })
+
 
         return () => {
             setCurrentContractID(null);
@@ -98,14 +106,27 @@ const ContractDetailScreen = () => {
         []
     )
 
-    if (!contract || !items) return null
+    if (!contract || !items || !client) return null
 
     return (
         <div>
-            <Box sx={{ display: 'flex', alignItems: 'end', gap: 2 }}>
-                <Typography align='justify' variant="h4">
-                    {contract.id_umowy}. {contract.data}
-                </Typography>
+            <Box sx={{ display: 'flex', alignItems: 'end', gap: 6 }}>
+                <Box>
+                    <Typography align='justify' variant="body1" fontSize={21}>
+                        Umowa nr. {contract.id_umowy}
+                    </Typography>
+                    <Typography align='justify' variant="body2" fontSize={21}>
+                        {fullDateToString(contract.data)}
+                    </Typography>
+                </Box>
+                <Box>
+                    <Typography align='justify' variant="body1" fontSize={21}>
+                        {client.skrot}
+                    </Typography>
+                    <Typography align='justify' variant="body2" fontSize={21}>
+                        {client.imie} {client.nazwisko}
+                    </Typography>
+                </Box>
                 {/* <Typography sx={{ mb: 1 }}>{contract.data}</Typography> */}
             </Box>
             <Box sx={{ mb: 2, display: 'flex', alignItems: 'end', gap: 1 }}>

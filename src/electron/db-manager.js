@@ -14,6 +14,12 @@ getClients = ipcMain.handle("get/clients", async (event, args) => {
     return knex.select().from("klienci").orderBy('skrot', 'asc')
 })
 
+getClient = ipcMain.handle("get/client", async (event, args) => {
+    const { clientId } = args
+
+    return knex.select().from("klienci").where('id_klienta', clientId)
+})
+
 getSales = ipcMain.handle("get/sales", async (event, args) => {
     return knex.select().from("sprzedaz")
 })
