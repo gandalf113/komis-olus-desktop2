@@ -4,13 +4,15 @@ import { Typography } from '@mui/material';
 import { useDispatch } from 'react-redux';
 import { setNavbarTitle } from '../redux/screenSlice';
 import { ContractContext } from '../context/contract-context';
+import EditIcon from '@mui/icons-material/Edit';
 import { useNavigate } from 'react-router-dom';
+import { toggleEditContractModal } from '../redux/modalSlice';
 
 const ContractsScreen = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
-    const { allContracts: contracts, reloadContracts } = useContext(ContractContext);
+    const { allContracts: contracts, reloadContracts, setCurrentlyEditedContract } = useContext(ContractContext);
 
     useEffect(() => {
         dispatch(setNavbarTitle('umowy'))
@@ -55,6 +57,15 @@ const ContractsScreen = () => {
                 Cell: props => <Typography sx={{ cursor: 'pointer' }} onClick={() => openContract(props.row.original)}
                     color="secondary">Otwórz umowę</Typography>
 
+            },
+            {
+                Header: 'Edytuj',
+                Cell: props => <EditIcon
+                    onClick={() => {
+                        setCurrentlyEditedContract(props.row.original);
+                        dispatch(toggleEditContractModal(true));
+                    }}
+                    sx={{ cursor: 'pointer' }} />
             },
         ],
         [openContract]

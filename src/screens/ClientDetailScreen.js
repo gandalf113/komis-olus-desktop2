@@ -49,7 +49,7 @@ const ClientDetailScreen = () => {
 
             },
         ],
-        []
+        [openContract]
     )
 
     if (!contracts || !client) return null

@@ -21,8 +21,7 @@ const ContractDetailScreen = () => {
     const [client, setClient] = useState();
 
     const { id } = useParams()
-    const { setCurrentContractID, allContracts,
-        currentlyEditedItem, setCurrentlyEditetItem } = useContext(ContractContext);
+    const { setCurrentContractID, allContracts, setCurrentlyEditetItem } = useContext(ContractContext);
 
     const dispatch = useDispatch()
 
@@ -117,7 +116,7 @@ const ContractDetailScreen = () => {
             <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'end', gap: 6 }}>
                 <Box>
                     <Typography align='justify' variant="body1" fontSize={21}>
-                        Umowa nr. {contract.id_umowy} - {client.skrot}
+                        Umowa nr. {contract.numer_umowy} - {client.skrot}
                     </Typography>
                     <Typography align='justify' variant="body2" fontSize={21}>
                     </Typography>

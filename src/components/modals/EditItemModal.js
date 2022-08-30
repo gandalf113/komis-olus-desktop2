@@ -9,8 +9,6 @@ import { getContractDetail } from '../../redux/databaseSlice';
 import { useParams, useLocation } from 'react-router-dom';
 import { ContractContext } from '../../context/contract-context';
 
-
-
 export const EditItemModal = ({ isOpen, handleClose }) => {
     // Local state
     const [name, setName] = useState('')

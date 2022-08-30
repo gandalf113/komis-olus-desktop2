@@ -127,9 +127,12 @@ export const NewContractModal = ({ isOpen, handleClose }) => {
                 .then(res => {
                     // Refresh the clients
                     reloadClients();
+                    console.log(res)
 
                     const clientId = res[0]
                     return clientId;
+                })
+                .catch(error => {
                 })
                 .then(clientId => {
                     // Create the contract now that we have a valid client
@@ -215,9 +218,7 @@ export const NewContractModal = ({ isOpen, handleClose }) => {
                         label={<Typography variant='button' color='gray'>Nowy klient?</Typography>} />
 
                     <Button onClick={async () => {
-                        if (selectedClient) {
-                            createContract(selectedClient)
-                        }
+                        createContract(selectedClient)
                     }}
                         disabled={!validateForm()}
                     >Utwórz</Button>

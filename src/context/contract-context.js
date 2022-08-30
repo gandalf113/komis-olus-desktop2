@@ -8,6 +8,7 @@ const ContractProvider = props => {
 
     // Potrzebne w EditItemModal.js, przechowuje cały obiekt a nie tylko ID
     const [currentlyEditedItem, setCurrentlyEditetItem] = useState();
+    const [currentlyEditedContract, setCurrentlyEditedContract] = useState();
 
     const reloadContracts = () => {
         window.api.getContractsWithClients().then(contracts => {
@@ -18,7 +19,8 @@ const ContractProvider = props => {
     return <ContractContext.Provider value={{
         currentContractID, setCurrentContractID,
         allContracts, reloadContracts,
-        currentlyEditedItem, setCurrentlyEditetItem
+        currentlyEditedItem, setCurrentlyEditetItem,
+        currentlyEditedContract, setCurrentlyEditedContract
     }}>
         {props.children}
     </ContractContext.Provider >

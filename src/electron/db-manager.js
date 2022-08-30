@@ -165,6 +165,16 @@ updateItem = ipcMain.handle("update/item", async (event, args) => {
         })
 })
 
+updateContract = ipcMain.handle("update/contract", async (event, args) => {
+    const { contractId, clientId } = args
+
+    return knex('umowy')
+        .where({ id_umowy: contractId })
+        .update({
+            id_klienta: clientId
+        })
+})
+
 incrementSoldAmount = ipcMain.handle('increment/soldAmount', async (event, args) => {
     const { itemId } = args
 
