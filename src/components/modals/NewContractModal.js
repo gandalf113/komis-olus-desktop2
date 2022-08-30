@@ -11,12 +11,14 @@ import { useNavigate } from 'react-router-dom';
 import { Box } from '@mui/system';
 
 
-const generateContractNumber = (allContracts, year) => {
+export const generateContractNumber = (allContracts, year) => {
     // Get all contracts for a given year
-    console.log(allContracts)
     const contractsThisYear = allContracts.filter(contract => contract.data.split('-')[0] === year.toString());
-    // Get the prefix based on how many contracts were made this year
-    const prefix = contractsThisYear.length + 1;
+
+    // Get the prefix from last contract this year
+    const lastContract = contractsThisYear[contractsThisYear.length - 1];
+    const lastPrefix = !!lastContract ? Number.parseInt(lastContract.numer_umowy.split('/')[0]) : 0
+    const prefix = lastPrefix + 1;
     return `${prefix}/${year}`
 }
 
