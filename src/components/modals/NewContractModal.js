@@ -27,7 +27,7 @@ export const generateContractNumber = (allContracts, year) => {
 
 export const NewContractModal = ({ isOpen, handleClose }) => {
     const [clients, setClients] = useState([]);
-    const [selectedClient, setSelectedClient] = useState({});
+    const [selectedClient, setSelectedClient] = useState();
 
     // New client form data
     const [isNewClient, setIsNewClient] = useState(false);
@@ -53,7 +53,10 @@ export const NewContractModal = ({ isOpen, handleClose }) => {
         }
     }, [isOpen])
 
-    const toggleIsNewClient = () => setIsNewClient(!isNewClient);
+    const toggleIsNewClient = () => {
+        setIsNewClient(!isNewClient);
+        setSelectedClient(undefined);
+    };
 
     const getToday = () => {
         var today = new Date();
@@ -73,6 +76,16 @@ export const NewContractModal = ({ isOpen, handleClose }) => {
 
     const openContract = (contractId) => {
         navigate(`/contracts/${contractId}`)
+    }
+
+    const validateForm = () => {
+        if (isNewClient) {
+            if (firstName && lastName && short && firstName.trim() !== '' && lastName.trim() !== '') return true
+            return false
+        } else {
+            if (selectedClient && selectedClient.id_klienta) return true
+            return false
+        }
     }
 
     const createContract = async (client) => {
@@ -206,7 +219,7 @@ export const NewContractModal = ({ isOpen, handleClose }) => {
                             createContract(selectedClient)
                         }
                     }}
-                        disabled={selectedClient === undefined}
+                        disabled={!validateForm()}
                     >Utwórz</Button>
                 </DialogActions>
             </Dialog>
