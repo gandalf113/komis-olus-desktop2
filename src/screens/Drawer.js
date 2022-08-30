@@ -30,6 +30,7 @@ import PointOfSaleIcon from '@mui/icons-material/PointOfSale';
 import { useDispatch, useSelector } from 'react-redux';
 import { setScreen } from '../redux/screenSlice';
 import { toggleNewClientModal, toggleNewContractModal, toggleNewSaleModal } from '../redux/modalSlice';
+
 import SalesScreen from './SalesScreen';
 import ClientsScreen from './ClientsScreen';
 import ContractsScreen from './ContractsScreen';
@@ -38,6 +39,7 @@ import MonthlySales from './MonthlySales';
 import DailySales from './DailySales';
 import AllSales from './AllSales';
 import MonthlySummary from './MonthlySummary';
+import ClientDetailScreen from './ClientDetailScreen';
 
 const drawerWidth = 240;
 
@@ -129,8 +131,8 @@ export default function PersistentDrawerLeft({ renderScreen }) {
                         <KeyboardReturnIcon />
                     </IconButton>
                     <Typography variant="h6" noWrap component="div">
-                        Komis OLUŚ
-                        {/* {location.pathname} */}
+                        {/* Komis OLUŚ */}
+                        {location.pathname}
                     </Typography>
                 </Toolbar>
             </AppBar>
@@ -225,6 +227,8 @@ export default function PersistentDrawerLeft({ renderScreen }) {
                 <Routes>
                     <Route path="/" element={<>Komis Olus</>} exact />
                     <Route path="/clients" element={<ClientsScreen />} />
+                    <Route path="/clients/:id" element={<ClientDetailScreen />} />
+
                     <Route path="/contracts" element={<ContractsScreen />} />
                     <Route path='/contracts/:id' element={<ContractDetailScreen />} />
 

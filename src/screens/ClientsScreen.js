@@ -3,9 +3,12 @@ import { DataTable } from '../components/DataTable'
 import { useDispatch } from 'react-redux'
 import { setNavbarTitle } from '../redux/screenSlice';
 import { ClientContext } from '../context/client-context';
+import { Typography } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
 
 const ClientsScreen = () => {
     const dispatch = useDispatch()
+    const navigate = useNavigate();
 
     const { allClients: clients, reloadClients } = useContext(ClientContext);
 
@@ -31,6 +34,12 @@ const ClientsScreen = () => {
             {
                 Header: 'Nazwisko',
                 accessor: 'nazwisko',
+            },
+            {
+                Header: 'Otwórz',
+                Cell: props => <Typography sx={{ cursor: 'pointer' }} onClick={() => navigate(`/clients/${props.row.original.id_klienta}`)}
+                    color="secondary">Otwórz</Typography>
+
             },
         ],
         []

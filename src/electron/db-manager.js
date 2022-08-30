@@ -20,6 +20,13 @@ getClient = ipcMain.handle("get/client", async (event, args) => {
     return knex.select().from("klienci").where('id_klienta', clientId)
 })
 
+getClientsContracts = ipcMain.handle("get/client/contracts", async (event, args) => {
+    const { clientId } = args
+
+    return knex.select().from("umowy").where('id_klienta', clientId)
+
+})
+
 getSales = ipcMain.handle("get/sales", async (event, args) => {
     return knex.select().from("sprzedaz")
 })
