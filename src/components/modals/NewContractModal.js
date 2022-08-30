@@ -75,12 +75,14 @@ export const NewContractModal = ({ isOpen, handleClose }) => {
         navigate(`/contracts/${contractId}`)
     }
 
-
-
     const createContract = async (client) => {
-        if (!isNewClient) {
-            // If we are creating a contract for EXISTING user
-            await window.api.createContract(client.id_klienta, contractNumber, getToday())
+        /**
+         * Creates the contract in the database, refreshes the database, opens the contract, shows the notification
+         * @param {Number} clientId - id of client with whom the contract is arranged
+         * @param {String} contractNumber - number of the contract relative to the year like '142/2022'
+         */
+        const handleCreation = (clientId, contractNumber) => {
+            window.api.createContract(clientId, contractNumber, getToday())
                 .then(res => {
                     const contractId = res[0];
 
@@ -91,7 +93,7 @@ export const NewContractModal = ({ isOpen, handleClose }) => {
 
                     // Show the notification
                     dispatch(
-                        showNotification(`Pomyślnie utworzono umowa dla: ${client.skrot}`)
+                        showNotification(`Pomyślnie utworzono umowę ${contractNumber}`)
                     )
 
                     // Close the modal
@@ -100,6 +102,11 @@ export const NewContractModal = ({ isOpen, handleClose }) => {
                     console.log(error)
                     alert('Wystąpił błąd. Więcej informacji w konsoli.')
                 })
+        }
+
+        if (!isNewClient) {
+            // If we are creating a contract for EXISTING user
+            handleCreation(client.id_klienta, contractNumber);
         } else {
             // If we are creating a contract for a NEW user
             // First, create the new user
@@ -111,29 +118,9 @@ export const NewContractModal = ({ isOpen, handleClose }) => {
                     const clientId = res[0]
                     return clientId;
                 })
-                // Create the contract now that we have a valid client
                 .then(clientId => {
-                    //
-                    window.api.createContract(clientId, contractNumber, getToday())
-                        .then(res => {
-                            const contractId = res[0];
-
-                            reloadContracts();
-
-                            // Open the contract
-                            openContract(contractId);
-
-                            // Show the notification
-                            dispatch(
-                                showNotification(`Pomyślnie utworzono umowa dla: ${client.skrot}`)
-                            )
-
-                            // Close the modal
-                            handleClose();
-                        }).catch(error => {
-                            console.log(error)
-                            alert('Wystąpił błąd. Więcej informacji w konsoli.')
-                        })
+                    // Create the contract now that we have a valid client
+                    handleCreation(clientId, contractNumber)
                 })
                 .catch(error => {
                     alert('Nie udało się dodać klienta! Informacje o błędzie w konsoli.')
