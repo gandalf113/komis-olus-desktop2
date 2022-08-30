@@ -4,12 +4,14 @@ import {
     Autocomplete, TextField, Button, FormControlLabel,
     Switch, Box, Typography
 } from '@mui/material';
+import { useDispatch } from 'react-redux';
 import { ContractContext } from '../../context/contract-context'
 import { openNotification as showNotification } from '../../redux/notificationSlice';
 
 const EditContractModal = ({ isOpen, handleClose }) => {
-    const { currentlyEditedContract, reloadContracts } = useContext(ContractContext);
+    const dispatch = useDispatch();
 
+    const { currentlyEditedContract, reloadContracts } = useContext(ContractContext);
 
     const [clients, setClients] = useState([]);
     const [selectedClient, setSelectedClient] = useState();
@@ -49,12 +51,20 @@ const EditContractModal = ({ isOpen, handleClose }) => {
             .then(_ => {
                 handleClose();
                 reloadContracts();
-                showNotification(`Pomyślnie zaktualizowano umowę ${currentlyEditedContract.numer_umowy}`)
+                dispatch(showNotification(`Zaktualizowano umowę ${contractNumber}`))
             })
             .catch(error => {
                 alert('Nie udało się zaktualizować umowy! Informacje o błędzie w konsoli.')
                 console.error(error)
             });
+    }
+
+    const deleteContract = (contractId) => {
+        window.api.deleteContract(contractId).then(_ => {
+            handleClose();
+            reloadContracts();
+            dispatch(showNotification(`Usunięto umowę ${contractNumber}`));
+        });
     }
 
     if (!selectedClient) return null
@@ -80,7 +90,7 @@ const EditContractModal = ({ isOpen, handleClose }) => {
                         value={selectedClient}
                         getOptionLabel={(client) => client.skrot + " -  " + client.imie + " " + client.nazwisko}
                         onChange={(event, client) => {
-                            if (client){
+                            if (client) {
                                 setSelectedClient(client)
                             }
                         }}
@@ -92,13 +102,14 @@ const EditContractModal = ({ isOpen, handleClose }) => {
 
             </DialogContent>
             <DialogActions>
-
-
+                <Button onClick={() => {
+                    deleteContract(currentlyEditedContract.id_umowy);
+                }} color='error'>Usuń</Button>
+                <Button onClick={() => {
+                    handleClose()
+                }}>Odrzuć</Button>
                 <Button onClick={async () => {
                     updateContract(selectedClient.id_klienta);
-                    // if (selectedClient) {
-                    //     createContract(selectedClient)
-                    // }
                 }}
                 >Zapisz</Button>
             </DialogActions>

@@ -203,3 +203,10 @@ deleteItem = ipcMain.handle('delete/item', async (event, args) => {
     return knex.select('*').from('przedmioty')
         .where('id_przedmiotu', itemId).del();
 })
+
+deleteContract = ipcMain.handle('delete/contract', async (event, args) => {
+    const { contractId } = args
+
+    return knex.select('*').from('umowy')
+        .where('id_umowy', contractId).del();
+})

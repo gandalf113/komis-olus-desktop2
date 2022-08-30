@@ -32,6 +32,7 @@ const WINDOW_API = {
     incrementSoldAmount: (itemId) => ipcRenderer.invoke("increment/soldAmount", { itemId: itemId }),
     // Delete
     deleteItem: (itemId) => ipcRenderer.invoke("delete/item", { itemId: itemId }),
+    deleteContract: (contractId) => ipcRenderer.invoke("delete/contract", { contractId: contractId }),
 
 }
 

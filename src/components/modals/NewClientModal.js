@@ -71,8 +71,7 @@ export const NewClientModal = ({ isOpen, handleClose }) => {
                 // Refresh the clients
                 reloadClients();
                 // Show success notification
-                showNotification(`Pomyślnie dodano klienta: ${short}`)
-
+                dispatch(showNotification(`Pomyślnie dodano klienta: ${short}`))
             })
             .catch(error => {
                 alert('Nie udało się dodać klienta! Informacje o błędzie w konsoli.')
