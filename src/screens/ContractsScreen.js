@@ -31,6 +31,10 @@ const ContractsScreen = () => {
                 accessor: 'id_umowy',
             },
             {
+                Header: 'Numer umowy',
+                accessor: 'numer_umowy',
+            },
+            {
                 Header: 'Komitent',
                 accessor: 'skrot',
             },

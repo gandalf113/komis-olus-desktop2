@@ -8,7 +8,17 @@ import { openNotification as showNotification } from '../../redux/notificationSl
 import { loadContract, setScreen } from '../../redux/screenSlice';
 import { ContractContext } from '../../context/contract-context';
 import { useNavigate } from 'react-router-dom';
+import { Box } from '@mui/system';
 
+
+const generateContractNumber = (allContracts, year) => {
+    // Get all contracts for a given year
+    console.log(allContracts)
+    const contractsThisYear = allContracts.filter(contract => contract.data.split('-')[0] === year.toString());
+    // Get the prefix based on how many contracts were made this year
+    const prefix = contractsThisYear.length + 1;
+    return `${prefix}/${year}`
+}
 
 export const NewContractModal = ({ isOpen, handleClose }) => {
     const [clients, setClients] = useState([]);
@@ -17,7 +27,9 @@ export const NewContractModal = ({ isOpen, handleClose }) => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
-    const { reloadContracts } = useContext(ContractContext);
+    const { reloadContracts, allContracts } = useContext(ContractContext);
+
+    const contractNumber = generateContractNumber(allContracts, new Date().getFullYear());
 
     useEffect(() => {
         // Get clients on open
@@ -47,7 +59,7 @@ export const NewContractModal = ({ isOpen, handleClose }) => {
     }
 
     const createContract = async (client) => {
-        await window.api.createContract(client.id_klienta, getToday())
+        await window.api.createContract(client.id_klienta, contractNumber, getToday())
             .then(res => {
                 const contractId = res[0];
 
@@ -65,7 +77,7 @@ export const NewContractModal = ({ isOpen, handleClose }) => {
                 handleClose();
             }).catch(error => {
                 console.log(error)
-                alert('fuck')
+                alert('Wystąpił błąd. Więcej informacji w konsoli.')
             })
     }
 
@@ -73,23 +85,33 @@ export const NewContractModal = ({ isOpen, handleClose }) => {
         <div>
             <Dialog open={isOpen} onClose={handleClose}>
                 <DialogTitle>Nowa umowa</DialogTitle>
-                <DialogContent style={{ mt: 2, minWidth: 560 }}>
-                    <Autocomplete
-                        id="szukaj-klienta"
-                        freeSolo
-                        options={clients}
-                        getOptionLabel={(client) => client.skrot + " -  " + client.imie + " " + client.nazwisko}
-                        onChange={(event, client) => {
-                            if (client)
-                                setSelectedClient(client)
-                        }}
-                        onInputChange={() => {
-                            setSelectedClient(undefined)
-                        }}
-                        renderInput={(params) => (
-                            <TextField {...params} label="Szukaj klienta" />)
-                        }
-                    />
+                <DialogContent style={{ minWidth: 560 }}>
+                    <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
+                        <Box></Box>
+                        <TextField
+                            id="numer-umowy"
+                            label='Numer umowy'
+                            value={contractNumber}
+                        />
+                        <Autocomplete
+                            id="szukaj-klienta"
+                            freeSolo
+                            options={clients}
+                            getOptionLabel={(client) => client.skrot + " -  " + client.imie + " " + client.nazwisko}
+                            onChange={(event, client) => {
+                                if (client)
+                                    setSelectedClient(client)
+                            }}
+                            onInputChange={() => {
+                                setSelectedClient(undefined)
+                            }}
+                            renderInput={(params) => (
+                                <TextField {...params} label="Szukaj klienta" />)
+                            }
+                        />
+
+                    </Box>
+
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={async () => {

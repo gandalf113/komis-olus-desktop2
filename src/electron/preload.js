@@ -21,7 +21,7 @@ const WINDOW_API = {
     searchClientExact: (search) => ipcRenderer.invoke("search/clients/exact", { search: search }),
     // Create
     createClient: (firstName, lastName, short) => ipcRenderer.invoke("create/client", { firstName: firstName, lastName: lastName, short: short }),
-    createContract: (clientId, date) => ipcRenderer.invoke("create/contract", { clientId: clientId, date: date }),
+    createContract: (clientId, contractNumber, date) => ipcRenderer.invoke("create/contract", { clientId: clientId, contractNumber: contractNumber, date: date }),
     createSale: (itemId, date) => ipcRenderer.invoke("create/sale", { itemId: itemId, date: date }),
     createItem: (name, amount, commiterValue, margin, price, contractId) => ipcRenderer.invoke("create/item", { name: name, amount: amount, commiterValue: commiterValue, margin: margin, price: price, contractId: contractId }),
     // Update

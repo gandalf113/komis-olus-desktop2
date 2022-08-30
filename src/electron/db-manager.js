@@ -109,11 +109,12 @@ createClient = ipcMain.handle("create/client", async (event, args) => {
 })
 
 createContract = ipcMain.handle("create/contract", async (event, args) => {
-    const { clientId, date } = args
+    const { clientId, contractNumber, date } = args
 
     return knex('umowy')
         .insert({
             id_klienta: clientId,
+            numer_umowy: contractNumber,
             data: date
         })
 })
