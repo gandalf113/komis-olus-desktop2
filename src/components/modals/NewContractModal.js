@@ -11,6 +11,7 @@ import { ContractContext } from '../../context/contract-context';
 import { useNavigate } from 'react-router-dom';
 import { Box } from '@mui/system';
 import { generateShort } from './NewClientModal';
+import { ClientContext } from '../../context/client-context';
 
 
 export const generateContractNumber = (allContracts, year) => {
@@ -38,6 +39,7 @@ export const NewContractModal = ({ isOpen, handleClose }) => {
     const navigate = useNavigate();
 
     const { reloadContracts, allContracts } = useContext(ContractContext);
+    const { reloadClients } = useContext(ClientContext);
 
     const contractNumber = generateContractNumber(allContracts, new Date().getFullYear());
 
@@ -73,27 +75,71 @@ export const NewContractModal = ({ isOpen, handleClose }) => {
         navigate(`/contracts/${contractId}`)
     }
 
+
+
     const createContract = async (client) => {
-        await window.api.createContract(client.id_klienta, contractNumber, getToday())
-            .then(res => {
-                const contractId = res[0];
+        if (!isNewClient) {
+            // If we are creating a contract for EXISTING user
+            await window.api.createContract(client.id_klienta, contractNumber, getToday())
+                .then(res => {
+                    const contractId = res[0];
 
-                reloadContracts();
+                    reloadContracts();
 
-                // Open the contract
-                openContract(contractId);
+                    // Open the contract
+                    openContract(contractId);
 
-                // Show the notification
-                dispatch(
-                    showNotification(`Pomyślnie utworzono umowa dla: ${client.skrot}`)
-                )
+                    // Show the notification
+                    dispatch(
+                        showNotification(`Pomyślnie utworzono umowa dla: ${client.skrot}`)
+                    )
 
-                // Close the modal
-                handleClose();
-            }).catch(error => {
-                console.log(error)
-                alert('Wystąpił błąd. Więcej informacji w konsoli.')
-            })
+                    // Close the modal
+                    handleClose();
+                }).catch(error => {
+                    console.log(error)
+                    alert('Wystąpił błąd. Więcej informacji w konsoli.')
+                })
+        } else {
+            // If we are creating a contract for a NEW user
+            // First, create the new user
+            window.api.createClient(firstName, lastName, short)
+                .then(res => {
+                    // Refresh the clients
+                    reloadClients();
+
+                    const clientId = res[0]
+                    return clientId;
+                })
+                // Create the contract now that we have a valid client
+                .then(clientId => {
+                    //
+                    window.api.createContract(clientId, contractNumber, getToday())
+                        .then(res => {
+                            const contractId = res[0];
+
+                            reloadContracts();
+
+                            // Open the contract
+                            openContract(contractId);
+
+                            // Show the notification
+                            dispatch(
+                                showNotification(`Pomyślnie utworzono umowa dla: ${client.skrot}`)
+                            )
+
+                            // Close the modal
+                            handleClose();
+                        }).catch(error => {
+                            console.log(error)
+                            alert('Wystąpił błąd. Więcej informacji w konsoli.')
+                        })
+                })
+                .catch(error => {
+                    alert('Nie udało się dodać klienta! Informacje o błędzie w konsoli.')
+                    console.error(error)
+                })
+        }
     }
 
     return (

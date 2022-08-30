@@ -63,7 +63,6 @@ export const NewClientModal = ({ isOpen, handleClose }) => {
     const { reloadClients } = useContext(ClientContext);
 
 
-
     const createClient = async (firstName, lastName, short) => {
         window.api.createClient(firstName, lastName, short)
             .then(_ => {
