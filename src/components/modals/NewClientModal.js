@@ -7,6 +7,44 @@ import { openNotification as showNotification } from '../../redux/notificationSl
 import { toggleNewClientModal } from '../../redux/modalSlice';
 import { ClientContext } from '../../context/client-context';
 
+/**
+* Generates a abbreviation from customer's first and last name
+* by combining last name's first two letter with first name's first two letters
+* @param {string} firstName
+* @param {string} lastName
+* @returns {string} abbreviation, for example person named John Smith will have short: 'smjo1'
+*/
+export const generateShort = async (firstName, lastName) => {
+    firstName = firstName.trim();
+    lastName = lastName.trim();
+    if (firstName === '' || lastName === '' || !firstName || !lastName) return '';
+
+    // Concatenate last name's two first letters with first name's two first letters
+    var short = lastName.substring(0, 2) + firstName.substring(0, 2)
+    short = short.toLowerCase()
+
+    // At the end of each short, add a number
+    // So that each abbreviation can be unique
+    function findFreeSuffix(suffix_number) {
+        var final_short = short + suffix_number
+
+        // Scan the database in search for person with this short
+        return window.api.searchClientExact(final_short).then(res => {
+            if (res.length > 0) {
+                // If this abbreviation is taken...
+                return findFreeSuffix(suffix_number + 1)
+            } else {
+                console.log(suffix_number) // <- This prints the correct result, but I'm unable to return it
+                return suffix_number
+            }
+        })
+    }
+
+    const suffix = await findFreeSuffix(1)
+
+    // Suffix is undefined :(
+    return short + suffix
+}
 
 export const NewClientModal = ({ isOpen, handleClose }) => {
     // Local state
@@ -24,40 +62,7 @@ export const NewClientModal = ({ isOpen, handleClose }) => {
     const dispatch = useDispatch();
     const { reloadClients } = useContext(ClientContext);
 
-    /**
-     * Generates a abbreviation from customer's first and last name
-     * by combining last name's first two letter with first name's first two letters
-     * @param {string} firstName
-     * @param {string} lastName
-     * @returns {string} abbreviation, for example person named John Smith will have short: 'smjo1'
-     */
-    const generateShort = async (firstName, lastName) => {
-        // Concatenate last name's two first letters with first name's two first letters
-        var short = lastName.substring(0, 2) + firstName.substring(0, 2)
-        short = short.toLowerCase()
 
-        // At the end of each short, add a number
-        // So that each abbreviation can be unique
-        function findFreeSuffix(suffix_number) {
-            var final_short = short + suffix_number
-
-            // Scan the database in search for person with this short
-            return window.api.searchClientExact(final_short).then(res => {
-                if (res.length > 0) {
-                    // If this abbreviation is taken...
-                    return findFreeSuffix(suffix_number + 1)
-                } else {
-                    console.log(suffix_number) // <- This prints the correct result, but I'm unable to return it
-                    return suffix_number
-                }
-            })
-        }
-
-        const suffix = await findFreeSuffix(1)
-
-        // Suffix is undefined :(
-        return short + suffix
-    }
 
     const createClient = async (firstName, lastName, short) => {
         window.api.createClient(firstName, lastName, short)

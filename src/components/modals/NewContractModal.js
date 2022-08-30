@@ -2,13 +2,15 @@ import { useState, useEffect, useContext } from 'react';
 import { useDispatch } from 'react-redux';
 import {
     Dialog, DialogTitle, DialogContent, DialogActions,
-    Autocomplete, TextField, Button
+    Autocomplete, TextField, Button, FormControlLabel,
+    Switch,
+    Typography
 } from '@mui/material';
 import { openNotification as showNotification } from '../../redux/notificationSlice';
-import { loadContract, setScreen } from '../../redux/screenSlice';
 import { ContractContext } from '../../context/contract-context';
 import { useNavigate } from 'react-router-dom';
 import { Box } from '@mui/system';
+import { generateShort } from './NewClientModal';
 
 
 export const generateContractNumber = (allContracts, year) => {
@@ -26,6 +28,12 @@ export const NewContractModal = ({ isOpen, handleClose }) => {
     const [clients, setClients] = useState([]);
     const [selectedClient, setSelectedClient] = useState({});
 
+    // New client form data
+    const [isNewClient, setIsNewClient] = useState(false);
+    const [firstName, setFirstName] = useState('');
+    const [lastName, setLastName] = useState('');
+    const [short, setShort] = useState('');
+
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
@@ -34,11 +42,16 @@ export const NewContractModal = ({ isOpen, handleClose }) => {
     const contractNumber = generateContractNumber(allContracts, new Date().getFullYear());
 
     useEffect(() => {
+        setFirstName('');
+        setLastName('');
+        setShort('');
         // Get clients on open
         if (isOpen) {
             getClients();
         }
     }, [isOpen])
+
+    const toggleIsNewClient = () => setIsNewClient(!isNewClient);
 
     const getToday = () => {
         var today = new Date();
@@ -86,7 +99,10 @@ export const NewContractModal = ({ isOpen, handleClose }) => {
     return (
         <div>
             <Dialog open={isOpen} onClose={handleClose}>
-                <DialogTitle>Nowa umowa</DialogTitle>
+                <DialogTitle>
+                    Nowa umowa
+                </DialogTitle>
+
                 <DialogContent style={{ minWidth: 560 }}>
                     <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
                         <Box></Box>
@@ -95,9 +111,10 @@ export const NewContractModal = ({ isOpen, handleClose }) => {
                             label='Numer umowy'
                             value={contractNumber}
                         />
-                        <Autocomplete
+                        {!isNewClient && <Autocomplete
                             id="szukaj-klienta"
                             freeSolo
+                            disabled={isNewClient}
                             options={clients}
                             getOptionLabel={(client) => client.skrot + " -  " + client.imie + " " + client.nazwisko}
                             onChange={(event, client) => {
@@ -110,12 +127,47 @@ export const NewContractModal = ({ isOpen, handleClose }) => {
                             renderInput={(params) => (
                                 <TextField {...params} label="Szukaj klienta" />)
                             }
-                        />
+                        />}
+                        <Box sx={{ display: `${isNewClient ? 'flex' : 'none'}`, flexDirection: 'column', gap: 1 }}>
+                            <TextField
+                                id="client-first-name-input"
+                                label="Imię"
+                                onChange={(e) => {
+                                    setFirstName(e.target.value)
 
+                                    generateShort(e.target.value, lastName)
+                                        .then(res => setShort(res))
+                                }}
+
+                            />
+                            <TextField
+                                id="client-last-name-input"
+                                label="Nazwisko"
+                                onChange={(e) => {
+                                    setLastName(e.target.value)
+
+                                    generateShort(firstName, e.target.value)
+                                        .then(res => setShort(res))
+                                }}
+                            />
+                            <TextField
+                                id="client-short-input"
+                                label="Skrót"
+                                type="text"
+                                value={short}
+
+                            />
+                        </Box>
                     </Box>
 
                 </DialogContent>
-                <DialogActions>
+                <DialogActions style={{ display: 'flex', justifyContent: 'space-between' }}>
+                    <FormControlLabel
+                        control={<Switch
+                            checked={isNewClient}
+                            onChange={toggleIsNewClient} />}
+                        label={<Typography variant='button' color='gray'>Nowy klient?</Typography>} />
+
                     <Button onClick={async () => {
                         if (selectedClient) {
                             createContract(selectedClient)
