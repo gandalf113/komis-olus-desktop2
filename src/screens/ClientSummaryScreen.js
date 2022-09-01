@@ -17,6 +17,21 @@ const getSumOfSales = (items) => {
 }
 
 /**
+ * How much money does the client have on his account to withdraw?
+ * @param {Array} items
+ * @param {Array} withdraws
+ * @returns {Number} - amount that the client can withdraw
+ */
+const getWithdrawAmount = (sumOfSales, withdraws) => {
+    let sumOfWithdraws = 0;
+    for (const withdraw of withdraws) {
+        sumOfWithdraws += withdraw.kwota;
+    }
+
+    return sumOfSales - sumOfWithdraws;
+}
+
+/**
  * Wypłaty klienta
  * Client's money withdraws
  */
@@ -89,6 +104,8 @@ const ClientSummaryScreen = () => {
         dispatch(toggleNewWithdrawModal(true));
     }
 
+    const sumOfSales = getSumOfSales(items);
+
     return (
         <div>
             <Box style={{ alignItems: 'center', marginBottom: 12 }}>
@@ -99,8 +116,8 @@ const ClientSummaryScreen = () => {
                     style={{ margin: 10 }} color='inherit' variant='contained'>Dodaj wypłatę</Button>
             </Box>
             <Box style={{ display: 'flex', flexDirection: 'column' }}>
-                <Typography variant='body'>Suma sprzedaży: {toCurrency(getSumOfSales(items))} </Typography>
-                <Typography variant='body'>Do wypłaty: {toCurrency(getSumOfSales(items))} </Typography>
+                <Typography variant='body'>Suma sprzedaży: {toCurrency(sumOfSales)} </Typography>
+                <Typography variant='body'>Do wypłaty: {toCurrency(getWithdrawAmount(sumOfSales, withdraws))} </Typography>
             </Box>
             <DataTable loading={false} tableData={withdraws} columns={columms} />
         </div>
