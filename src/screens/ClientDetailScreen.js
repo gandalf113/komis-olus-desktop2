@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useMemo, useCallback } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
-import { Typography, Box } from '@mui/material'
+import { Typography, Box, Button } from '@mui/material'
 import { DataTable } from '../components/DataTable';
 
 const ClientDetailScreen = () => {
@@ -54,12 +54,16 @@ const ClientDetailScreen = () => {
 
     if (!contracts || !client) return null
 
+    const handleOpenSummary = () => {
+        navigate(`summary`);
+    }
+
     return (
         <div>
             <Box style={{ alignItems: 'center', marginBottom: 12 }}>
                 <Typography variant='h5'>{client.imie} {client.nazwisko} - {client.skrot}</Typography>
-                <Typography variant='body1'></Typography>
-
+                <Button onClick={handleOpenSummary}
+                    style={{ marginTop: 10, marginBottom: 10 }} color='secondary' variant='contained'>Otwórz wypłaty</Button>
             </Box>
 
             <DataTable loading={false} tableData={contracts} columns={columns} />

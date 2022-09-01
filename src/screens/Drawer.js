@@ -40,6 +40,7 @@ import DailySales from './DailySales';
 import AllSales from './AllSales';
 import MonthlySummary from './MonthlySummary';
 import ClientDetailScreen from './ClientDetailScreen';
+import ClientSummaryScreen from './ClientSummaryScreen';
 
 const drawerWidth = 240;
 
@@ -228,6 +229,7 @@ export default function PersistentDrawerLeft({ renderScreen }) {
                     <Route path="/" element={<>Komis Olus</>} exact />
                     <Route path="/clients" element={<ClientsScreen />} />
                     <Route path="/clients/:id" element={<ClientDetailScreen />} />
+                    <Route path="/clients/:id/summary" element={<ClientSummaryScreen />} />
 
                     <Route path="/contracts" element={<ContractsScreen />} />
                     <Route path='/contracts/:id' element={<ContractDetailScreen />} />
