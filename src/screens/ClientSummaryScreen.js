@@ -3,6 +3,8 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { Box, Typography, Button } from '@mui/material';
 import { SalesContext } from '../context/sales-context';
 import { toCurrency } from '../utils/miscUtils';
+import { useDispatch } from 'react-redux';
+import { toggleNewWithdrawModal } from '../redux/modalSlice';
 
 
 const getSumOfSales = (items) => {
@@ -20,29 +22,51 @@ const getSumOfSales = (items) => {
 const ClientSummaryScreen = () => {
     const { id } = useParams();
     const navigate = useNavigate();
+    const dispatch = useDispatch();
 
     const [client, setClient] = useState();
     const [items, setItems] = useState();
+    const [withdraws, setWithdraws] = useState();
 
     const { allSales } = useContext(SalesContext);
 
+    /**
+     * Get client detail
+     */
     useEffect(() => {
         window.api.getClient(id).then(res => {
             setClient(res[0]);
         });
     }, [])
 
+    /**
+     * Get all items for this client
+     */
     useEffect(() => {
         window.api.getItemsForGivenClient(id).then(res => {
             console.log(res);
             setItems(res);
-        })
+        });
     }, [allSales]);
 
-    if (!client || !items) return null
+    /**
+     * Get withdraws
+     */
+    useEffect(() => {
+        window.api.getWithdrawsForGivenClient(id).then(res => {
+            console.log(res);
+            setWithdraws(res);
+        });
+    }, []);
+
+    if (!client || !items || !withdraws) return null
 
     const handleOpenClientContracts = () => {
         navigate(`/clients/${id}`);
+    }
+
+    const handleOpenNewWithdrawModal = () => {
+        dispatch(toggleNewWithdrawModal(true));
     }
 
     return (
@@ -51,7 +75,8 @@ const ClientSummaryScreen = () => {
                 <Typography variant='h5'>{client.imie} {client.nazwisko} - {client.skrot}</Typography>
                 <Button onClick={handleOpenClientContracts}
                     style={{ marginTop: 10, marginBottom: 10 }} color='secondary' variant='contained'>Pokaż umowy</Button>
-                <Button style={{ margin: 10 }} color='inherit' variant='contained'>Dodaj wypłatę</Button>
+                <Button onClick={handleOpenNewWithdrawModal}
+                    style={{ margin: 10 }} color='inherit' variant='contained'>Dodaj wypłatę</Button>
             </Box>
             <Box style={{ display: 'flex', flexDirection: 'column' }}>
                 <Typography variant='body'>Suma sprzedaży: {toCurrency(getSumOfSales(items))} </Typography>

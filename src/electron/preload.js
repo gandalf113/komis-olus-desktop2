@@ -18,6 +18,7 @@ const WINDOW_API = {
     getItemsWithContracts: (contractId) => ipcRenderer.invoke("get/items-contracts", { contractId: contractId }),
     getClientsWithContractsAndItems: (search) => ipcRenderer.invoke("get/clients-contracts-items", { search: search }),
     getItemsForGivenClient: (clientId) => ipcRenderer.invoke("get/client/items", { clientId: clientId }),
+    getWithdrawsForGivenClient: (clientId) => ipcRenderer.invoke("get/client/withdraws", { clientId: clientId }),
     getItemsDetailed: (search) => ipcRenderer.invoke("get/items/detailed", { search: search }),
     searchClients: (search) => ipcRenderer.invoke("search/clients", { search: search }),
     searchClientExact: (search) => ipcRenderer.invoke("search/clients/exact", { search: search }),
@@ -26,6 +27,7 @@ const WINDOW_API = {
     createContract: (clientId, contractNumber, date) => ipcRenderer.invoke("create/contract", { clientId: clientId, contractNumber: contractNumber, date: date }),
     createSale: (itemId, date) => ipcRenderer.invoke("create/sale", { itemId: itemId, date: date }),
     createItem: (name, amount, commiterValue, margin, price, contractId) => ipcRenderer.invoke("create/item", { name: name, amount: amount, commiterValue: commiterValue, margin: margin, price: price, contractId: contractId }),
+    createWithdraw: (clientId, amount, date) => ipcRenderer.invoke("create/withdraw", { clientId: clientId, amount: amount, date: date }),
     // Update
     updateItem: (itemId, name, amount, commiterValue, margin, price) => ipcRenderer.invoke("update/item", { itemId: itemId, name: name, amount: amount, commiterValue: commiterValue, margin: margin, price: price }),
     updateContract: (contractId, clientId) => ipcRenderer.invoke("update/contract", { contractId: contractId, clientId: clientId }),

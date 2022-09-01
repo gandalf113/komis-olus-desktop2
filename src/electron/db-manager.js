@@ -98,6 +98,13 @@ getItemsForGivenClient = ipcMain.handle("get/client/items", async (event, args) 
         .where('klienci.id_klienta', clientId)
 });
 
+getWithdrawsForGivenClient = ipcMain.handle("get/client/withdraws", async (event, args) => {
+    const { clientId } = args;
+
+    return knex.select("*").from("wyplaty").where("id_klienta", clientId);
+
+});
+
 searchClients = ipcMain.handle("search/clients", async (event, args) => {
     const { search } = args
 
@@ -157,6 +164,17 @@ createItem = ipcMain.handle("create/item", async (event, args) => {
             cena: price,
             przyjetaIlosc: amount,
             sprzedanaIlosc: 0
+        })
+})
+
+createWithdraw = ipcMain.handle("create/withdraw", async (event, args) => {
+    const { clientId, amount, date } = args
+
+    return knex('wyplaty')
+        .insert({
+            id_klienta: clientId,
+            kwota: amount,
+            data: date
         })
 })
 

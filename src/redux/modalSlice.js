@@ -7,8 +7,9 @@ export const modalSlice = createSlice({
         newContractIsOpen: false,
         newSaleIsOpen: false,
         newItemIsOpen: false,
+        newWithdrawIsOpen: false,
         editItemIsOpen: false,
-        editContractIsOpen: false
+        editContractIsOpen: false,
         // Item detail modal is handled from within NewSaleModal
     },
     reducers: {
@@ -24,6 +25,9 @@ export const modalSlice = createSlice({
         toggleNewItemModal: (state, action) => {
             state.newItemIsOpen = action.payload
         },
+        toggleNewWithdrawModal: (state, action) => {
+            state.newWithdrawIsOpen = action.payload
+        },
         toggleEditItemModal: (state, action) => {
             state.editItemIsOpen = action.payload
         },
@@ -35,6 +39,7 @@ export const modalSlice = createSlice({
             state.newContractIsOpen = false
             state.newSaleIsOpen = false
             state.newItemIsOpen = false
+            state.newWithdrawIsOpen = false;
             state.editItemIsOpen = false
             state.editContractIsOpen = false
         }
@@ -48,6 +53,7 @@ export const {
     closeAllModals,
     toggleNewItemModal,
     toggleEditItemModal,
+    toggleNewWithdrawModal,
     toggleEditContractModal
 } = modalSlice.actions
 
