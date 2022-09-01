@@ -6,6 +6,7 @@ import { toCurrency } from '../utils/miscUtils';
 import { useDispatch } from 'react-redux';
 import { toggleNewWithdrawModal } from '../redux/modalSlice';
 import { DataTable } from '../components/DataTable';
+import { WithdrawContext } from '../context/withdraw-context';
 
 
 const getSumOfSales = (items) => {
@@ -45,6 +46,7 @@ const ClientSummaryScreen = () => {
     const [withdraws, setWithdraws] = useState();
 
     const { allSales } = useContext(SalesContext);
+    const { allWithdraws } = useContext(WithdrawContext);
 
     /**
      * Get client detail
@@ -53,7 +55,7 @@ const ClientSummaryScreen = () => {
         window.api.getClient(id).then(res => {
             setClient(res[0]);
         });
-    }, [])
+    }, [id])
 
     /**
      * Get all items for this client
@@ -63,7 +65,7 @@ const ClientSummaryScreen = () => {
             console.log(res);
             setItems(res);
         });
-    }, [allSales]);
+    }, [id, allSales]);
 
     /**
      * Get withdraws
@@ -73,7 +75,7 @@ const ClientSummaryScreen = () => {
             console.log(res);
             setWithdraws(res);
         });
-    }, []);
+    }, [id, allWithdraws]);
 
     const columms = useMemo(
         () => [

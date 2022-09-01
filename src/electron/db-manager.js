@@ -45,6 +45,10 @@ getItems = ipcMain.handle("get/items", async (event, args) => {
     return knex.select().from("przedmioty")
 })
 
+getWithdraws = ipcMain.handle("get/withdraws", async (event, args) => {
+    return knex.select().from("wyplaty")
+});
+
 getContractsWithClients = ipcMain.handle("get/contracts-clients", async (event, args) => {
     const { contractId } = args
 

@@ -8,6 +8,7 @@ import { getToday } from '../../utils/date-utils';
 import { useDispatch } from 'react-redux';
 import { openNotification } from '../../redux/notificationSlice';
 import { toCurrency } from '../../utils/miscUtils';
+import { WithdrawContext } from '../../context/withdraw-context';
 
 const NewWithdrawModal = ({ isOpen, handleClose }) => {
     const [amount, setAmount] = useState('');
@@ -15,6 +16,7 @@ const NewWithdrawModal = ({ isOpen, handleClose }) => {
     const dispatch = useDispatch();
 
     const { currentlyEditetClient } = useContext(ClientContext);
+    const { reloadWithdraws } = useContext(WithdrawContext);
 
     useEffect(() => {
         setAmount('');
@@ -25,6 +27,7 @@ const NewWithdrawModal = ({ isOpen, handleClose }) => {
         window.api.createWithdraw(currentlyEditetClient.id_klienta, amount, getToday())
             .then(_ => {
                 handleClose();
+                reloadWithdraws();
                 dispatch(openNotification(`Pomyślnie wypłacono ${toCurrency(amount)} dla ${currentlyEditetClient.skrot}`))
             })
             .catch(err => {
