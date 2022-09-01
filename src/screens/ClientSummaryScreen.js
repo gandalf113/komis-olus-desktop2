@@ -5,6 +5,7 @@ import { SalesContext } from '../context/sales-context';
 import { toCurrency } from '../utils/miscUtils';
 import { useDispatch } from 'react-redux';
 import { toggleNewWithdrawModal } from '../redux/modalSlice';
+import { DataTable } from '../components/DataTable';
 
 
 const getSumOfSales = (items) => {
@@ -59,6 +60,25 @@ const ClientSummaryScreen = () => {
         });
     }, []);
 
+    const columms = useMemo(
+        () => [
+            {
+                Header: 'Id',
+                accessor: 'id_wyplaty',
+            },
+            {
+                Header: 'Kwota',
+                accessor: 'kwota',
+                Cell: props => <p>{toCurrency(props.value)}</p>
+            },
+            {
+                Header: 'Data wypłaty',
+                accessor: 'data',
+            },
+        ],
+        []
+    )
+
     if (!client || !items || !withdraws) return null
 
     const handleOpenClientContracts = () => {
@@ -81,8 +101,8 @@ const ClientSummaryScreen = () => {
             <Box style={{ display: 'flex', flexDirection: 'column' }}>
                 <Typography variant='body'>Suma sprzedaży: {toCurrency(getSumOfSales(items))} </Typography>
                 <Typography variant='body'>Do wypłaty: {toCurrency(getSumOfSales(items))} </Typography>
-
             </Box>
+            <DataTable loading={false} tableData={withdraws} columns={columms} />
         </div>
     )
 }

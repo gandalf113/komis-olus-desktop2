@@ -11,6 +11,7 @@ import { openNotification as showNotification } from '../../redux/notificationSl
 import { useDispatch } from 'react-redux';
 import { getSalesData, getItemsDetailed } from '../../redux/databaseSlice';
 import { SalesContext } from '../../context/sales-context';
+import { getToday } from '../../utils/date-utils';
 
 export const NewSaleModal = ({ isOpen, handleClose }) => {
     // Local state
@@ -31,16 +32,6 @@ export const NewSaleModal = ({ isOpen, handleClose }) => {
 
     function closeModal() {
         setDetailModalOpen(false);
-    }
-
-    const getToday = () => {
-        var today = new Date();
-        var dd = String(today.getDate()).padStart(2, '0');
-        var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
-        var yyyy = today.getFullYear();
-
-        today = yyyy + '-' + mm + '-' + dd;
-        return today
     }
 
     const createSale = async (itemId, itemName) => {

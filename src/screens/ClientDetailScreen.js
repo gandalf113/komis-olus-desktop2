@@ -1,7 +1,8 @@
-import React, { useEffect, useState, useMemo, useCallback } from 'react'
+import React, { useEffect, useState, useMemo, useCallback, useContext } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { Typography, Box, Button } from '@mui/material'
 import { DataTable } from '../components/DataTable';
+import { ClientContext } from '../context/client-context';
 
 const ClientDetailScreen = () => {
     const { id } = useParams();
@@ -10,9 +11,13 @@ const ClientDetailScreen = () => {
     const [contracts, setContracts] = useState();
     const [client, setClient] = useState();
 
+    const { setCurrentlyEditetClient } = useContext(ClientContext);
+
     useEffect(() => {
         window.api.getClient(id).then(res => {
-            setClient(res[0]);
+            const client = res[0];
+            setCurrentlyEditetClient(client);
+            setClient(client);
         });
 
         window.api.getClientsContracts(id).then(res => {
