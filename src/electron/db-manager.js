@@ -89,6 +89,15 @@ getClientsWithContractsAndItems = ipcMain.handle("get/clients-contracts-items", 
         .whereLike('id_przedmiotu', `%${hexToDec(search)}%`)
 })
 
+getItemsForGivenClient = ipcMain.handle("get/client/items", async (event, args) => {
+    const { clientId } = args;
+
+    return knex.select("*").from('przedmioty')
+        .leftJoin('umowy', 'przedmioty.id_umowy', 'umowy.id_umowy')
+        .leftJoin('klienci', 'umowy.id_klienta', 'klienci.id_klienta')
+        .where('klienci.id_klienta', clientId)
+});
+
 searchClients = ipcMain.handle("search/clients", async (event, args) => {
     const { search } = args
 
