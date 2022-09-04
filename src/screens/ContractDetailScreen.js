@@ -76,7 +76,7 @@ const ContractDetailScreen = () => {
             },
             {
                 Header: 'Ilość w komisie',
-                Cell: props => <div>{props.row.original.przyjetaIlosc - props.row.original.sprzedanaIlosc}</div>
+                Cell: props => <div>{props.row.original.przyjetaIlosc - props.row.original.sprzedanaIlosc - props.row.original.zwroconaIlosc}</div>
             },
             {
                 Header: 'Kwota dla komitenta (sztuka)',
@@ -114,7 +114,7 @@ const ContractDetailScreen = () => {
                 Header: 'Zwróć',
                 Cell: props => <AssignmentReturnIcon
                     onClick={() => {
-                        // setCurrentlyEditetItem(props.row.original);
+                        setCurrentlyEditetItem(props.row.original);
                         dispatch(toggleNewReturnModal(true));
                     }}
                     sx={{ cursor: 'pointer' }} />

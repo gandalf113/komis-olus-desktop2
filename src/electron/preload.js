@@ -9,6 +9,7 @@ const WINDOW_API = {
     getContracts: () => ipcRenderer.invoke("get/contracts"),
     getItems: () => ipcRenderer.invoke("get/items"),
     getWithdraws: () => ipcRenderer.invoke("get/withdraws"),
+    getReturns: () => ipcRenderer.invoke("get/returns"),
     getSalesWithItems: () => ipcRenderer.invoke("get/sales-items"),
     getSalesWithItemsByDate: (date) => ipcRenderer.invoke("get/sales-items/date", { date: date }),
     getClientsContracts: (clientId) => ipcRenderer.invoke("get/client/contracts", { clientId: clientId }),
@@ -29,11 +30,13 @@ const WINDOW_API = {
     createSale: (itemId, date) => ipcRenderer.invoke("create/sale", { itemId: itemId, date: date }),
     createItem: (name, amount, commiterValue, margin, price, contractId) => ipcRenderer.invoke("create/item", { name: name, amount: amount, commiterValue: commiterValue, margin: margin, price: price, contractId: contractId }),
     createWithdraw: (clientId, amount, date) => ipcRenderer.invoke("create/withdraw", { clientId: clientId, amount: amount, date: date }),
+    createReturn: (itemId, date) => ipcRenderer.invoke("create/return", { itemId: itemId, date: date }),
     // Update
     updateItem: (itemId, name, amount, commiterValue, margin, price) => ipcRenderer.invoke("update/item", { itemId: itemId, name: name, amount: amount, commiterValue: commiterValue, margin: margin, price: price }),
     updateContract: (contractId, clientId) => ipcRenderer.invoke("update/contract", { contractId: contractId, clientId: clientId }),
     // Increment
     incrementSoldAmount: (itemId) => ipcRenderer.invoke("increment/soldAmount", { itemId: itemId }),
+    incrementReturnedAmount: (itemId) => ipcRenderer.invoke("increment/returnedAmount", { itemId: itemId }),
     // Delete
     deleteItem: (itemId) => ipcRenderer.invoke("delete/item", { itemId: itemId }),
     deleteContract: (contractId) => ipcRenderer.invoke("delete/contract", { contractId: contractId }),

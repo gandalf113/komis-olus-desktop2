@@ -11,7 +11,9 @@ import { openNotification as showNotification } from '../../redux/notificationSl
 import { useDispatch } from 'react-redux';
 import { getSalesData, getItemsDetailed } from '../../redux/databaseSlice';
 import { SalesContext } from '../../context/sales-context';
+import { ContractContext } from '../../context/contract-context';
 import { getToday } from '../../utils/date-utils';
+import { checkIfSoldOut } from '../../utils/miscUtils';
 
 export const NewSaleModal = ({ isOpen, handleClose }) => {
     // Local state
@@ -20,6 +22,7 @@ export const NewSaleModal = ({ isOpen, handleClose }) => {
     const [searchValue, setSearchValue] = useState('');
 
     const { reloadSales } = useContext(SalesContext);
+    const { reloadContracts } = useContext(ContractContext);
 
     // Redux
     const items = useSelector(state => state.database.detailedItemsData);
@@ -46,6 +49,7 @@ export const NewSaleModal = ({ isOpen, handleClose }) => {
             })
 
             reloadSales();
+            reloadContracts();
         }).catch(error => {
             alert('Wystąpił błąd')
             console.log(error)
@@ -65,14 +69,6 @@ export const NewSaleModal = ({ isOpen, handleClose }) => {
         setCurrentItem(item)
         console.log(item)
         openModal()
-    }
-
-    const checkIfSoldOut = (item) => {
-        const initAmount = item.przyjetaIlosc
-        const soldAmount = item.sprzedanaIlosc
-        const remainingAmount = initAmount - soldAmount
-
-        return remainingAmount <= 0
     }
 
     return (

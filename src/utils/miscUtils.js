@@ -17,3 +17,18 @@ export const toCurrency = (value) => {
     let price = parseFloat(value);
     return price.toFixed(2) + " zł"
 }
+
+/**
+ * Sprawdź, czy przedmiot został cakowicie wyprzedany
+ * @param {Object} item - przedmiot, który sprawdzamy
+ * @returns {boolean} - czy przedmiot jest jeszcze na stanie
+ */
+export const checkIfSoldOut = (item) => {
+    const initAmount = item.przyjetaIlosc
+    const soldAmount = item.sprzedanaIlosc
+    const returnedAmount = item.zwroconaIlosc
+
+    const remainingAmount = initAmount - soldAmount - returnedAmount
+
+    return remainingAmount <= 0
+}

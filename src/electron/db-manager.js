@@ -49,6 +49,10 @@ getWithdraws = ipcMain.handle("get/withdraws", async (event, args) => {
     return knex.select().from("wyplaty")
 });
 
+getReturns = ipcMain.handle("get/returns", async (event, args) => {
+    return knex.select().from("zwroty")
+});
+
 getContractsWithClients = ipcMain.handle("get/contracts-clients", async (event, args) => {
     const { contractId } = args
 
@@ -183,6 +187,16 @@ createWithdraw = ipcMain.handle("create/withdraw", async (event, args) => {
         })
 })
 
+createReturn = ipcMain.handle("create/return", async (event, args) => {
+    const { itemId, date } = args
+
+    return knex('zwroty')
+        .insert({
+            id_przedmiotu: itemId,
+            data: date
+        })
+})
+
 updateItem = ipcMain.handle("update/item", async (event, args) => {
     const { itemId, name, commiterValue, margin, price, amount } = args
 
@@ -213,6 +227,14 @@ incrementSoldAmount = ipcMain.handle('increment/soldAmount', async (event, args)
     return knex('przedmioty')
         .where('id_przedmiotu', '=', itemId)
         .increment('sprzedanaIlosc', 1)
+})
+
+incrementReturnedAmount = ipcMain.handle('increment/returnedAmount', async (event, args) => {
+    const { itemId } = args
+
+    return knex('przedmioty')
+        .where('id_przedmiotu', '=', itemId)
+        .increment('zwroconaIlosc', 1)
 })
 
 getItemsDetailed = ipcMain.handle('get/items/detailed', async (event, args) => {
