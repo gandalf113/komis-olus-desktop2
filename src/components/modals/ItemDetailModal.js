@@ -14,7 +14,8 @@ export const ItemDetailModal = ({ isOpen, handleClose, item }) => {
                     <p><b>Skrót:</b> {item.skrot}</p>
                     <p><b>Przyjęta ilość:</b> {item.przyjetaIlosc}</p>
                     <p><b>Sprzedana ilość:</b> {item.sprzedanaIlosc}</p>
-                    <p><b>Ilość w komisie:</b> {parseInt(item.przyjetaIlosc) - parseInt(item.sprzedanaIlosc)}</p>
+                    <p><b>Zwrócona ilość:</b> {item.zwroconaIlosc}</p>
+                    <p><b>Ilość w komisie:</b> {parseInt(item.przyjetaIlosc) - parseInt(item.sprzedanaIlosc) - parseInt(item.zwroconaIlosc)}</p>
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={handleClose} variant='contained'>Zamknij</Button>

@@ -3,7 +3,8 @@ import { useSelector, useDispatch } from 'react-redux';
 import { DataTable } from '../components/DataTable'
 import { Box, Button, Typography } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
-import { toggleEditItemModal, toggleNewItemModal } from '../redux/modalSlice';
+import AssignmentReturnIcon from '@mui/icons-material/AssignmentReturn';
+import { toggleEditItemModal, toggleNewItemModal, toggleNewReturnModal } from '../redux/modalSlice';
 import { toCurrency, decToHex } from '../utils/miscUtils';
 import { useParams } from 'react-router-dom';
 import { ContractContext } from '../context/contract-context';
@@ -70,6 +71,10 @@ const ContractDetailScreen = () => {
                 accessor: 'sprzedanaIlosc',
             },
             {
+                Header: 'Zwrot towaru',
+                accessor: 'zwroconaIlosc',
+            },
+            {
                 Header: 'Ilość w komisie',
                 Cell: props => <div>{props.row.original.przyjetaIlosc - props.row.original.sprzedanaIlosc}</div>
             },
@@ -105,6 +110,15 @@ const ContractDetailScreen = () => {
                     }}
                     sx={{ cursor: 'pointer' }} />
             },
+            {
+                Header: 'Zwróć',
+                Cell: props => <AssignmentReturnIcon
+                    onClick={() => {
+                        // setCurrentlyEditetItem(props.row.original);
+                        dispatch(toggleNewReturnModal(true));
+                    }}
+                    sx={{ cursor: 'pointer' }} />
+            },
         ],
         []
     )
@@ -121,10 +135,10 @@ const ContractDetailScreen = () => {
                     <Typography align='justify' variant="body2" fontSize={21}>
                     </Typography>
                 </Box>
-                    <Typography align='justify' variant="body2" fontSize={21}>
-                        {client.imie} {client.nazwisko}, {fullDateToString(contract.data)}
+                <Typography align='justify' variant="body2" fontSize={21}>
+                    {client.imie} {client.nazwisko}, {fullDateToString(contract.data)}
 
-                    </Typography>
+                </Typography>
                 {/* <Typography sx={{ mb: 1 }}>{contract.data}</Typography> */}
             </Box>
             <Box sx={{ mb: 2, display: 'flex', alignItems: 'end', gap: 1 }}>

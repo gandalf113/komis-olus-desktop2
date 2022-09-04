@@ -167,7 +167,8 @@ createItem = ipcMain.handle("create/item", async (event, args) => {
             marza: margin,
             cena: price,
             przyjetaIlosc: amount,
-            sprzedanaIlosc: 0
+            sprzedanaIlosc: 0,
+            zwroconaIlosc: 0
         })
 })
 

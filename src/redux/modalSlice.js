@@ -8,6 +8,7 @@ export const modalSlice = createSlice({
         newSaleIsOpen: false,
         newItemIsOpen: false,
         newWithdrawIsOpen: false,
+        newReturnIsOpen: false,
         editItemIsOpen: false,
         editContractIsOpen: false,
         // Item detail modal is handled from within NewSaleModal
@@ -28,6 +29,9 @@ export const modalSlice = createSlice({
         toggleNewWithdrawModal: (state, action) => {
             state.newWithdrawIsOpen = action.payload
         },
+        toggleNewReturnModal: (state, action) => {
+            state.newReturnIsOpen = action.payload
+        },
         toggleEditItemModal: (state, action) => {
             state.editItemIsOpen = action.payload
         },
@@ -39,7 +43,8 @@ export const modalSlice = createSlice({
             state.newContractIsOpen = false
             state.newSaleIsOpen = false
             state.newItemIsOpen = false
-            state.newWithdrawIsOpen = false;
+            state.newWithdrawIsOpen = false
+            state.newReturnIsOpen = false
             state.editItemIsOpen = false
             state.editContractIsOpen = false
         }
@@ -54,6 +59,7 @@ export const {
     toggleNewItemModal,
     toggleEditItemModal,
     toggleNewWithdrawModal,
+    toggleNewReturnModal,
     toggleEditContractModal
 } = modalSlice.actions
 
