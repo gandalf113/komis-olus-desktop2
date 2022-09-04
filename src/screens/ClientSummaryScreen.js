@@ -46,7 +46,7 @@ const ClientSummaryScreen = () => {
     const [withdraws, setWithdraws] = useState();
 
     const { allSales } = useContext(SalesContext);
-    const { allWithdraws } = useContext(WithdrawContext);
+    const { allWithdraws, setWithdrawableAmount } = useContext(WithdrawContext);
 
     /**
      * Get client detail
@@ -98,15 +98,17 @@ const ClientSummaryScreen = () => {
 
     if (!client || !items || !withdraws) return null
 
+    const sumOfSales = getSumOfSales(items);
+
     const handleOpenClientContracts = () => {
         navigate(`/clients/${id}`);
     }
 
     const handleOpenNewWithdrawModal = () => {
+        setWithdrawableAmount(getWithdrawAmount(sumOfSales, withdraws));
         dispatch(toggleNewWithdrawModal(true));
     }
 
-    const sumOfSales = getSumOfSales(items);
 
     return (
         <div>

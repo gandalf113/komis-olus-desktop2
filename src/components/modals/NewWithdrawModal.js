@@ -16,7 +16,7 @@ const NewWithdrawModal = ({ isOpen, handleClose }) => {
     const dispatch = useDispatch();
 
     const { currentlyEditetClient } = useContext(ClientContext);
-    const { reloadWithdraws } = useContext(WithdrawContext);
+    const { reloadWithdraws, withdrawableAmount } = useContext(WithdrawContext);
 
     useEffect(() => {
         setAmount('');
@@ -28,12 +28,20 @@ const NewWithdrawModal = ({ isOpen, handleClose }) => {
             .then(_ => {
                 handleClose();
                 reloadWithdraws();
-                dispatch(openNotification(`Pomyślnie wypłacono ${toCurrency(amount)} dla ${currentlyEditetClient.skrot}`))
+                dispatch(openNotification(`Pomyślnie wypłacono ${toCurrency(amount)} dla ${currentlyEditetClient.skrot}`));
             })
             .catch(err => {
-                alert('Nie udało się wypłacić pieniędzy. Informacje o błędzie w konsoli.')
+                alert('Nie udało się wypłacić pieniędzy. Informacje o błędzie w konsoli.');
                 console.error(err);
             })
+    }
+
+    const validateAmount = () => {
+        return amount <= withdrawableAmount;
+    }
+
+    const validateForm = () => {
+        return amount && validateAmount();
     }
 
     if (!currentlyEditetClient) return null;
@@ -43,7 +51,6 @@ const NewWithdrawModal = ({ isOpen, handleClose }) => {
             <DialogTitle>Nowa wypłata</DialogTitle>
             <DialogContent style={{ mt: 2, minWidth: 560 }}>
                 <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
-
                     <TextField
                         id="client"
                         label="Klient"
@@ -65,6 +72,8 @@ const NewWithdrawModal = ({ isOpen, handleClose }) => {
                         label="Kwota [zł]"
                         type="number"
                         value={amount}
+                        error={!validateAmount()}
+                        helperText={!validateAmount() && 'Kwota nie może przekroczyć stanu konta klienta'}
                         onChange={(e) => setAmount(e.target.value)}
                         InputLabelProps={{
                             shrink: true,
@@ -77,7 +86,9 @@ const NewWithdrawModal = ({ isOpen, handleClose }) => {
                     <Button onClick={() => {
                         handleClose()
                     }}>Odrzuć</Button>
-                    <Button onClick={createWithdraw}>Zapisz</Button>
+                    <Button onClick={createWithdraw}
+                        disabled={!validateForm()}
+                    >Zapisz</Button>
                 </DialogActions>
 
             </DialogContent>
