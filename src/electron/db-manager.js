@@ -50,7 +50,21 @@ getWithdraws = ipcMain.handle("get/withdraws", async (event, args) => {
 });
 
 getReturns = ipcMain.handle("get/returns", async (event, args) => {
+    // knex.select('zwroty.id_zwrotu','przedmioty.id_przedmiotu', 'przedmioty.nazwa', 'zwroty.data', 'klienci.skrot').from("zwroty")
     return knex.select().from("zwroty")
+        .leftOuterJoin('przedmioty', 'zwroty.id_przedmiotu', 'przedmioty.id_przedmiotu')
+        .leftOuterJoin('umowy', 'przedmioty.id_umowy', 'umowy.id_umowy')
+        .leftOuterJoin('klienci', 'umowy.id_umowy', 'klienci.id_klienta');
+});
+
+getReturn = ipcMain.handle("get/return", async (event, args) => {
+    const { returnId } = args
+
+    return knex.select().from("zwroty")
+        .where('id_zwrotu', returnId)
+        .leftOuterJoin('przedmioty', 'zwroty.id_przedmiotu', 'przedmioty.id_przedmiotu')
+        .leftOuterJoin('umowy', 'przedmioty.id_umowy', 'umowy.id_umowy')
+        .leftOuterJoin('klienci', 'umowy.id_umowy', 'klienci.id_klienta');
 });
 
 getContractsWithClients = ipcMain.handle("get/contracts-clients", async (event, args) => {

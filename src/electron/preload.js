@@ -16,6 +16,7 @@ const WINDOW_API = {
     // Search
     getContract: (contractId) => ipcRenderer.invoke("get/contract", { contractId: contractId }),
     getClient: (clientId) => ipcRenderer.invoke("get/client", { clientId: clientId }),
+    getReturn: (returnId) => ipcRenderer.invoke("get/return", { returnId: returnId }),
     getContractsWithClients: (contractId = undefined) => ipcRenderer.invoke("get/contracts-clients", { contractId: contractId }),
     getItemsWithContracts: (contractId) => ipcRenderer.invoke("get/items-contracts", { contractId: contractId }),
     getClientsWithContractsAndItems: (search) => ipcRenderer.invoke("get/clients-contracts-items", { search: search }),

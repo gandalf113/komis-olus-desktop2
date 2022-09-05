@@ -1,4 +1,5 @@
 import React from 'react';
+import { HashRouter } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import PersistentDrawerLeft from './screens/Drawer';
 import Notification from './components/Notification';
@@ -10,11 +11,12 @@ import SalesDetailScreen from './screens/SalesDetailScreen';
 import ContractDetailScreen from './screens/ContractDetailScreen';
 import ContractsScreen from './screens/ContractsScreen';
 import SalesSummaryScreen from './screens/SalesSummaryScreen';
-import { HashRouter } from 'react-router-dom';
+
 import SalesProvider from './context/sales-context';
 import ContractProvider from './context/contract-context';
 import ClientProvider from './context/client-context';
 import WithdrawProvider from './context/withdraw-context';
+import ReturnsProvider from './context/return-context';
 
 function App() {
   // Redux
@@ -46,12 +48,15 @@ function App() {
         <SalesProvider>
           <ContractProvider>
             <WithdrawProvider>
+              <ReturnsProvider>
 
-              <HashRouter>
-                <PersistentDrawerLeft renderScreen={() => renderScreen(currentScreen)} />
-                <Modals />
-              </HashRouter>
 
+                <HashRouter>
+                  <PersistentDrawerLeft renderScreen={() => renderScreen(currentScreen)} />
+                  <Modals />
+                </HashRouter>
+
+              </ReturnsProvider>
             </WithdrawProvider>
           </ContractProvider>
         </SalesProvider>

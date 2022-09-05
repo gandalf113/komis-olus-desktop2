@@ -25,6 +25,7 @@ import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
+import AssignmentReturnIcon from '@mui/icons-material/AssignmentReturn';
 import ListItemText from '@mui/material/ListItemText';
 import PointOfSaleIcon from '@mui/icons-material/PointOfSale';
 import { useDispatch, useSelector } from 'react-redux';
@@ -41,6 +42,8 @@ import AllSales from './AllSales';
 import MonthlySummary from './MonthlySummary';
 import ClientDetailScreen from './ClientDetailScreen';
 import ClientSummaryScreen from './ClientSummaryScreen';
+import ReturnsScreen from './ReturnsScreen';
+import ReturnPrint from './print/ReturnPrint';
 
 const drawerWidth = 240;
 
@@ -192,6 +195,15 @@ export default function PersistentDrawerLeft({ renderScreen }) {
                             <ListItemText primary="Cała sprzedaż" />
                         </ListItemButton>
                     </ListItem>
+
+                    <ListItem disablePadding>
+                        <ListItemButton onClick={() => navigate('/returns')}>
+                            <ListItemIcon>
+                                <AssignmentReturnIcon />
+                            </ListItemIcon>
+                            <ListItemText primary="Zwroty" />
+                        </ListItemButton>
+                    </ListItem>
                 </List>
                 <Divider />
                 <List>
@@ -239,6 +251,9 @@ export default function PersistentDrawerLeft({ renderScreen }) {
                     <Route path="/sales/:date" element={<MonthlySales />} />
                     <Route path="/sales/:date/summary" element={<MonthlySummary />} />
                     <Route path="/sales/:date/:day" element={<DailySales />} />
+
+                    <Route path="/returns" element={<ReturnsScreen />} />
+                    <Route path="/returns/print/:id" element={<ReturnPrint />} />
                 </Routes>
             </Main>
         </Box>
