@@ -12,8 +12,8 @@ const createWindow = () => {
         height: 600,
         autoHideMenuBar: true,
         webPreferences: {
-            preload: path.join(__dirname, 'preload.js')
-        }
+            preload: path.join(__dirname, 'preload.js'),
+        },
     })
 
     // and load the index.html of the app.
@@ -57,6 +57,31 @@ ipcMain.on("greet", (event, args) => {
 
 ipcMain.handle("get/version", async (event, args) => {
     return app.getVersion();
+})
+
+// var current = document.getElementById('current');
+var options = {
+    silent: false,
+    printBackground: true,
+    color: false,
+    margin: {
+        marginType: 'printableArea'
+    },
+    landscape: false,
+    pagesPerSheet: 1,
+    collate: false,
+    copies: 1,
+    header: 'Header of the Page',
+    footer: 'Footer of the Page'
+}
+
+ipcMain.on("print", (event, args) => {
+
+    mainWindow.webContents.print(options, (success, failureReason) => {
+        if (!success) console.log(failureReason);
+
+        console.log('Print Initiated');
+    });
 })
 
 require('./db-manager');

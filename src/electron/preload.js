@@ -44,4 +44,9 @@ const WINDOW_API = {
 
 }
 
+const PRINTER_API = {
+    print: (message) => ipcRenderer.send("print", message)
+}
+
 contextBridge.exposeInMainWorld("api", WINDOW_API)
+contextBridge.exposeInMainWorld("printer", PRINTER_API)

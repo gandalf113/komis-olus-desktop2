@@ -1,4 +1,4 @@
-import { Box, Typography } from '@mui/material'
+import { Box, Typography, Button } from '@mui/material'
 import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { fullDateToString } from '../../utils/date-utils'
@@ -8,6 +8,17 @@ const ReturnPrint = () => {
   const { id } = useParams();
 
   const [_return, setReturn] = useState();
+
+  const handlePrint = () => {
+    window.printer.print('testeey')
+    // const browserWindow = BrowserWindow();
+    // const wc = browserWindow.webContents
+    // wc.print(options, (success, failureReason) => {
+    //   if (!success) console.log(failureReason);
+
+    //   console.log('Print Initiated');
+    // });
+  }
 
   useEffect(() => {
     const fetchReturn = async () => {
@@ -24,9 +35,9 @@ const ReturnPrint = () => {
 
   return (
     <div>
-      <Box sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between', height: '80vh', paddingX: 16, paddingY: 3 }}>
-        <Box>
-
+      <Box sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between', height: '80vh', paddingX: 12, paddingY: 3 }}>
+        <Box onClick={handlePrint}>
+          <Button>Drukuj</Button>
           <Typography sx={{ marginBottom: 3 }}
             variant='h4'>Pokwitowanie zwrotu towaru dla <i>{_return.imie} {_return.nazwisko}</i></Typography>
           <Typography variant='body1' fontSize={20}><b>Numer umowy:</b> {_return.numer_umowy}</Typography>
