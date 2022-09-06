@@ -1,15 +1,12 @@
 import React, { useContext, useEffect, useState } from 'react'
 import {
     Dialog, DialogTitle, DialogContent, Box, Button,
-    IconButton, List, ListItem, ListItemIcon, ListItemButton, ListItemText, Autocomplete, TextField, DialogActions, Typography
+    IconButton, ListItem, ListItemIcon, ListItemText, Autocomplete, TextField, DialogActions, Typography
 } from '@mui/material';
-import { useSelector } from 'react-redux';
-import SearchIcon from '@mui/icons-material/Search';
 import InfoIcon from '@mui/icons-material/Info';
 import ItemDetailModal from './ItemDetailModal';
 import { openNotification as showNotification } from '../../redux/notificationSlice';
 import { useDispatch } from 'react-redux';
-import { getSalesData, getItemsDetailed } from '../../redux/databaseSlice';
 import { SalesContext } from '../../context/sales-context';
 import { ContractContext } from '../../context/contract-context';
 import { getToday } from '../../utils/date-utils';
@@ -50,7 +47,7 @@ export const NewSaleModal = ({ isOpen, handleClose }) => {
     useEffect(() => {
         if (selectedItem)
             setPrice(Number.parseFloat(margin) + Number.parseFloat(selectedItem.kwotaDlaKomitenta))
-    }, [margin])
+    }, [margin, selectedItem])
 
     const createSale = async (item, margin) => {
         const price = calculatePrice(item.kwotaDlaKomitenta, margin);
@@ -128,6 +125,7 @@ export const NewSaleModal = ({ isOpen, handleClose }) => {
                         />
                         <TextField
                             id="price-input"
+                            type='number'
                             label="Marża [zł]"
                             disabled={!selectedItem}
                             value={margin}

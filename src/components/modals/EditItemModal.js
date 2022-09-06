@@ -2,11 +2,7 @@ import React, { useEffect, useState, useContext } from 'react'
 import {
     Dialog, DialogTitle, DialogContent, DialogActions, TextField, Box, Button
 } from '@mui/material';
-import { useDispatch, useSelector } from 'react-redux';
 import { openNotification as showNotification } from '../../redux/notificationSlice';
-import { toggleNewItemModal } from '../../redux/modalSlice';
-import { getContractDetail } from '../../redux/databaseSlice';
-import { useParams, useLocation } from 'react-router-dom';
 import { ContractContext } from '../../context/contract-context';
 import { calculatePrice } from '../../utils/miscUtils';
 
@@ -18,13 +14,7 @@ export const EditItemModal = ({ isOpen, handleClose }) => {
     const [margin, setMargin] = useState(0)
     const [price, setPrice] = useState(0)
 
-    // Redux
-    const { currentContract: contract } = useSelector(state => state.screen)
-
-    const { currentContractID, reloadContracts,
-        currentlyEditedItem, setCurrentlyEditetItem } = useContext(ContractContext);
-
-    const params = useParams();
+    const { reloadContracts, currentlyEditedItem } = useContext(ContractContext);
 
     // Ustaw wartości pól
     useEffect(() => {
@@ -32,8 +22,7 @@ export const EditItemModal = ({ isOpen, handleClose }) => {
             setName(currentlyEditedItem.nazwa)
             setCommiterValue(currentlyEditedItem.kwotaDlaKomitenta)
             setAmount(currentlyEditedItem.przyjetaIlosc)
-            setMargin(currentlyEditedItem.marza)
-            setPrice(currentlyEditedItem.cena)
+            setMargin(currentlyEditedItem.domyslnaMarza)
         }
     }, [isOpen, currentlyEditedItem])
 
@@ -136,7 +125,7 @@ export const EditItemModal = ({ isOpen, handleClose }) => {
                         />
                         <TextField
                             id="item-margin-input"
-                            label="Marża"
+                            label="Domyślna marża [zł]"
                             type="number"
                             defaultValue={'0.00'}
                             value={margin}
@@ -169,7 +158,6 @@ export const EditItemModal = ({ isOpen, handleClose }) => {
                             handleClose()
                         }}>Odrzuć</Button>
                         <Button onClick={() => {
-                            const price = calculatePrice(commiterValue, margin)
                             updateItem(currentlyEditedItem.id_przedmiotu, name, commiterValue, margin, amount)
                         }} disabled={!validateForm()}>Zapisz</Button>
                     </DialogActions>

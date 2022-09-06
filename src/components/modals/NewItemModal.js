@@ -5,8 +5,6 @@ import {
 import { useDispatch, useSelector } from 'react-redux';
 import { openNotification as showNotification } from '../../redux/notificationSlice';
 import { toggleNewItemModal } from '../../redux/modalSlice';
-import { getContractDetail } from '../../redux/databaseSlice';
-import { useParams, useLocation } from 'react-router-dom';
 import { calculatePrice } from '../../utils/miscUtils';
 import { ContractContext } from '../../context/contract-context';
 
@@ -113,7 +111,7 @@ export const NewItemModal = ({ isOpen, handleClose }) => {
                         />
                         <TextField
                             id="item-margin-input"
-                            label="Marża"
+                            label="Domyślna marża [zł]"
                             type="number"
                             placeholder='0.00'
                             onChange={(e) => setMargin(e.target.value)}
