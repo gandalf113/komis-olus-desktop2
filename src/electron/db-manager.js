@@ -165,25 +165,26 @@ createContract = ipcMain.handle("create/contract", async (event, args) => {
 })
 
 createSale = ipcMain.handle("create/sale", async (event, args) => {
-    const { itemId, date } = args
+    const { itemId, margin, price, date } = args
 
     return knex('sprzedaz')
         .insert({
             id_przedmiotu: itemId,
+            marza: margin,
+            cena: price,
             data: date
         })
 })
 
 createItem = ipcMain.handle("create/item", async (event, args) => {
-    const { contractId, name, commiterValue, margin, price, amount } = args
+    const { contractId, name, commiterValue, defaultMargin, amount } = args
 
     return knex('przedmioty')
         .insert({
             id_umowy: contractId,
             nazwa: name,
             kwotaDlaKomitenta: commiterValue,
-            marza: margin,
-            cena: price,
+            domyslnaMarza: defaultMargin,
             przyjetaIlosc: amount,
             sprzedanaIlosc: 0,
             zwroconaIlosc: 0
@@ -212,15 +213,14 @@ createReturn = ipcMain.handle("create/return", async (event, args) => {
 })
 
 updateItem = ipcMain.handle("update/item", async (event, args) => {
-    const { itemId, name, commiterValue, margin, price, amount } = args
+    const { itemId, name, commiterValue, defaultMargin, amount } = args
 
     return knex('przedmioty')
         .where({ id_przedmiotu: itemId })
         .update({
             nazwa: name,
             kwotaDlaKomitenta: commiterValue,
-            marza: margin,
-            cena: price,
+            domyslnaMarza: defaultMargin,
             przyjetaIlosc: amount
         })
 })

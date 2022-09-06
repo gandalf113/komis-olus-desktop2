@@ -32,3 +32,17 @@ export const checkIfSoldOut = (item) => {
 
     return remainingAmount <= 0
 }
+
+/**
+ * Calculates final price of the product
+ * @param {Number} commiterValue
+ * @param {Number} margin
+ * @returns {Number} final price
+ */
+export const calculatePrice = (commiterValue, margin) => {
+    commiterValue = Number.parseFloat(commiterValue)
+    margin = Number.parseFloat(margin)
+
+    const price = commiterValue + margin
+    return price.toFixed(2)
+}

@@ -13,7 +13,7 @@ import { getSalesData, getItemsDetailed } from '../../redux/databaseSlice';
 import { SalesContext } from '../../context/sales-context';
 import { ContractContext } from '../../context/contract-context';
 import { getToday } from '../../utils/date-utils';
-import { checkIfSoldOut, toCurrency, decToHex } from '../../utils/miscUtils';
+import { checkIfSoldOut, toCurrency, decToHex, calculatePrice } from '../../utils/miscUtils';
 
 export const NewSaleModal = ({ isOpen, handleClose }) => {
     // Local state
@@ -52,6 +52,29 @@ export const NewSaleModal = ({ isOpen, handleClose }) => {
             setPrice(Number.parseFloat(margin) + Number.parseFloat(selectedItem.kwotaDlaKomitenta))
     }, [margin])
 
+    const createSale = async (item, margin) => {
+        const price = calculatePrice(item.kwotaDlaKomitenta, margin);
+
+        const itemId = item.id_przedmiotu;
+        const itemName = item.nazwa;
+
+        await window.api.createSale(itemId, margin, price, getToday()).then(res => {
+            console.log('Pomyślnie dodano sprzedaż')
+
+            window.api.incrementSoldAmount(itemId).then(_ => {
+                console.log('Pomyślnie zwiększono ilość sprzedanych sztuk')
+                dispatch(showNotification(`Pomyślnie sprzedano przedmiot: "${itemName}"`))
+                handleClose();
+            })
+
+            reloadSales();
+            reloadContracts();
+        }).catch(error => {
+            alert('Wystąpił błąd')
+            console.log(error)
+        })
+    }
+
     /**
      * Get the detailed item
      * @param {String} itemId - itemId in hex
@@ -61,7 +84,7 @@ export const NewSaleModal = ({ isOpen, handleClose }) => {
         window.api.getItemsDetailed(itemId).then(res => {
             const item = res[0];
             setSelectedItem(item);
-            setMargin(item.marza)
+            setMargin(item.domyslnaMarza)
         })
     }
 
@@ -78,7 +101,7 @@ export const NewSaleModal = ({ isOpen, handleClose }) => {
 
     const validateForm = () => {
         return selectedItem && price && price > 0 && margin >= 0
-        && !checkIfSoldOut(selectedItem)
+            && !checkIfSoldOut(selectedItem)
     }
 
     return (
@@ -130,7 +153,7 @@ export const NewSaleModal = ({ isOpen, handleClose }) => {
                         <Typography variant='body2' color={validateForm() ? 'inherit' : 'lightgray'}>
                             <b>CENA: </b>{!!price ? toCurrency(price) : toCurrency(0)}
                         </Typography>
-                        <Button disabled={!validateForm()}>Sprzedaj</Button>
+                        <Button disabled={!validateForm()} onClick={() => createSale(selectedItem, margin)}>Sprzedaj</Button>
                     </DialogActions>
 
                 </DialogContent>

@@ -8,6 +8,7 @@ import { toggleNewItemModal } from '../../redux/modalSlice';
 import { getContractDetail } from '../../redux/databaseSlice';
 import { useParams, useLocation } from 'react-router-dom';
 import { ContractContext } from '../../context/contract-context';
+import { calculatePrice } from '../../utils/miscUtils';
 
 export const EditItemModal = ({ isOpen, handleClose }) => {
     // Local state
@@ -36,14 +37,6 @@ export const EditItemModal = ({ isOpen, handleClose }) => {
         }
     }, [isOpen, currentlyEditedItem])
 
-    const calculatePrice = (commiterValue, margin) => {
-        commiterValue = Number.parseFloat(commiterValue)
-        margin = Number.parseFloat(margin)
-
-        const price = commiterValue + margin + (commiterValue + margin) * 0.23
-        return price.toFixed(2)
-    }
-
     useEffect(() => {
         const newPrice = calculatePrice(commiterValue, margin)
         setPrice(`${newPrice} zł`)
@@ -58,12 +51,11 @@ export const EditItemModal = ({ isOpen, handleClose }) => {
  *
  * @param {string} name - item name
  * @param {number} commiterValue - amount of money for the commiter
- * @param {number} margin - profit for the company
- * @param {number} price - commiterValue + margin + tax
+ * @param {number} defaultMargin - profit for the company
  * @param {int} amount - how many items of this kind has the commiter brought
  */
-    const updateItem = async (itemId, name, commiterValue, margin, price, amount) => {
-        window.api.updateItem(itemId, name, amount, commiterValue, margin, price)
+    const updateItem = async (itemId, name, commiterValue, defaultMargin, amount) => {
+        window.api.updateItem(itemId, name, amount, commiterValue, defaultMargin)
             .then(_ => {
                 // Close
                 handleClose();
@@ -178,7 +170,7 @@ export const EditItemModal = ({ isOpen, handleClose }) => {
                         }}>Odrzuć</Button>
                         <Button onClick={() => {
                             const price = calculatePrice(commiterValue, margin)
-                            updateItem(currentlyEditedItem.id_przedmiotu, name, commiterValue, margin, price, amount)
+                            updateItem(currentlyEditedItem.id_przedmiotu, name, commiterValue, margin, amount)
                         }} disabled={!validateForm()}>Zapisz</Button>
                     </DialogActions>
 

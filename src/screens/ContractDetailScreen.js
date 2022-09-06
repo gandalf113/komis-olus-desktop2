@@ -88,15 +88,15 @@ const ContractDetailScreen = () => {
                 Cell: props => <div> {toCurrency(props.row.original.kwotaDlaKomitenta * props.row.original.przyjetaIlosc)} </div>
             },
             {
-                Header: 'Marża',
-                accessor: 'marza',
+                Header: 'Domyślna marża',
+                accessor: 'domyslnaMarza',
                 Cell: props => <div> {toCurrency(props.value)} </div>
             },
-            {
-                Header: 'Cena',
-                accessor: 'cena',
-                Cell: props => <div> {toCurrency(props.value)} </div>
-            },
+            // {
+            //     Header: 'Cena',
+            //     accessor: 'cena',
+            //     Cell: props => <div> {toCurrency(props.value)} </div>
+            // },
             {
                 Header: 'Do wypłaty',
                 Cell: props => <div> {toCurrency(props.row.original.kwotaDlaKomitenta * props.row.original.sprzedanaIlosc)} </div>
@@ -120,7 +120,7 @@ const ContractDetailScreen = () => {
                     sx={{ cursor: 'pointer' }} />
             },
         ],
-        []
+        [dispatch, setCurrentlyEditetItem]
     )
 
     if (!contract || !items || !client) return null

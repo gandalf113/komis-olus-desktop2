@@ -7,6 +7,7 @@ import { openNotification as showNotification } from '../../redux/notificationSl
 import { toggleNewItemModal } from '../../redux/modalSlice';
 import { getContractDetail } from '../../redux/databaseSlice';
 import { useParams, useLocation } from 'react-router-dom';
+import { calculatePrice } from '../../utils/miscUtils';
 import { ContractContext } from '../../context/contract-context';
 
 
@@ -35,14 +36,6 @@ export const NewItemModal = ({ isOpen, handleClose }) => {
 
     const dispatch = useDispatch()
 
-    const calculatePrice = (commiterValue, margin) => {
-        commiterValue = Number.parseFloat(commiterValue)
-        margin = Number.parseFloat(margin)
-
-        const price = commiterValue + margin + (commiterValue + margin) * 0.23
-        return price.toFixed(2)
-    }
-
     const validateForm = () => {
         return name.trim !== '' && amount >= 1 && commiterValue && commiterValue > 0 &&
             price
@@ -57,14 +50,13 @@ export const NewItemModal = ({ isOpen, handleClose }) => {
      *
      * @param {string} name - item name
      * @param {number} commiterValue - amount of money for the commiter
-     * @param {number} margin - profit for the company
-     * @param {number} price - commiterValue + margin + tax
+     * @param {number} defaultMargin - profit for the company
      * @param {int} amount - how many items of this kind has the commiter brought
      */
-    const createSale = async (name, commiterValue, margin, price, amount) => {
+    const createSale = async (name, commiterValue, defaultMargin, amount) => {
         const contractId = currentContractID;
 
-        window.api.createItem(name, amount, commiterValue, margin, price, contractId)
+        window.api.createItem(name, amount, commiterValue, defaultMargin, contractId)
             .then(_ => {
                 // Close the modal
                 dispatch(toggleNewItemModal(false))
@@ -150,8 +142,7 @@ export const NewItemModal = ({ isOpen, handleClose }) => {
                             handleClose()
                         }}>Odrzuć</Button>
                         <Button onClick={() => {
-                            const price = calculatePrice(commiterValue, margin)
-                            createSale(name, commiterValue, margin, price, amount)
+                            createSale(name, commiterValue, margin, amount)
                         }} disabled={!validateForm()}>Zapisz</Button>
                     </DialogActions>
 
