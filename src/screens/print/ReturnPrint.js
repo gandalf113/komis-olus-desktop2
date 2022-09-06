@@ -1,23 +1,27 @@
-import { Box, Typography, Button } from '@mui/material'
-import React, { useEffect, useState } from 'react'
-import { useParams } from 'react-router-dom'
-import { fullDateToString } from '../../utils/date-utils'
-import { toCurrency } from '../../utils/miscUtils'
+import { Box, Typography, Button } from '@mui/material';
+import React, { useEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { useParams } from 'react-router-dom';
+import { fullDateToString } from '../../utils/date-utils';
+import { decToHex, toCurrency } from '../../utils/miscUtils';
+import { openNotification as showNotification } from '../../redux/notificationSlice';
+import '../../global.css';
 
 const ReturnPrint = () => {
   const { id } = useParams();
+  const dispatch = useDispatch();
 
   const [_return, setReturn] = useState();
 
   const handlePrint = () => {
-    window.printer.print('testeey')
-    // const browserWindow = BrowserWindow();
-    // const wc = browserWindow.webContents
-    // wc.print(options, (success, failureReason) => {
-    //   if (!success) console.log(failureReason);
+    const hexId = decToHex(id);
 
-    //   console.log('Print Initiated');
-    // });
+    try {
+      window.printer.print(`zwrot_${_return.skrot}_${hexId}_${_return.data}`)
+      dispatch(showNotification('Pomyślnie utworzono plik wydruku'))
+    } catch (error) {
+      alert("Wystąpił błąd podczas drukowania");
+    }
   }
 
   useEffect(() => {
@@ -35,12 +39,13 @@ const ReturnPrint = () => {
 
   return (
     <div>
-      <Box sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between', height: '80vh', paddingX: 12, paddingY: 3 }}>
-        <Box onClick={handlePrint}>
-          <Button>Drukuj</Button>
-          <Typography sx={{ marginBottom: 3 }}
+      <Box sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between', height: '80vh', paddingX: 12 }}>
+        <Box>
+          <Button onClick={handlePrint} variant='contained' className='no-print'>Drukuj</Button>
+          <Typography sx={{ marginY: 5 }}
             variant='h4'>Pokwitowanie zwrotu towaru dla <i>{_return.imie} {_return.nazwisko}</i></Typography>
           <Typography variant='body1' fontSize={20}><b>Numer umowy:</b> {_return.numer_umowy}</Typography>
+          <Typography variant='body1' fontSize={20}><b>Kod przedmiotu:</b> {decToHex(_return.id_przedmiotu)}</Typography>
           <Typography variant='body1' fontSize={20}><b>Nazwa towaru:</b> {_return.nazwa}</Typography>
           <Typography variant='body1' fontSize={20}><b>Przyjęta ilość:</b> {_return.przyjetaIlosc}</Typography>
           <Typography variant='body1' fontSize={20}><b>Kwota:</b> {toCurrency(_return.kwotaDlaKomitenta)}</Typography>

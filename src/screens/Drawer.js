@@ -45,6 +45,8 @@ import ClientSummaryScreen from './ClientSummaryScreen';
 import ReturnsScreen from './ReturnsScreen';
 import ReturnPrint from './print/ReturnPrint';
 
+import "../global.css";
+
 const drawerWidth = 240;
 
 const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })(
@@ -118,7 +120,7 @@ export default function PersistentDrawerLeft({ renderScreen }) {
     return (
         <Box sx={{ display: 'flex' }}>
             <CssBaseline />
-            <AppBar position="fixed" color='success' open={open}>
+            <AppBar position="fixed" color='success' open={open} className='no-print'>
                 <Toolbar>
                     <IconButton
                         color="inherit"
@@ -151,6 +153,7 @@ export default function PersistentDrawerLeft({ renderScreen }) {
                 }}
                 variant="persistent"
                 anchor="left"
+                className='no-print'
                 open={open}
             >
                 <DrawerHeader>

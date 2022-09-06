@@ -6,6 +6,8 @@ import CloseIcon from '@mui/icons-material/Close';
 import { useDispatch, useSelector } from 'react-redux';
 import { closeNotification } from '../redux/notificationSlice';
 
+import "../global.css";
+
 const Notification = () => {
     const { isOpen, message } = useSelector(state => state.notification)
 
@@ -43,6 +45,7 @@ const Notification = () => {
             onClose={handleClose}
             message={message}
             action={action}
+            className='no-print'
         />
     )
 }

@@ -1,6 +1,8 @@
 // Modules to control application life and create native browser window
 const { app, BrowserWindow, ipcMain } = require('electron')
 const path = require('path')
+const fs = require('fs')
+const os = require('os')
 const isDev = require('electron-is-dev');
 
 let mainWindow;
@@ -75,13 +77,26 @@ var options = {
     footer: 'Footer of the Page'
 }
 
-ipcMain.on("print", (event, args) => {
+// ipcMain.on("print", (event, args) => {
 
-    mainWindow.webContents.print(options, (success, failureReason) => {
-        if (!success) console.log(failureReason);
+//     mainWindow.webContents.print(options, (success, failureReason) => {
+//         if (!success) console.log(failureReason);
 
-        console.log('Print Initiated');
-    });
+//         console.log('Print Initiated');
+//     });
+// })
+
+ipcMain.on('print', (event, filename) => {
+    // Use default printing options
+    const pdfPath = path.join('C:\\', 'KOMIS_OLUS', 'zwroty', `${filename}.pdf`)
+    mainWindow.webContents.printToPDF({}).then(data => {
+        fs.writeFile(pdfPath, data, (error) => {
+            if (error) throw error
+            console.log(`Wrote PDF successfully to ${pdfPath}`)
+        })
+    }).catch(error => {
+        console.log(`Failed to write PDF to ${pdfPath}: `, error)
+    })
 })
 
 require('./db-manager');
