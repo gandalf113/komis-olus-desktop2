@@ -1,7 +1,7 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import {
-    Dialog, DialogTitle, DialogContent, OutlinedInput, InputAdornment,
-    IconButton, List, ListItem, ListItemIcon, ListItemButton, ListItemText
+    Dialog, DialogTitle, DialogContent, Box, Button,
+    IconButton, List, ListItem, ListItemIcon, ListItemButton, ListItemText, Autocomplete, TextField, DialogActions, Typography
 } from '@mui/material';
 import { useSelector } from 'react-redux';
 import SearchIcon from '@mui/icons-material/Search';
@@ -13,19 +13,20 @@ import { getSalesData, getItemsDetailed } from '../../redux/databaseSlice';
 import { SalesContext } from '../../context/sales-context';
 import { ContractContext } from '../../context/contract-context';
 import { getToday } from '../../utils/date-utils';
-import { checkIfSoldOut } from '../../utils/miscUtils';
+import { checkIfSoldOut, toCurrency, decToHex } from '../../utils/miscUtils';
 
 export const NewSaleModal = ({ isOpen, handleClose }) => {
     // Local state
-    const [currentItem, setCurrentItem] = useState()
     const [detailModalOpen, setDetailModalOpen] = useState(false);
-    const [searchValue, setSearchValue] = useState('');
+
+    const [selectedItem, setSelectedItem] = useState();
+    const [items, setItems] = useState();
+    const [margin, setMargin] = useState('');
+    const [price, setPrice] = useState('');
 
     const { reloadSales } = useContext(SalesContext);
     const { reloadContracts } = useContext(ContractContext);
 
-    // Redux
-    const items = useSelector(state => state.database.detailedItemsData);
 
     const dispatch = useDispatch();
 
@@ -37,78 +38,104 @@ export const NewSaleModal = ({ isOpen, handleClose }) => {
         setDetailModalOpen(false);
     }
 
-    const createSale = async (itemId, itemName) => {
-        await window.api.createSale(itemId, getToday()).then(res => {
-            console.log('Pomyślnie dodano sprzedaż')
+    useEffect(() => {
+        window.api.getItems().then(items => {
+            setItems(items);
+        });
 
-            window.api.incrementSoldAmount(itemId).then(_ => {
-                console.log('Pomyślnie zwiększono ilość sprzedanych sztuk')
-                dispatch(showNotification(`Pomyślnie sprzedano przedmiot: "${itemName}"`))
-                dispatch(getSalesData())
-                dispatch(getItemsDetailed(searchValue))
-            })
+        clearItem();
+    }, [isOpen]);
 
-            reloadSales();
-            reloadContracts();
-        }).catch(error => {
-            alert('Wystąpił błąd')
-            console.log(error)
+
+    useEffect(() => {
+        if (selectedItem)
+            setPrice(Number.parseFloat(margin) + Number.parseFloat(selectedItem.kwotaDlaKomitenta))
+    }, [margin])
+
+    /**
+     * Get the detailed item
+     * @param {String} itemId - itemId in hex
+     */
+    const loadItem = (item) => {
+        const itemId = decToHex(item.id_przedmiotu);
+        window.api.getItemsDetailed(itemId).then(res => {
+            const item = res[0];
+            setSelectedItem(item);
+            setMargin(item.marza)
         })
     }
 
-    const getItems = async (searchValue) => {
-        if (searchValue === "") {
-            // setItems([])
-            return
-        }
-
-        dispatch(getItemsDetailed(searchValue))
+    const clearItem = () => {
+        setSelectedItem(null);
+        setPrice('');
+        setMargin('');
     }
 
     const showInfo = async (item) => {
-        setCurrentItem(item)
-        console.log(item)
-        openModal()
+        // setSelectedItem(item)
+        openModal();
+    }
+
+    const validateForm = () => {
+        return selectedItem && price && price > 0 && margin >= 0
+        && !checkIfSoldOut(selectedItem)
     }
 
     return (
         <div>
             <Dialog open={isOpen} onClose={handleClose}>
                 <DialogTitle>Nowa sprzedaż</DialogTitle>
-                <DialogContent>
-                    <OutlinedInput
-                        endAdornment={
-                            <InputAdornment position='end'>
-                                <IconButton>
-                                    <SearchIcon />
-                                </IconButton>
-                            </InputAdornment>}
+                <DialogContent sx={{ minWidth: 400 }}>
+                    <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
+                        <Box></Box>
+                        <Autocomplete
+                            id='search-item'
+                            options={items}
+                            getOptionLabel={(item) => decToHex(item.id_przedmiotu) + ` (${item.nazwa})`}
+                            onChange={(event, item) => {
+                                if (item)
+                                    loadItem(item);
+                                else
+                                    clearItem();
+                            }}
+                            renderInput={(params) => (
+                                <TextField {...params}
+                                    label='Wprowadź kod z metki' />
+                            )}
+                        />
+                        <TextField
+                            id="price-input"
+                            label="Marża [zł]"
+                            disabled={!selectedItem}
+                            value={margin}
+                            onChange={(e) => {
+                                setMargin(e.target.value);
+                            }}
 
-                        onChange={(e) => {
-                            getItems(e.target.value)
-                            setSearchValue(e.target.value)
-                        }}
-                    />
-                    <List>
-                        {searchValue.trim() !== "" && items.map(item => (
-                            <ListItem key={item.id_przedmiotu} disablePadding>
-                                <ListItemIcon>
-                                    <IconButton onClick={() => showInfo(item)}>
-                                        <InfoIcon color='primary' />
-                                    </IconButton>
-                                </ListItemIcon>
-                                <ListItemButton dense disabled={checkIfSoldOut(item) ? true : false}
-                                    onClick={() => createSale(item.id_przedmiotu, item.nazwa)} >
-                                    <ListItemText
-                                        primary={`${item.nazwa} - ${item.skrot}`}
-                                        secondary={checkIfSoldOut(item) ? 'WYPRZEDANO' : ''} />
-                                </ListItemButton>
+                        />
+                        {selectedItem && <ListItem key={selectedItem.id_przedmiotu} disablePadding>
+                            <ListItemIcon>
+                                <IconButton onClick={() => showInfo(selectedItem)}>
+                                    <InfoIcon color='primary' />
+                                </IconButton>
+                            </ListItemIcon>
+                            <ListItem dense disabled={checkIfSoldOut(selectedItem) ? true : false}>
+                                <ListItemText
+                                    primary={`${selectedItem.nazwa} - ${selectedItem.skrot}`}
+                                    secondary={checkIfSoldOut(selectedItem) ? 'WYPRZEDANO' : ''} />
                             </ListItem>
-                        ))}
-                    </List>
+                        </ListItem>}
+                    </Box>
+                    <DialogActions style={{ display: 'flex', justifyContent: 'space-between' }}>
+                        <Typography variant='body2' color={validateForm() ? 'inherit' : 'lightgray'}>
+                            <b>CENA: </b>{!!price ? toCurrency(price) : toCurrency(0)}
+                        </Typography>
+                        <Button disabled={!validateForm()}>Sprzedaj</Button>
+                    </DialogActions>
+
                 </DialogContent>
             </Dialog>
-            <ItemDetailModal isOpen={detailModalOpen} handleClose={closeModal} item={currentItem} />
+            <ItemDetailModal isOpen={detailModalOpen} handleClose={closeModal} item={selectedItem} />
         </div>
     );
 }

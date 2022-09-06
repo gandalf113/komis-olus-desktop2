@@ -161,7 +161,7 @@ export const NewContractModal = ({ isOpen, handleClose }) => {
                             value={contractNumber}
                         />
                         {!isNewClient && <Autocomplete
-                            id="szukaj-klienta"
+                            id="search-client"
                             freeSolo
                             disabled={isNewClient}
                             options={clients}
