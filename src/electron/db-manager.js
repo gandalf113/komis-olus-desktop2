@@ -54,7 +54,7 @@ getReturns = ipcMain.handle("get/returns", async (event, args) => {
     return knex.select().from("zwroty")
         .leftOuterJoin('przedmioty', 'zwroty.id_przedmiotu', 'przedmioty.id_przedmiotu')
         .leftOuterJoin('umowy', 'przedmioty.id_umowy', 'umowy.id_umowy')
-        .leftOuterJoin('klienci', 'umowy.id_umowy', 'klienci.id_klienta');
+        .leftOuterJoin('klienci', 'umowy.id_klienta', 'klienci.id_klienta');
 });
 
 getReturn = ipcMain.handle("get/return", async (event, args) => {
@@ -64,7 +64,7 @@ getReturn = ipcMain.handle("get/return", async (event, args) => {
         .where('id_zwrotu', returnId)
         .leftOuterJoin('przedmioty', 'zwroty.id_przedmiotu', 'przedmioty.id_przedmiotu')
         .leftOuterJoin('umowy', 'przedmioty.id_umowy', 'umowy.id_umowy')
-        .leftOuterJoin('klienci', 'umowy.id_umowy', 'klienci.id_klienta');
+        .leftOuterJoin('klienci', 'umowy.id_klienta', 'klienci.id_klienta');
 });
 
 getContractsWithClients = ipcMain.handle("get/contracts-clients", async (event, args) => {
