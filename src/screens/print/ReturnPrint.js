@@ -18,7 +18,6 @@ const ReturnPrint = () => {
 
     try {
       window.printer.print(`zwrot_${_return.skrot}_${hexId}_${_return.data}`)
-      dispatch(showNotification('Pomyślnie utworzono plik wydruku'))
     } catch (error) {
       alert("Wystąpił błąd podczas drukowania");
     }

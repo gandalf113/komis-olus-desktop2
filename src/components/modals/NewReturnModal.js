@@ -2,17 +2,11 @@ import React, { useContext, useState } from 'react'
 import {
     Dialog, DialogTitle, DialogContent, TextField, Box, DialogActions, Button
 } from '@mui/material';
-import { useSelector } from 'react-redux';
-import SearchIcon from '@mui/icons-material/Search';
-import InfoIcon from '@mui/icons-material/Info';
-import ItemDetailModal from './ItemDetailModal';
 import { openNotification, openNotification as showNotification } from '../../redux/notificationSlice';
 import { useDispatch } from 'react-redux';
-import { getSalesData, getItemsDetailed } from '../../redux/databaseSlice';
-import { SalesContext } from '../../context/sales-context';
 import { getToday } from '../../utils/date-utils';
 import { ContractContext } from '../../context/contract-context';
-import { checkIfAmountRemaining, checkIfSoldOut } from '../../utils/miscUtils';
+import { checkIfAmountRemaining } from '../../utils/miscUtils';
 
 export const NewReturnModal = ({ isOpen, handleClose }) => {
     const { currentlyEditedItem, reloadContracts } = useContext(ContractContext);
