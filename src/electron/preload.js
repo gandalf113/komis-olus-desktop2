@@ -33,6 +33,7 @@ const WINDOW_API = {
     createWithdraw: (clientId, amount, date) => ipcRenderer.invoke("create/withdraw", { clientId: clientId, amount: amount, date: date }),
     createReturn: (itemId, date) => ipcRenderer.invoke("create/return", { itemId: itemId, date: date }),
     // Update
+    updateSale: (saleId, margin, price) => ipcRenderer.invoke("update/sale", { saleId: saleId, margin: margin, price: price }),
     updateItem: (itemId, name, amount, commiterValue, defaultMargin) => ipcRenderer.invoke("update/item", { itemId: itemId, name: name, amount: amount, commiterValue: commiterValue, defaultMargin: defaultMargin }),
     updateContract: (contractId, clientId) => ipcRenderer.invoke("update/contract", { contractId: contractId, clientId: clientId }),
     // Increment

@@ -1,12 +1,16 @@
-import React, { useEffect, useState, useMemo, useContext } from 'react'
+import React, { useEffect, useContext } from 'react'
 import { DataTable } from '../components/DataTable';
 import { SalesContext } from '../context/sales-context';
 import { toCurrency } from '../utils/miscUtils';
+import EditIcon from '@mui/icons-material/Edit';
+import { toggleEditSaleModal } from '../redux/modalSlice';
+import { useDispatch } from 'react-redux';
 
 const AllSales = () => {
     // const [sales, setSales] = useState();
+    const dispatch = useDispatch();
 
-    const { allSales: sales, reloadSales } = useContext(SalesContext);
+    const { allSales: sales, reloadSales, setCurrentlyEditedSale } = useContext(SalesContext);
 
     useEffect(() => {
         reloadSales();
@@ -41,6 +45,16 @@ const AllSales = () => {
             {
                 Header: 'Data sprzedaży',
                 accessor: 'data',
+            },
+            {
+                Header: 'Edytuj',
+                Cell: props => <EditIcon
+                    onClick={() => {
+                        // setCurrentlyEditetItem(props.row.original);
+                        setCurrentlyEditedSale(props.row.original)
+                        dispatch(toggleEditSaleModal(true))
+                    }}
+                    sx={{ cursor: 'pointer' }} />
             },
         ],
         []

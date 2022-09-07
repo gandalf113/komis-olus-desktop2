@@ -1,9 +1,12 @@
 import React, { useContext, useEffect, useState } from 'react'
-import { Button } from '@mui/material';
+import { useDispatch } from 'react-redux';
 import { DataTable } from '../components/DataTable'
 import { toCurrency } from '../utils/miscUtils';
 import { useParams } from 'react-router-dom';
 import { SalesContext } from '../context/sales-context';
+import { toggleEditSaleModal } from '../redux/modalSlice';
+import EditIcon from '@mui/icons-material/Edit';
+
 
 /**
  * Zwraca listę sprzedaży dla danego dnia
@@ -20,12 +23,13 @@ const getDailySales = (allSales, date) => {
 
 
 const DailySales = () => {
+    const dispatch = useDispatch();
 
     const [sales, setSales] = useState();
 
     const { date, day } = useParams();
 
-    const { allSales } = useContext(SalesContext);
+    const { allSales, setCurrentlyEditedSale } = useContext(SalesContext);
 
     const fullDate = () => {
         // return month + '-' + day
@@ -68,8 +72,18 @@ const DailySales = () => {
                 Header: 'Data sprzedaży',
                 accessor: 'data',
             },
+            {
+                Header: 'Edytuj',
+                Cell: props => <EditIcon
+                    onClick={() => {
+                        // setCurrentlyEditetItem(props.row.original);
+                        setCurrentlyEditedSale(props.row.original)
+                        dispatch(toggleEditSaleModal(true))
+                    }}
+                    sx={{ cursor: 'pointer' }} />
+            },
         ],
-        []
+        [dispatch, setCurrentlyEditedSale]
     )
 
     if (!sales) return <div>oops</div>;

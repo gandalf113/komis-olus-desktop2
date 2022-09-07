@@ -9,21 +9,18 @@ import { openNotification as showNotification } from '../../redux/notificationSl
 import { useDispatch } from 'react-redux';
 import { SalesContext } from '../../context/sales-context';
 import { ContractContext } from '../../context/contract-context';
-import { getToday } from '../../utils/date-utils';
 import { checkIfSoldOut, toCurrency, decToHex, calculatePrice } from '../../utils/miscUtils';
 
-export const NewSaleModal = ({ isOpen, handleClose }) => {
+export const EditSaleModal = ({ isOpen, handleClose }) => {
     // Local state
     const [detailModalOpen, setDetailModalOpen] = useState(false);
 
     const [selectedItem, setSelectedItem] = useState();
-    const [items, setItems] = useState();
     const [margin, setMargin] = useState('');
     const [price, setPrice] = useState('');
 
-    const { reloadSales } = useContext(SalesContext);
+    const { reloadSales, currentlyEditedSale } = useContext(SalesContext);
     const { reloadContracts } = useContext(ContractContext);
-
 
     const dispatch = useDispatch();
 
@@ -36,12 +33,13 @@ export const NewSaleModal = ({ isOpen, handleClose }) => {
     }
 
     useEffect(() => {
-        window.api.getItems().then(items => {
-            setItems(items);
-        });
+        if(currentlyEditedSale){
+            loadItem(currentlyEditedSale);
+            setMargin(currentlyEditedSale.marza)
+        }
 
         clearItem();
-    }, [isOpen]);
+    }, [isOpen, currentlyEditedSale]);
 
 
     useEffect(() => {
@@ -49,23 +47,15 @@ export const NewSaleModal = ({ isOpen, handleClose }) => {
             setPrice(Number.parseFloat(margin) + Number.parseFloat(selectedItem.kwotaDlaKomitenta))
     }, [margin, selectedItem])
 
-    const createSale = async (item, margin) => {
+    const updateSale = async (item, margin) => {
         const price = calculatePrice(item.kwotaDlaKomitenta, margin);
 
-        const itemId = item.id_przedmiotu;
-        const itemName = item.nazwa;
-
-        await window.api.createSale(itemId, margin, price, getToday()).then(res => {
-            console.log('Pomyślnie dodano sprzedaż')
-
-            window.api.incrementSoldAmount(itemId).then(_ => {
-                console.log('Pomyślnie zwiększono ilość sprzedanych sztuk')
-                dispatch(showNotification(`Pomyślnie sprzedano przedmiot: "${itemName}"`))
-                handleClose();
-            })
-
+        await window.api.updateSale(currentlyEditedSale.id_sprzedazy, margin, price).then(res => {
             reloadSales();
             reloadContracts();
+
+            handleClose();
+            dispatch(showNotification(`Pomyślnie zaktualizowano sprzedaż nr. ${currentlyEditedSale.id_sprzedazy}`))
         }).catch(error => {
             alert('Wystąpił błąd')
             console.log(error)
@@ -81,14 +71,12 @@ export const NewSaleModal = ({ isOpen, handleClose }) => {
         window.api.getItemsDetailed(itemId).then(res => {
             const item = res[0];
             setSelectedItem(item);
-            setMargin(item.domyslnaMarza)
         })
     }
 
     const clearItem = () => {
         setSelectedItem(null);
         setPrice('');
-        setMargin('');
     }
 
     const showInfo = async (item) => {
@@ -98,31 +86,16 @@ export const NewSaleModal = ({ isOpen, handleClose }) => {
 
     const validateForm = () => {
         return selectedItem && price && price > 0 && margin >= 0
-            && !checkIfSoldOut(selectedItem)
     }
 
     return (
         <div>
             <Dialog open={isOpen} onClose={handleClose}>
-                <DialogTitle>Nowa sprzedaż</DialogTitle>
+                <DialogTitle>Edytuj sprzedaż</DialogTitle>
                 <DialogContent sx={{ minWidth: 400 }}>
                     <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
                         <Box></Box>
-                        <Autocomplete
-                            id='search-item'
-                            options={items}
-                            getOptionLabel={(item) => decToHex(item.id_przedmiotu) + ` (${item.nazwa})`}
-                            onChange={(event, item) => {
-                                if (item)
-                                    loadItem(item);
-                                else
-                                    clearItem();
-                            }}
-                            renderInput={(params) => (
-                                <TextField {...params}
-                                    label='Wprowadź kod z metki' />
-                            )}
-                        />
+
                         <TextField
                             id="price-input"
                             type='number'
@@ -135,23 +108,24 @@ export const NewSaleModal = ({ isOpen, handleClose }) => {
 
                         />
                         {selectedItem && <ListItem key={selectedItem.id_przedmiotu} disablePadding>
+                            <ListItem dense disabled={checkIfSoldOut(selectedItem) ? false : false}>
+                                <ListItemText
+                                    primary={`${selectedItem.nazwa} - ${selectedItem.skrot}`}
+                                    secondary={checkIfSoldOut(selectedItem) ? 'WYPRZEDANO' : ''} />
+                            </ListItem>
                             <ListItemIcon>
                                 <IconButton onClick={() => showInfo(selectedItem)}>
                                     <InfoIcon color='primary' />
                                 </IconButton>
                             </ListItemIcon>
-                            <ListItem dense disabled={checkIfSoldOut(selectedItem) ? true : false}>
-                                <ListItemText
-                                    primary={`${selectedItem.nazwa} - ${selectedItem.skrot}`}
-                                    secondary={checkIfSoldOut(selectedItem) ? 'WYPRZEDANO' : ''} />
-                            </ListItem>
                         </ListItem>}
+
                     </Box>
                     <DialogActions style={{ display: 'flex', justifyContent: 'space-between' }}>
                         <Typography variant='body2' color={validateForm() ? 'inherit' : 'lightgray'}>
                             <b>CENA: </b>{!!price ? toCurrency(price) : toCurrency(0)}
                         </Typography>
-                        <Button disabled={!validateForm()} onClick={() => createSale(selectedItem, margin)}>Sprzedaj</Button>
+                        <Button disabled={!validateForm()} onClick={() => updateSale(selectedItem, margin)}>Zapisz</Button>
                     </DialogActions>
 
                 </DialogContent>
@@ -161,4 +135,4 @@ export const NewSaleModal = ({ isOpen, handleClose }) => {
     );
 }
 
-export default NewSaleModal
+export default EditSaleModal

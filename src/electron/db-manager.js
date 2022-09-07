@@ -212,6 +212,17 @@ createReturn = ipcMain.handle("create/return", async (event, args) => {
         })
 })
 
+updateSale = ipcMain.handle("update/sale", async (event, args) => {
+    const { saleId, margin, price } = args
+
+    return knex('sprzedaz')
+        .where({ id_sprzedazy: saleId })
+        .update({
+            marza: margin,
+            cena: price,
+        })
+})
+
 updateItem = ipcMain.handle("update/item", async (event, args) => {
     const { itemId, name, commiterValue, defaultMargin, amount } = args
 
