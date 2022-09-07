@@ -203,11 +203,12 @@ createWithdraw = ipcMain.handle("create/withdraw", async (event, args) => {
 })
 
 createReturn = ipcMain.handle("create/return", async (event, args) => {
-    const { itemId, date } = args
+    const { itemId, returnedAmount, date } = args
 
     return knex('zwroty')
         .insert({
             id_przedmiotu: itemId,
+            ilosc: returnedAmount,
             data: date
         })
 })
@@ -254,12 +255,12 @@ incrementSoldAmount = ipcMain.handle('increment/soldAmount', async (event, args)
         .increment('sprzedanaIlosc', 1)
 })
 
-incrementReturnedAmount = ipcMain.handle('increment/returnedAmount', async (event, args) => {
-    const { itemId } = args
+incrementReturnedAmountBy = ipcMain.handle('increment/returnedAmount', async (event, args) => {
+    const { itemId, amount } = args
 
     return knex('przedmioty')
         .where('id_przedmiotu', '=', itemId)
-        .increment('zwroconaIlosc', 1)
+        .increment('zwroconaIlosc', amount)
 })
 
 getItemsDetailed = ipcMain.handle('get/items/detailed', async (event, args) => {

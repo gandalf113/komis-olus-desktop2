@@ -34,6 +34,22 @@ export const checkIfSoldOut = (item) => {
 }
 
 /**
+ * Sprawdź, czy na stanie zostało więcej niż ilość amount danego przedmiotu
+ * @param {Object} item - przedmiot, który sprawdzamy
+ * @param {Number} amount - ilość, wg której chcemy sprawdzić
+ * @returns {boolean} - czy na stanie jest więcej lub tyle samo niż amount sztuk przedmiotu item
+ */
+export const checkIfAmountRemaining = (item, amount) => {
+    const initAmount = item.przyjetaIlosc
+    const soldAmount = item.sprzedanaIlosc
+    const returnedAmount = item.zwroconaIlosc
+
+    const remainingAmount = initAmount - soldAmount - returnedAmount
+
+    return remainingAmount < amount
+}
+
+/**
  * Calculates final price of the product
  * @param {Number} commiterValue
  * @param {Number} margin

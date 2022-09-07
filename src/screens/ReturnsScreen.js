@@ -40,6 +40,10 @@ const ReturnsScreen = () => {
                 accessor: 'skrot',
             },
             {
+                Header: 'Zwrócona ilość',
+                accessor: 'ilosc',
+            },
+            {
                 Header: 'Data zwrotu',
                 accessor: 'data',
             },

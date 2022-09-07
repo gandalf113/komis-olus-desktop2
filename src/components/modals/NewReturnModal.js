@@ -12,19 +12,21 @@ import { getSalesData, getItemsDetailed } from '../../redux/databaseSlice';
 import { SalesContext } from '../../context/sales-context';
 import { getToday } from '../../utils/date-utils';
 import { ContractContext } from '../../context/contract-context';
-import { checkIfSoldOut } from '../../utils/miscUtils';
+import { checkIfAmountRemaining, checkIfSoldOut } from '../../utils/miscUtils';
 
 export const NewReturnModal = ({ isOpen, handleClose }) => {
     const { currentlyEditedItem, reloadContracts } = useContext(ContractContext);
+
+    const [amount, setAmount] = useState(1);
 
     const dispatch = useDispatch();
 
     const createReturn = async () => {
         const date = getToday();
 
-        window.api.createReturn(currentlyEditedItem.id_przedmiotu, date)
+        window.api.createReturn(currentlyEditedItem.id_przedmiotu, amount, date)
             .then(_ => {
-                window.api.incrementReturnedAmount(currentlyEditedItem.id_przedmiotu)
+                window.api.incrementReturnedAmountBy(currentlyEditedItem.id_przedmiotu, amount)
                     .then(_ => {
                         handleClose();
                         reloadContracts();
@@ -45,6 +47,8 @@ export const NewReturnModal = ({ isOpen, handleClose }) => {
 
     if (!currentlyEditedItem) return null;
 
+    const isAmountValid = checkIfAmountRemaining(currentlyEditedItem, amount);
+
     return (
         <div>
             <Dialog open={isOpen} onClose={handleClose}>
@@ -59,16 +63,25 @@ export const NewReturnModal = ({ isOpen, handleClose }) => {
                             value={getToday()}
                         />
                         <TextField
+                            id="amount"
+                            label="Ilość"
+                            inputProps={{ min: 1 }}
+                            type="number"
+                            defaultValue={1}
+                            value={amount}
+                            onChange={(e) => setAmount(e.target.value)}
+                        />
+                        <TextField
                             id="client"
                             label="Nazwa towaru"
                             type="text"
-                            error={checkIfSoldOut(currentlyEditedItem)}
-                            helperText={checkIfSoldOut(currentlyEditedItem) && 'Brak sztuk na stanie'}
+                            error={isAmountValid}
+                            helperText={isAmountValid && 'Nie ma tyle towaru na stanie'}
                             value={currentlyEditedItem.nazwa}
                         />
                     </Box>
                     <DialogActions>
-                        <Button disabled={checkIfSoldOut(currentlyEditedItem)}
+                        <Button disabled={isAmountValid}
                             onClick={createReturn}>Zwróć towar</Button>
                     </DialogActions>
                 </DialogContent>
