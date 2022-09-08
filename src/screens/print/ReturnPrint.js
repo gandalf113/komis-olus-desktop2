@@ -46,7 +46,7 @@ const ReturnPrint = () => {
           <Typography variant='body1' fontSize={20}><b>Numer umowy:</b> {_return.numer_umowy}</Typography>
           <Typography variant='body1' fontSize={20}><b>Kod przedmiotu:</b> {decToHex(_return.id_przedmiotu)}</Typography>
           <Typography variant='body1' fontSize={20}><b>Nazwa towaru:</b> {_return.nazwa}</Typography>
-          <Typography variant='body1' fontSize={20}><b>Przyjęta ilość:</b> {_return.przyjetaIlosc}</Typography>
+          <Typography variant='body1' fontSize={20}><b>Zwrócona ilość:</b> {_return.ilosc}</Typography>
           <Typography variant='body1' fontSize={20}><b>Kwota:</b> {toCurrency(_return.kwotaDlaKomitenta)}</Typography>
 
         </Box>

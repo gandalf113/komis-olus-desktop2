@@ -155,7 +155,7 @@ const ContractDetailScreen = () => {
                 </Button>
                 <Button
                     onClick={openPrintView} variant="contained" color="inherit" style={{ marginTop: 20 }}>
-                    Drukuj PDF
+                    Drukuj
                 </Button>
                 <Button
                     onClick={() => console.log(contract)} variant="contained" color="inherit" style={{ marginTop: 20 }}>

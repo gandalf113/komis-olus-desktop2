@@ -113,13 +113,13 @@ const ClientSummaryScreen = () => {
                 {/* <Typography variant='h5'>{client.imie} {client.nazwisko} - {client.skrot}</Typography>
                 <Button onClick={handleOpenClientContracts}
                     style={{ marginTop: 10, marginBottom: 10 }} color='secondary' variant='contained'>Pokaż umowy</Button> */}
-                {/* <Button onClick={handleOpenNewWithdrawModal}
-                    style={{ margin: 10 }} color='inherit' variant='contained'>Dodaj wypłatę</Button> */}
             </Box>
             <DataTable loading={false} tableData={withdraws} columns={columms} />
-            <Box style={{ display: 'flex', flexDirection: 'column', marginTop: 4 }}>
+            <Box style={{ display: 'flex', flexDirection: 'column', alignItems:'start', gap: 2, marginTop: 4 }}>
                 <Typography variant='body'>Suma sprzedaży: {toCurrency(sumOfSales)} </Typography>
                 <Typography variant='body'>Do wypłaty: {toCurrency(getWithdrawAmount(sumOfSales, withdraws))} </Typography>
+                <Button onClick={handleOpenNewWithdrawModal}
+                    sx={{ marginTop: 3 }} color='inherit' variant='contained'>Dodaj wypłatę</Button>
             </Box>
         </div>
     )

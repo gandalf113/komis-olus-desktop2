@@ -81,7 +81,8 @@ const ClientDetailScreen = () => {
 
     return (
         <Box sx={{ width: '100%' }}>
-            <Typography variant='h5' sx={{marginBottom: 3}}>{client.imie} {client.nazwisko}</Typography>
+            <Typography variant='h5' sx={{ marginBottom: 1 }}>{client.imie} {client.nazwisko}</Typography>
+            <Typography variant='body1' sx={{ marginBottom: 1 }}>{client.adres}</Typography>
             <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
                 <Tabs value={tabIndex} onChange={handleTabChange} aria-label="basic tabs example">
                     <Tab label="Umowy" {...a11yProps(0)} />
@@ -98,7 +99,7 @@ const ClientDetailScreen = () => {
 
             {/* Client's withdraws */}
             <TabPanel value={tabIndex} index={1}>
-                <ClientSummaryScreen/>
+                <ClientSummaryScreen />
             </TabPanel>
         </Box>
     )

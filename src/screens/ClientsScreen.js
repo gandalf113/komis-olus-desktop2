@@ -37,6 +37,10 @@ const ClientsScreen = () => {
                 accessor: 'nazwisko',
             },
             {
+                Header: 'Adres',
+                accessor: 'adres',
+            },
+            {
                 Header: 'Otwórz',
                 Cell: props => <Typography sx={{ cursor: 'pointer' }} onClick={() => navigate(`/clients/${props.row.original.id_klienta}`)}
                     color="secondary">Otwórz</Typography>

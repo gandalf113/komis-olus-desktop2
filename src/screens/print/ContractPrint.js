@@ -61,18 +61,18 @@ const ContractPrint = () => {
                 Header: 'Przyjęta ilość',
                 accessor: 'przyjetaIlosc',
             },
-            {
-                Header: 'Sprzedana ilość',
-                accessor: 'sprzedanaIlosc',
-            },
-            {
-                Header: 'Zwrot towaru',
-                accessor: 'zwroconaIlosc',
-            },
-            {
-                Header: 'Ilość w komisie',
-                Cell: props => <div>{props.row.original.przyjetaIlosc - props.row.original.sprzedanaIlosc - props.row.original.zwroconaIlosc}</div>
-            },
+            // {
+            //     Header: 'Sprzedana ilość',
+            //     accessor: 'sprzedanaIlosc',
+            // },
+            // {
+            //     Header: 'Zwrot towaru',
+            //     accessor: 'zwroconaIlosc',
+            // },
+            // {
+            //     Header: 'Ilość w komisie',
+            //     Cell: props => <div>{props.row.original.przyjetaIlosc - props.row.original.sprzedanaIlosc - props.row.original.zwroconaIlosc}</div>
+            // },
             {
                 Header: 'Kwota dla komitenta (sztuka)',
                 accessor: 'kwotaDlaKomitenta',
@@ -82,15 +82,15 @@ const ContractPrint = () => {
                 Header: 'Kwota dla komitenta (całość)',
                 Cell: props => <div> {toCurrency(props.row.original.kwotaDlaKomitenta * props.row.original.przyjetaIlosc)} </div>
             },
-            {
-                Header: 'Domyślna marża',
-                accessor: 'domyslnaMarza',
-                Cell: props => <div> {toCurrency(props.value)} </div>
-            },
-            {
-                Header: 'Do wypłaty',
-                Cell: props => <div> {toCurrency(props.row.original.kwotaDlaKomitenta * props.row.original.sprzedanaIlosc)} </div>
-            },
+            // {
+            //     Header: 'Domyślna marża',
+            //     accessor: 'domyslnaMarza',
+            //     Cell: props => <div> {toCurrency(props.value)} </div>
+            // },
+            // {
+            //     Header: 'Do wypłaty',
+            //     Cell: props => <div> {toCurrency(props.row.original.kwotaDlaKomitenta * props.row.original.sprzedanaIlosc)} </div>
+            // },
         ],
         []
     )

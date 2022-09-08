@@ -143,13 +143,14 @@ searchClientExact = ipcMain.handle("search/clients/exact", async (event, args) =
 
 
 createClient = ipcMain.handle("create/client", async (event, args) => {
-    const { firstName, lastName, short } = args
+    const { firstName, lastName, short, address } = args
 
     return knex('klienci')
         .insert({
             imie: firstName,
             nazwisko: lastName,
-            skrot: short
+            skrot: short,
+            adres: address
         })
 })
 

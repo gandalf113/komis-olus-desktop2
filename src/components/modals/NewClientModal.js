@@ -51,6 +51,7 @@ export const NewClientModal = ({ isOpen, handleClose }) => {
     const [firstName, setFirstName] = useState('');
     const [lastName, setLastName] = useState('');
     const [short, setShort] = useState('');
+    const [address, setAddress] = useState('');
 
     // Reset the values on open
     useEffect(() => {
@@ -63,8 +64,8 @@ export const NewClientModal = ({ isOpen, handleClose }) => {
     const { reloadClients } = useContext(ClientContext);
 
 
-    const createClient = async (firstName, lastName, short) => {
-        window.api.createClient(firstName, lastName, short)
+    const createClient = async (firstName, lastName, short, address) => {
+        window.api.createClient(firstName, lastName, short, address)
             .then(_ => {
                 // Close the modal
                 dispatch(toggleNewClientModal(false))
@@ -114,6 +115,17 @@ export const NewClientModal = ({ isOpen, handleClose }) => {
                             }}
                         />
                         <TextField
+                            id="client-address-input"
+                            label="Adres"
+                            variant="filled"
+                            onChange={(e) => {
+                                setAddress(e.target.value)
+                            }}
+                            InputLabelProps={{
+                                shrink: true,
+                            }}
+                        />
+                        <TextField
                             id="client-short-input"
                             label="Skrót"
                             type="text"
@@ -126,7 +138,7 @@ export const NewClientModal = ({ isOpen, handleClose }) => {
                     </Box>
                     <DialogActions>
                         <Button onClick={() => {
-                            createClient(firstName, lastName, short)
+                            createClient(firstName, lastName, short, address);
                         }}>Dodaj</Button>
                     </DialogActions>
 

@@ -1,10 +1,11 @@
 import React, { useEffect, useCallback, useContext } from 'react'
 import { DataTable } from '../components/DataTable'
-import { Typography } from '@mui/material';
+import { IconButton, Typography, Button } from '@mui/material';
 import { useDispatch } from 'react-redux';
 import { setNavbarTitle, setPath } from '../redux/screenSlice';
 import { ContractContext } from '../context/contract-context';
 import EditIcon from '@mui/icons-material/Edit';
+import ReceiptIcon from '@mui/icons-material/Receipt';
 import { useNavigate } from 'react-router-dom';
 import { toggleEditContractModal } from '../redux/modalSlice';
 
@@ -55,18 +56,22 @@ const ContractsScreen = () => {
             },
             {
                 Header: 'Otwórz',
-                Cell: props => <Typography sx={{ cursor: 'pointer' }} onClick={() => openContract(props.row.original)}
-                    color="secondary">Otwórz umowę</Typography>
+                Cell: props => <IconButton sx={{ cursor: 'pointer' }} onClick={() => openContract(props.row.original)}>
+                    <ReceiptIcon />
+                </IconButton>
 
             },
             {
                 Header: 'Edytuj',
-                Cell: props => <EditIcon
+                Cell: props => <IconButton
                     onClick={() => {
                         setCurrentlyEditedContract(props.row.original);
                         dispatch(toggleEditContractModal(true));
-                    }}
-                    sx={{ cursor: 'pointer' }} />
+                    }}>
+                    <EditIcon
+
+                        sx={{ cursor: 'pointer' }} />
+                </IconButton>
             },
         ],
         [openContract]
