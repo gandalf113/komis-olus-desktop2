@@ -13,7 +13,7 @@ const ReturnsScreen = () => {
     const navigate = useNavigate();
 
     const openPrintView = (id) => {
-        navigate(`/returns/print/${id}`);
+        navigate(`/returns/${id}/print`);
     }
 
     useEffect(() => {
@@ -50,11 +50,7 @@ const ReturnsScreen = () => {
             {
                 Header: 'Drukuj',
                 Cell: props => <IconButton onClick={() => openPrintView(props.row.original.id_zwrotu)}>
-                    <PrintIcon
-                        onClick={() => {
-                            // setCurrentlyEditedContract(props.row.original);
-                            // dispatch(toggleEditContractModal(true));
-                        }} />
+                    <PrintIcon/>
                 </IconButton>
             },
         ],

@@ -16,7 +16,7 @@ import SearchBar from './modals/SearchBar';
 
 Modal.setAppElement('#root');
 
-export const DataTable = ({ loading, tableData, columns = {} }) => {
+export const DataTable = ({ loading, tableData, columns = {}, hideSearchBar=false }) => {
     const data = React.useMemo(
         () => tableData,
         [tableData]
@@ -44,9 +44,9 @@ export const DataTable = ({ loading, tableData, columns = {} }) => {
 
     return (
         <TableContainer>
-            <SearchBar preGlobalFilteredRows={preGlobalFilteredRows}
+            {hideSearchBar || <SearchBar preGlobalFilteredRows={preGlobalFilteredRows}
                 globalFilter={state.globalFilter}
-                setGlobalFilter={setGlobalFilter} />
+                setGlobalFilter={setGlobalFilter} />}
             <Table  {...getTableProps()}>
                 <TableHead>
                     {// Loop over the header rows

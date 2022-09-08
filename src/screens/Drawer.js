@@ -44,6 +44,7 @@ import ClientDetailScreen from './ClientDetailScreen';
 import ClientSummaryScreen from './ClientSummaryScreen';
 import ReturnsScreen from './ReturnsScreen';
 import ReturnPrint from './print/ReturnPrint';
+import ContractPrint from './print/ContractPrint';
 
 import "../global.css";
 
@@ -248,6 +249,7 @@ export default function PersistentDrawerLeft({ renderScreen }) {
 
                     <Route path="/contracts" element={<ContractsScreen />} />
                     <Route path='/contracts/:id' element={<ContractDetailScreen />} />
+                    <Route path='/contracts/:id/print' element={<ContractPrint />} />
 
                     <Route path="/sales/all" element={<AllSales />} />
                     <Route path="/sales" element={<SalesScreen />} />
@@ -256,7 +258,7 @@ export default function PersistentDrawerLeft({ renderScreen }) {
                     <Route path="/sales/:date/:day" element={<DailySales />} />
 
                     <Route path="/returns" element={<ReturnsScreen />} />
-                    <Route path="/returns/print/:id" element={<ReturnPrint />} />
+                    <Route path="/returns/:id/print" element={<ReturnPrint />} />
                 </Routes>
             </Main>
         </Box>

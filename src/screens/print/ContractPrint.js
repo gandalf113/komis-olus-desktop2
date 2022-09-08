@@ -1,20 +1,16 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux';
-import { DataTable } from '../components/DataTable'
+import { DataTable } from '../../components/DataTable'
 import { Box, Button, Typography } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
 import AssignmentReturnIcon from '@mui/icons-material/AssignmentReturn';
-import { toggleEditItemModal, toggleNewItemModal, toggleNewReturnModal } from '../redux/modalSlice';
-import { toCurrency, decToHex } from '../utils/miscUtils';
+import { toggleEditItemModal, toggleNewItemModal, toggleNewReturnModal } from '../../redux/modalSlice';
 import { useNavigate, useParams } from 'react-router-dom';
-import { ContractContext } from '../context/contract-context';
-import { fullDateToString } from '../utils/date-utils';
+import { ContractContext } from '../../context/contract-context';
+import { toCurrency, decToHex } from '../../utils/miscUtils';
+import { fullDateToString } from '../../utils/date-utils';
 
-
-// Contract detail screen
-const ContractDetailScreen = () => {
-    // Redux
-    // const { detailedContractData: items } = useSelector(state => state.database)
+const ContractPrint = () => {
     const { loading } = useSelector(state => state.screen)
 
     const [items, setItems] = useState();
@@ -93,32 +89,9 @@ const ContractDetailScreen = () => {
                 accessor: 'domyslnaMarza',
                 Cell: props => <div> {toCurrency(props.value)} </div>
             },
-            // {
-            //     Header: 'Cena',
-            //     accessor: 'cena',
-            //     Cell: props => <div> {toCurrency(props.value)} </div>
-            // },
             {
                 Header: 'Do wypłaty',
                 Cell: props => <div> {toCurrency(props.row.original.kwotaDlaKomitenta * props.row.original.sprzedanaIlosc)} </div>
-            },
-            {
-                Header: 'Edytuj',
-                Cell: props => <EditIcon
-                    onClick={() => {
-                        setCurrentlyEditetItem(props.row.original);
-                        dispatch(toggleEditItemModal(true))
-                    }}
-                    sx={{ cursor: 'pointer' }} />
-            },
-            {
-                Header: 'Zwróć',
-                Cell: props => <AssignmentReturnIcon
-                    onClick={() => {
-                        setCurrentlyEditetItem(props.row.original);
-                        dispatch(toggleNewReturnModal(true));
-                    }}
-                    sx={{ cursor: 'pointer' }} />
             },
         ],
         [dispatch, setCurrentlyEditetItem]
@@ -126,44 +99,49 @@ const ContractDetailScreen = () => {
 
     if (!contract || !items || !client) return null
 
-    const openPrintView = () => {
-        navigate('print')
+    const handlePrint = () => {
+        window.printer.print(`umowa_${contract.numer_umowy}_${client.skrot}_${contract.data}`)
     }
 
     return (
-        <div>
-            <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'end', gap: 6 }}>
-                <Box>
+        <Box sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between', height: '80vh' }}>
+            <Box>
+                <Button onClick={handlePrint}
+                    variant='contained' color='inherit' sx={{ marginBottom: 4 }}>Drukuj</Button>
+                <Box sx={{
+                    display: 'flex', justifyContent: 'space-between',
+                    alignItems: 'end', gap: 6, marginBottom: 5
+                }}>
                     <Typography align='justify' variant="body1" fontSize={21}>
-                        Umowa nr. {contract.numer_umowy} - {client.skrot}
+                        Umowa nr. {contract.numer_umowy}
                     </Typography>
                     <Typography align='justify' variant="body2" fontSize={21}>
+                        {client.imie} {client.nazwisko} ({client.skrot})
                     </Typography>
                 </Box>
-                <Typography align='justify' variant="body2" fontSize={21}>
-                    {client.imie} {client.nazwisko}, {fullDateToString(contract.data)}
+            </Box>
 
+
+            <DataTable loading={loading} tableData={items} apiCallback={window.api.getItemsWithContracts}
+                columns={columns} apiArgs={contract.id_umowy} hideSearchBar />
+
+            <Box sx={{
+                display: 'flex', justifyContent: 'space-between',
+                alignItems: 'end', gap: 6, flexGrow: 1
+            }}>
+                <Typography align='justify' variant="body1" fontSize={21}>
+                    {fullDateToString(contract.data)}
                 </Typography>
-                {/* <Typography sx={{ mb: 1 }}>{contract.data}</Typography> */}
-            </Box>
-            <Box sx={{ mb: 2, display: 'flex', alignItems: 'end', gap: 1 }}>
-                <Button
-                    onClick={() => dispatch(toggleNewItemModal(true))} variant="contained" color="secondary" style={{ marginTop: 20 }}>
-                    Przyjmij towar
-                </Button>
-                <Button
-                    onClick={openPrintView} variant="contained" color="inherit" style={{ marginTop: 20 }}>
-                    Drukuj PDF
-                </Button>
-                <Button
-                    onClick={() => console.log(contract)} variant="contained" color="inherit" style={{ marginTop: 20 }}>
-                    Drukuj metki
-                </Button>
+
+                <Box>
+                    <Typography variant='body1' sx={{ marginBottom: 3 }}>Podpis: </Typography>
+                    <Typography variant='body2'>____________________________________</Typography>
+                </Box>
             </Box>
 
-            <DataTable loading={loading} tableData={items} columns={columns} />
-        </div>
+
+        </Box>
     )
 }
 
-export default ContractDetailScreen
+export default ContractPrint
