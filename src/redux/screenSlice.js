@@ -7,6 +7,7 @@ export const screenSlice = createSlice({
         currentScreen: 'klienci',
         currentContract: {},
         currentSalesDay: null,
+        path: ''
     },
     reducers: {
         setScreen: (state, action) => {
@@ -21,9 +22,12 @@ export const screenSlice = createSlice({
         setNavbarTitle: (state, action) => {
             state.navbarTitle = action.payload
         },
+        setPath: (state, action) => {
+            state.path = action.payload
+        }
     }
 })
 
-export const { setScreen, loadContract, loadSalesDay, setNavbarTitle } = screenSlice.actions
+export const { setScreen, loadContract, loadSalesDay, setNavbarTitle, setPath } = screenSlice.actions
 
 export default screenSlice.reducer

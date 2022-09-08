@@ -6,8 +6,7 @@ import {
     useNavigate,
 } from "react-router-dom";
 import { styled, useTheme } from '@mui/material/styles';
-import Box from '@mui/material/Box';
-import { Badge } from '@mui/material';
+import { Link, Breadcrumbs, Box, Button } from '@mui/material';
 import Drawer from '@mui/material/Drawer';
 import CssBaseline from '@mui/material/CssBaseline';
 import MuiAppBar from '@mui/material/AppBar';
@@ -23,13 +22,9 @@ import ReceiptIcon from '@mui/icons-material/Receipt';
 import PersonAddIcon from '@mui/icons-material/PersonAdd';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
-import MailIcon from '@mui/icons-material/Mail';
-import NotificationsIcon from '@mui/icons-material/Notifications';
-import AccountCircle from '@mui/icons-material/AccountCircle';
 import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
-import MoreIcon from '@mui/icons-material/MoreVert';
 import AssignmentReturnIcon from '@mui/icons-material/AssignmentReturn';
 import AddIcon from '@mui/icons-material/Add';
 import PrintIcon from '@mui/icons-material/Print';
@@ -106,7 +101,7 @@ export default function PersistentDrawerLeft({ renderScreen }) {
     const theme = useTheme();
     const [open, setOpen] = React.useState(true);
 
-    const { navbarTitle } = useSelector(state => state.screen);
+    const { navbarTitle, path } = useSelector(state => state.screen);
 
     const dispatch = useDispatch();
     const navigate = useNavigate();
@@ -123,6 +118,15 @@ export default function PersistentDrawerLeft({ renderScreen }) {
     const handleGoBack = () => {
         navigate(-1);
     }
+
+    const getBreadcrumsPath = () => {
+        const realPath = location.pathname.split('/');
+        const displayedPath = path.split('\\');
+
+        return { realPath, displayedPath }
+    }
+
+    const combinedPath = getBreadcrumsPath();
 
     return (
         <Box sx={{ display: 'flex' }}>
@@ -145,7 +149,20 @@ export default function PersistentDrawerLeft({ renderScreen }) {
                     </IconButton>
                     <Typography variant="h6" noWrap component="div">
                         {/* Komis OLUŚ */}
-                        {location.pathname}
+                        <Breadcrumbs aria-label="breadcrumb">
+                            {combinedPath.displayedPath.map((p, index) => (
+                                <Typography color='lightgray'
+                                onClick={() => navigate(combinedPath.realPath[index + 1])}>
+                                    {p}
+                                </Typography>
+                            ))}
+                            {/* <Typography color='lightgray' onClick={() => navigate('/clients')}>
+                                Klienci
+                            </Typography>
+                            <Typography color='white' onClick={() => navigate('/clients/21')}>
+                                koka1
+                            </Typography> */}
+                        </Breadcrumbs>
                     </Typography>
                     <Box sx={{ flexGrow: 1 }} />
                     <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
@@ -161,6 +178,7 @@ export default function PersistentDrawerLeft({ renderScreen }) {
                         </IconButton>
                     </Box>
                 </Toolbar>
+
             </AppBar>
             <Drawer
                 sx={{

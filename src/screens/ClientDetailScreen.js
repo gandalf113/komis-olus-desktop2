@@ -5,6 +5,8 @@ import { DataTable } from '../components/DataTable';
 import { ClientContext } from '../context/client-context';
 import TabPanel from '../components/TabPanel';
 import ClientSummaryScreen from './ClientSummaryScreen';
+import { useDispatch } from 'react-redux';
+import { setPath } from '../redux/screenSlice';
 
 function a11yProps(index) {
     return {
@@ -17,6 +19,7 @@ function a11yProps(index) {
 const ClientDetailScreen = () => {
     const { id } = useParams();
     const navigate = useNavigate();
+    const dispatch = useDispatch();
 
     const [contracts, setContracts] = useState();
     const [client, setClient] = useState();
@@ -32,6 +35,7 @@ const ClientDetailScreen = () => {
     useEffect(() => {
         window.api.getClient(id).then(res => {
             const client = res[0];
+            dispatch(setPath(`Klienci\\${client.skrot}`));
             setCurrentlyEditetClient(client);
             setClient(client);
         });

@@ -9,6 +9,7 @@ import { toCurrency, decToHex } from '../utils/miscUtils';
 import { useNavigate, useParams } from 'react-router-dom';
 import { ContractContext } from '../context/contract-context';
 import { fullDateToString } from '../utils/date-utils';
+import { setPath } from '../redux/screenSlice';
 
 
 // Contract detail screen
@@ -33,6 +34,7 @@ const ContractDetailScreen = () => {
         window.api.getContract(id).then(res => {
             const contract = res[0]
             setContract(contract)
+            dispatch(setPath(`Umowy\\${contract.numer_umowy}`))
 
             // Pobierz klienta
             window.api.getClient(contract.id_klienta).then(res => {

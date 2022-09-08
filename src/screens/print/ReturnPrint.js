@@ -6,6 +6,7 @@ import { fullDateToString } from '../../utils/date-utils';
 import { decToHex, toCurrency } from '../../utils/miscUtils';
 import { openNotification as showNotification } from '../../redux/notificationSlice';
 import '../../global.css';
+import { setPath } from '../../redux/screenSlice';
 
 const ReturnPrint = () => {
   const { id } = useParams();
@@ -24,6 +25,7 @@ const ReturnPrint = () => {
   }
 
   useEffect(() => {
+    dispatch(setPath(`Zwroty\\${id}\\Podgląd wydruku`))
     const fetchReturn = async () => {
       window.api.getReturn(id).then(res => {
         setReturn(res[0]);
@@ -40,7 +42,7 @@ const ReturnPrint = () => {
     <div>
       <Box sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between', height: '80vh', paddingX: 12 }}>
         <Box>
-          <Button onClick={handlePrint} variant='contained' className='no-print'>Drukuj</Button>
+          {/* <Button onClick={handlePrint} variant='contained' className='no-print'>Drukuj</Button> */}
           <Typography sx={{ marginY: 5 }}
             variant='h4'>Pokwitowanie zwrotu towaru dla <i>{_return.imie} {_return.nazwisko}</i></Typography>
           <Typography variant='body1' fontSize={20}><b>Numer umowy:</b> {_return.numer_umowy}</Typography>

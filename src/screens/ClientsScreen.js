@@ -1,7 +1,7 @@
 import React, { useContext, useEffect } from 'react'
 import { DataTable } from '../components/DataTable'
 import { useDispatch } from 'react-redux'
-import { setNavbarTitle } from '../redux/screenSlice';
+import { setNavbarTitle, setPath } from '../redux/screenSlice';
 import { ClientContext } from '../context/client-context';
 import { Typography } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
@@ -13,7 +13,8 @@ const ClientsScreen = () => {
     const { allClients: clients, reloadClients } = useContext(ClientContext);
 
     useEffect(() => {
-        dispatch(setNavbarTitle('klienci'))
+
+        dispatch(setPath('Klienci'))
         reloadClients();
     }, [dispatch])
 

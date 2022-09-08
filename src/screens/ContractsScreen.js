@@ -2,7 +2,7 @@ import React, { useEffect, useCallback, useContext } from 'react'
 import { DataTable } from '../components/DataTable'
 import { Typography } from '@mui/material';
 import { useDispatch } from 'react-redux';
-import { setNavbarTitle } from '../redux/screenSlice';
+import { setNavbarTitle, setPath } from '../redux/screenSlice';
 import { ContractContext } from '../context/contract-context';
 import EditIcon from '@mui/icons-material/Edit';
 import { useNavigate } from 'react-router-dom';
@@ -15,7 +15,8 @@ const ContractsScreen = () => {
     const { allContracts: contracts, reloadContracts, setCurrentlyEditedContract } = useContext(ContractContext);
 
     useEffect(() => {
-        dispatch(setNavbarTitle('umowy'))
+        dispatch(setPath('Umowy'))
+        dispatch(setNavbarTitle('umowy'));
         reloadContracts();
     }, [dispatch])
 

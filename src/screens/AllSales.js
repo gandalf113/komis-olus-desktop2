@@ -5,6 +5,7 @@ import { toCurrency } from '../utils/miscUtils';
 import EditIcon from '@mui/icons-material/Edit';
 import { toggleEditSaleModal } from '../redux/modalSlice';
 import { useDispatch } from 'react-redux';
+import { setPath } from '../redux/screenSlice';
 
 const AllSales = () => {
     // const [sales, setSales] = useState();
@@ -13,6 +14,7 @@ const AllSales = () => {
     const { allSales: sales, reloadSales, setCurrentlyEditedSale } = useContext(SalesContext);
 
     useEffect(() => {
+        dispatch(setPath('Cała sprzedaż'))
         reloadSales();
     }, []);
 

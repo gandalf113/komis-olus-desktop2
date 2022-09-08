@@ -44,9 +44,9 @@ export const DataTable = ({ loading, tableData, columns = {}, hideSearchBar=fals
 
     return (
         <TableContainer>
-            {/* {hideSearchBar || <SearchBar preGlobalFilteredRows={preGlobalFilteredRows}
+            {hideSearchBar || <SearchBar preGlobalFilteredRows={preGlobalFilteredRows}
                 globalFilter={state.globalFilter}
-                setGlobalFilter={setGlobalFilter} />} */}
+                setGlobalFilter={setGlobalFilter} />}
             <Table  {...getTableProps()}>
                 <TableHead>
                     {// Loop over the header rows

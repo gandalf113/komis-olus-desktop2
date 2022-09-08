@@ -6,6 +6,8 @@ import { useParams } from 'react-router-dom';
 import { SalesContext } from '../context/sales-context';
 import { toggleEditSaleModal } from '../redux/modalSlice';
 import EditIcon from '@mui/icons-material/Edit';
+import { setPath } from '../redux/screenSlice';
+import { yearAndMonthToString } from '../utils/date-utils';
 
 
 /**
@@ -36,7 +38,13 @@ const DailySales = () => {
         return `${date}-${day}`
     }
 
+    const getMonthAndYear = () => {
+        alert(date);
+    }
+
     useEffect(() => {
+        const readableDate = yearAndMonthToString(date);
+        dispatch(setPath(`Sprzedaż\\${readableDate}\\${day} ${readableDate}`))
         const dailySales = getDailySales(allSales, fullDate());
         setSales(dailySales);
     }, [allSales])

@@ -1,22 +1,26 @@
 import React, { useContext, useEffect, useMemo } from 'react'
+import { useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
 import { ReturnsContext } from '../context/return-context'
 import PrintIcon from '@mui/icons-material/Print';
 import { DataTable } from '../components/DataTable';
 import LoadingSpinner from '../components/LoadingSpinner';
 import { decToHex } from '../utils/miscUtils';
 import { IconButton, Typography } from '@mui/material';
-import { useNavigate } from 'react-router-dom';
+import { setPath } from '../redux/screenSlice';
 
 const ReturnsScreen = () => {
     const { allReturns, reloadReturns } = useContext(ReturnsContext);
 
     const navigate = useNavigate();
+    const dispatch = useDispatch();
 
     const openPrintView = (id) => {
         navigate(`/returns/${id}/print`);
     }
 
     useEffect(() => {
+        dispatch(setPath('Zwroty'))
         reloadReturns();
     }, [])
 

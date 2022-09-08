@@ -4,7 +4,9 @@ import { DataTable } from '../components/DataTable';
 import { Typography } from '@mui/material';
 import { SalesContext } from '../context/sales-context';
 import { getMonthlySales } from '../utils/sale-utils';
-import { extractDay, fullDateToString } from '../utils/date-utils';
+import { extractDay, fullDateToString, yearAndMonthToString } from '../utils/date-utils';
+import { useDispatch } from 'react-redux';
+import { setPath } from '../redux/screenSlice';
 
 const MonthlySales = () => {
     const { date } = useParams();
@@ -12,6 +14,7 @@ const MonthlySales = () => {
     const [days, setDays] = useState();
 
     const navigate = useNavigate();
+    const dispatch = useDispatch();
 
     const { allSales } = useContext(SalesContext);
 
@@ -20,6 +23,8 @@ const MonthlySales = () => {
      * i pogrupuj tą sprzedaż wg. dnia
      */
     useEffect(() => {
+        const readableDate = yearAndMonthToString(date);
+        dispatch(setPath(`Sprzedaż\\${readableDate}`));
         const sales = getMonthlySales(allSales, date);
 
         // Pobierz unikalną listę dni handlowych
@@ -61,7 +66,7 @@ const MonthlySales = () => {
 
     return (
         <div>
-            <DataTable loading={false} tableData={days} columns={columns} />
+            <DataTable loading={false} tableData={days} columns={columns} hideSearchBar />
         </div>
     )
 }
