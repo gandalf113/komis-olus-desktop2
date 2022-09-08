@@ -1,11 +1,8 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux';
 import { DataTable } from '../../components/DataTable'
-import { Box, Button, Typography } from '@mui/material';
-import EditIcon from '@mui/icons-material/Edit';
-import AssignmentReturnIcon from '@mui/icons-material/AssignmentReturn';
-import { toggleEditItemModal, toggleNewItemModal, toggleNewReturnModal } from '../../redux/modalSlice';
-import { useNavigate, useParams } from 'react-router-dom';
+import { Box, Typography } from '@mui/material';
+import { useParams } from 'react-router-dom';
 import { ContractContext } from '../../context/contract-context';
 import { toCurrency, decToHex } from '../../utils/miscUtils';
 import { fullDateToString } from '../../utils/date-utils';
@@ -19,10 +16,9 @@ const ContractPrint = () => {
     const [client, setClient] = useState();
 
     const { id } = useParams();
-    const { setCurrentContractID, allContracts, setCurrentlyEditetItem } = useContext(ContractContext);
+    const { setCurrentContractID, allContracts } = useContext(ContractContext);
 
     const dispatch = useDispatch();
-    const navigate = useNavigate();
 
     useEffect(() => {
         setCurrentContractID(id);
@@ -48,7 +44,7 @@ const ContractPrint = () => {
         return () => {
             setCurrentContractID(null);
         }
-    }, [dispatch, id, allContracts, setCurrentContractID]);
+    }, [id, allContracts, dispatch, setCurrentContractID]);
 
     const columns = React.useMemo(
         () => [
@@ -96,14 +92,10 @@ const ContractPrint = () => {
                 Cell: props => <div> {toCurrency(props.row.original.kwotaDlaKomitenta * props.row.original.sprzedanaIlosc)} </div>
             },
         ],
-        [dispatch, setCurrentlyEditetItem]
+        []
     )
 
     if (!contract || !items || !client) return null
-
-    const handlePrint = () => {
-        window.printer.print(`umowa_${contract.numer_umowy}_${client.skrot}_${contract.data}`)
-    }
 
     return (
         <Box sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between', height: '80vh' }}>

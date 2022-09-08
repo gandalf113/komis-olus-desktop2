@@ -86,7 +86,7 @@ const ClientSummaryScreen = () => {
             {
                 Header: 'Kwota',
                 accessor: 'kwota',
-                Cell: props => <p>{toCurrency(props.value)}</p>
+                Cell: props => <Typography variant='body'>{toCurrency(props.value)}</Typography>
             },
             {
                 Header: 'Data wypłaty',
@@ -100,9 +100,6 @@ const ClientSummaryScreen = () => {
 
     const sumOfSales = getSumOfSales(items);
 
-    const handleOpenClientContracts = () => {
-        navigate(`/clients/${id}`);
-    }
 
     const handleOpenNewWithdrawModal = () => {
         setWithdrawableAmount(getWithdrawAmount(sumOfSales, withdraws));
@@ -112,15 +109,15 @@ const ClientSummaryScreen = () => {
 
     return (
         <div>
-            <Box style={{ alignItems: 'center', marginBottom: 12 }}>
+            <Box style={{ alignItems: 'center' }}>
                 {/* <Typography variant='h5'>{client.imie} {client.nazwisko} - {client.skrot}</Typography>
                 <Button onClick={handleOpenClientContracts}
                     style={{ marginTop: 10, marginBottom: 10 }} color='secondary' variant='contained'>Pokaż umowy</Button> */}
-                <Button onClick={handleOpenNewWithdrawModal}
-                    style={{ margin: 10 }} color='inherit' variant='contained'>Dodaj wypłatę</Button>
+                {/* <Button onClick={handleOpenNewWithdrawModal}
+                    style={{ margin: 10 }} color='inherit' variant='contained'>Dodaj wypłatę</Button> */}
             </Box>
             <DataTable loading={false} tableData={withdraws} columns={columms} />
-            <Box style={{ display: 'flex', flexDirection: 'column', marginTop: 8 }}>
+            <Box style={{ display: 'flex', flexDirection: 'column', marginTop: 4 }}>
                 <Typography variant='body'>Suma sprzedaży: {toCurrency(sumOfSales)} </Typography>
                 <Typography variant='body'>Do wypłaty: {toCurrency(getWithdrawAmount(sumOfSales, withdraws))} </Typography>
             </Box>

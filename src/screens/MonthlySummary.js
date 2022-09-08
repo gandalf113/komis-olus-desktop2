@@ -96,7 +96,7 @@ const MonthlySummary = () => {
 
   return (
     <div>
-      <DataTable loading={false} columns={columns} tableData={summary} />
+      <DataTable loading={false} columns={columns} tableData={summary} hideSearchBar/>
       <Box sx={{ marginTop: 2, marginLeft: 1 }}>
         <Typography variant='h6'>RAZEM:</Typography>
         <Typography>Prowizja: {getPropertySum(summary, 'prowizja')} zł</Typography>

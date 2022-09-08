@@ -1,10 +1,9 @@
-import { Box, Typography, Button } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import { fullDateToString } from '../../utils/date-utils';
 import { decToHex, toCurrency } from '../../utils/miscUtils';
-import { openNotification as showNotification } from '../../redux/notificationSlice';
 import '../../global.css';
 import { setPath } from '../../redux/screenSlice';
 
@@ -14,15 +13,15 @@ const ReturnPrint = () => {
 
   const [_return, setReturn] = useState();
 
-  const handlePrint = () => {
-    const hexId = decToHex(id);
+  // const handlePrint = () => {
+  //   const hexId = decToHex(id);
 
-    try {
-      window.printer.print(`zwrot_${_return.skrot}_${hexId}_${_return.data}`)
-    } catch (error) {
-      alert("Wystąpił błąd podczas drukowania");
-    }
-  }
+  //   try {
+  //     window.printer.print(`zwrot_${_return.skrot}_${hexId}_${_return.data}`)
+  //   } catch (error) {
+  //     alert("Wystąpił błąd podczas drukowania");
+  //   }
+  // }
 
   useEffect(() => {
     dispatch(setPath(`Zwroty\\${id}\\Podgląd wydruku`))
@@ -34,7 +33,7 @@ const ReturnPrint = () => {
     }
 
     fetchReturn();
-  }, [id]);
+  }, [id, dispatch]);
 
   if (!_return) return null;
 
@@ -42,7 +41,6 @@ const ReturnPrint = () => {
     <div>
       <Box sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between', height: '80vh', paddingX: 12 }}>
         <Box>
-          {/* <Button onClick={handlePrint} variant='contained' className='no-print'>Drukuj</Button> */}
           <Typography sx={{ marginY: 5 }}
             variant='h4'>Pokwitowanie zwrotu towaru dla <i>{_return.imie} {_return.nazwisko}</i></Typography>
           <Typography variant='body1' fontSize={20}><b>Numer umowy:</b> {_return.numer_umowy}</Typography>

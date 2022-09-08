@@ -79,12 +79,9 @@ const ClientDetailScreen = () => {
 
     if (!contracts || !client) return null
 
-    const handleOpenSummary = () => {
-        navigate(`summary`);
-    }
-
     return (
         <Box sx={{ width: '100%' }}>
+            <Typography variant='h5' sx={{marginBottom: 3}}>{client.imie} {client.nazwisko}</Typography>
             <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
                 <Tabs value={tabIndex} onChange={handleTabChange} aria-label="basic tabs example">
                     <Tab label="Umowy" {...a11yProps(0)} />

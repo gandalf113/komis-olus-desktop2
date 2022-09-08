@@ -58,15 +58,6 @@ const SalesScreen = () => {
                     color="secondary">Otwórz miesiąc</Typography>
 
             },
-            {
-                Header: 'Podsumowanie',
-                Cell: props => <Typography sx={{ cursor: 'pointer' }}
-                    onClick={() => {
-                        navigate(`/sales/${props.row.original.miesiac}/summary`)
-                    }}
-                    color="secondary">Podsumowanie</Typography>
-
-            },
         ],
         [navigate]
     )

@@ -119,14 +119,11 @@ export default function PersistentDrawerLeft({ renderScreen }) {
         navigate(-1);
     }
 
-    const getBreadcrumsPath = () => {
-        const realPath = location.pathname.split('/');
-        const displayedPath = path.split('\\');
-
-        return { realPath, displayedPath }
+    const handlePrint = () => {
+        window.printer.print();
     }
 
-    const combinedPath = getBreadcrumsPath();
+    const breadcrumbs = path.split('\\');
 
     return (
         <Box sx={{ display: 'flex' }}>
@@ -150,9 +147,8 @@ export default function PersistentDrawerLeft({ renderScreen }) {
                     <Typography variant="h6" noWrap component="div">
                         {/* Komis OLUŚ */}
                         <Breadcrumbs aria-label="breadcrumb">
-                            {combinedPath.displayedPath.map((p, index) => (
-                                <Typography color='lightgray'
-                                onClick={() => navigate(combinedPath.realPath[index + 1])}>
+                            {breadcrumbs.map((p, index) => (
+                                <Typography key={p} color={index === breadcrumbs.length - 1 ? 'white' : 'lightgray'}>
                                     {p}
                                 </Typography>
                             ))}
@@ -166,14 +162,14 @@ export default function PersistentDrawerLeft({ renderScreen }) {
                     </Typography>
                     <Box sx={{ flexGrow: 1 }} />
                     <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
-                        <IconButton
+                        {/* <IconButton
                             size="large"
                             aria-label="show 17 new notifications"
                             color="inherit"
                         >
                             <AddIcon />
-                        </IconButton>
-                        <IconButton size="large" aria-label="show 4 new mails" color="inherit">
+                        </IconButton> */}
+                        <IconButton onClick={handlePrint}  size="large" aria-label="show 4 new mails" color="inherit">
                             <PrintIcon />
                         </IconButton>
                     </Box>
@@ -282,7 +278,6 @@ export default function PersistentDrawerLeft({ renderScreen }) {
                     <Route path="/" element={<>Komis Olus</>} exact />
                     <Route path="/clients" element={<ClientsScreen />} />
                     <Route path="/clients/:id" element={<ClientDetailScreen />} />
-                    <Route path="/clients/:id/summary" element={<ClientSummaryScreen />} />
 
                     <Route path="/contracts" element={<ContractsScreen />} />
                     <Route path='/contracts/:id' element={<ContractDetailScreen />} />
@@ -291,7 +286,6 @@ export default function PersistentDrawerLeft({ renderScreen }) {
                     <Route path="/sales/all" element={<AllSales />} />
                     <Route path="/sales" element={<SalesScreen />} />
                     <Route path="/sales/:date" element={<MonthlySales />} />
-                    <Route path="/sales/:date/summary" element={<MonthlySummary />} />
                     <Route path="/sales/:date/:day" element={<DailySales />} />
 
                     <Route path="/returns" element={<ReturnsScreen />} />
