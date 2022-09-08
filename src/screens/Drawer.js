@@ -7,6 +7,7 @@ import {
 } from "react-router-dom";
 import { styled, useTheme } from '@mui/material/styles';
 import Box from '@mui/material/Box';
+import { Badge } from '@mui/material';
 import Drawer from '@mui/material/Drawer';
 import CssBaseline from '@mui/material/CssBaseline';
 import MuiAppBar from '@mui/material/AppBar';
@@ -22,10 +23,16 @@ import ReceiptIcon from '@mui/icons-material/Receipt';
 import PersonAddIcon from '@mui/icons-material/PersonAdd';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
+import MailIcon from '@mui/icons-material/Mail';
+import NotificationsIcon from '@mui/icons-material/Notifications';
+import AccountCircle from '@mui/icons-material/AccountCircle';
 import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
+import MoreIcon from '@mui/icons-material/MoreVert';
 import AssignmentReturnIcon from '@mui/icons-material/AssignmentReturn';
+import AddIcon from '@mui/icons-material/Add';
+import PrintIcon from '@mui/icons-material/Print';
 import ListItemText from '@mui/material/ListItemText';
 import PointOfSaleIcon from '@mui/icons-material/PointOfSale';
 import { useDispatch, useSelector } from 'react-redux';
@@ -53,7 +60,7 @@ const drawerWidth = 240;
 const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })(
     ({ theme, open }) => ({
         flexGrow: 1,
-        padding: theme.spacing(3),
+        padding: theme.spacing(2),
         transition: theme.transitions.create('margin', {
             easing: theme.transitions.easing.sharp,
             duration: theme.transitions.duration.leavingScreen,
@@ -101,7 +108,6 @@ export default function PersistentDrawerLeft({ renderScreen }) {
 
     const { navbarTitle } = useSelector(state => state.screen);
 
-
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const location = useLocation();
@@ -141,6 +147,19 @@ export default function PersistentDrawerLeft({ renderScreen }) {
                         {/* Komis OLUŚ */}
                         {location.pathname}
                     </Typography>
+                    <Box sx={{ flexGrow: 1 }} />
+                    <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
+                        <IconButton
+                            size="large"
+                            aria-label="show 17 new notifications"
+                            color="inherit"
+                        >
+                            <AddIcon />
+                        </IconButton>
+                        <IconButton size="large" aria-label="show 4 new mails" color="inherit">
+                            <PrintIcon />
+                        </IconButton>
+                    </Box>
                 </Toolbar>
             </AppBar>
             <Drawer

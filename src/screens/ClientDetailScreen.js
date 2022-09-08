@@ -1,8 +1,18 @@
 import React, { useEffect, useState, useMemo, useCallback, useContext } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
-import { Typography, Box, Button } from '@mui/material'
+import { Typography, Box, Button, Tabs, Tab } from '@mui/material'
 import { DataTable } from '../components/DataTable';
 import { ClientContext } from '../context/client-context';
+import TabPanel from '../components/TabPanel';
+import ClientSummaryScreen from './ClientSummaryScreen';
+
+function a11yProps(index) {
+    return {
+        id: `simple-tab-${index}`,
+        'aria-controls': `simple-tabpanel-${index}`,
+    };
+}
+
 
 const ClientDetailScreen = () => {
     const { id } = useParams();
@@ -10,6 +20,12 @@ const ClientDetailScreen = () => {
 
     const [contracts, setContracts] = useState();
     const [client, setClient] = useState();
+
+    const [tabIndex, setTabIndex] = useState(0);
+
+    const handleTabChange = (event, newValue) => {
+        setTabIndex(newValue);
+    };
 
     const { setCurrentlyEditetClient } = useContext(ClientContext);
 
@@ -64,15 +80,26 @@ const ClientDetailScreen = () => {
     }
 
     return (
-        <div>
-            <Box style={{ alignItems: 'center', marginBottom: 12 }}>
-                <Typography variant='h5'>{client.imie} {client.nazwisko} - {client.skrot}</Typography>
-                <Button onClick={handleOpenSummary}
-                    style={{ marginTop: 10, marginBottom: 10 }} color='secondary' variant='contained'>Otwórz wypłaty</Button>
+        <Box sx={{ width: '100%' }}>
+            <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+                <Tabs value={tabIndex} onChange={handleTabChange} aria-label="basic tabs example">
+                    <Tab label="Umowy" {...a11yProps(0)} />
+                    <Tab label="Wypłaty" {...a11yProps(1)} />
+                </Tabs>
             </Box>
+            {/* Client's contracts */}
+            <TabPanel value={tabIndex} index={0}>
+                <Box style={{ alignItems: 'center' }}>
+                </Box>
 
-            <DataTable loading={false} tableData={contracts} columns={columns} />
-        </div>
+                <DataTable loading={false} tableData={contracts} columns={columns} />
+            </TabPanel>
+
+            {/* Client's withdraws */}
+            <TabPanel value={tabIndex} index={1}>
+                <ClientSummaryScreen/>
+            </TabPanel>
+        </Box>
     )
 }
 

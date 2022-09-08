@@ -106,8 +106,8 @@ const ContractPrint = () => {
     return (
         <Box sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between', height: '80vh' }}>
             <Box>
-                <Button onClick={handlePrint}
-                    variant='contained' color='inherit' sx={{ marginBottom: 4 }}>Drukuj</Button>
+                {/* <Button onClick={handlePrint}
+                    variant='contained' color='inherit' sx={{ marginBottom: 4 }}>Drukuj</Button> */}
                 <Box sx={{
                     display: 'flex', justifyContent: 'space-between',
                     alignItems: 'end', gap: 6, marginBottom: 5
