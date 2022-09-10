@@ -45,7 +45,7 @@ const ClientDetailScreen = () => {
         window.api.getClientsContracts(id).then(res => {
             setContracts(res);
         });
-    }, [])
+    }, [dispatch, id])
 
     const openContract = useCallback(
         (contract) => {
@@ -84,7 +84,8 @@ const ClientDetailScreen = () => {
     return (
         <Box sx={{ width: '100%' }}>
             <Typography variant='h5' sx={{ marginBottom: 1 }}>{client.imie} {client.nazwisko}</Typography>
-            <Typography variant='body1' sx={{ marginBottom: 1 }}>{client.adres}</Typography>
+            <Typography variant='body1' sx={{ marginBottom: 1 }}>Adres: {client.adres || '-'}</Typography>
+            <Typography variant='body1' sx={{ marginBottom: 1 }}>Telefon: {client.nr_tel || '-'}</Typography>
             <Box sx={{ borderBottom: 1, borderColor: 'divider' }} className='no-print'>
                 <Tabs value={tabIndex} onChange={handleTabChange} aria-label="basic tabs example">
                     <Tab label="Umowy" {...a11yProps(0)} />

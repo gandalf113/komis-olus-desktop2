@@ -52,20 +52,23 @@ export const NewClientModal = ({ isOpen, handleClose }) => {
     const [lastName, setLastName] = useState('');
     const [short, setShort] = useState('');
     const [address, setAddress] = useState('');
+    const [phone, setPhone] = useState('');
 
     // Reset the values on open
     useEffect(() => {
         setFirstName('');
         setLastName('');
         setShort('');
+        setAddress('');
+        setPhone('');
     }, [isOpen])
 
     const dispatch = useDispatch();
     const { reloadClients } = useContext(ClientContext);
 
 
-    const createClient = async (firstName, lastName, short, address) => {
-        window.api.createClient(firstName, lastName, short, address)
+    const createClient = async (firstName, lastName, short, address, phone) => {
+        window.api.createClient(firstName, lastName, short, address, phone)
             .then(_ => {
                 // Close the modal
                 dispatch(toggleNewClientModal(false))
@@ -126,6 +129,17 @@ export const NewClientModal = ({ isOpen, handleClose }) => {
                             }}
                         />
                         <TextField
+                            id="client-phone-input"
+                            label="Numer Telefonu"
+                            variant="filled"
+                            onChange={(e) => {
+                                setPhone(e.target.value)
+                            }}
+                            InputLabelProps={{
+                                shrink: true,
+                            }}
+                        />
+                        <TextField
                             id="client-short-input"
                             label="Skrót"
                             type="text"
@@ -138,7 +152,7 @@ export const NewClientModal = ({ isOpen, handleClose }) => {
                     </Box>
                     <DialogActions>
                         <Button onClick={() => {
-                            createClient(firstName, lastName, short, address);
+                            createClient(firstName, lastName, short, address, phone);
                         }}>Dodaj</Button>
                     </DialogActions>
 
