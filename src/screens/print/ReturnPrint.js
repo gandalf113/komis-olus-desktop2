@@ -6,6 +6,7 @@ import { fullDateToString } from '../../utils/date-utils';
 import { decToHex, toCurrency } from '../../utils/miscUtils';
 import '../../global.css';
 import { setPath } from '../../redux/screenSlice';
+import PrintTemplate from './PrintTemplate';
 
 const ReturnPrint = () => {
   const { id } = useParams();
@@ -38,11 +39,12 @@ const ReturnPrint = () => {
   if (!_return) return null;
 
   return (
-    <div>
+    <PrintTemplate date={_return.data}>
       <Box sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between', height: '80vh', paddingX: 12 }}>
         <Box>
           <Typography sx={{ marginY: 5 }}
-            variant='h4'>Pokwitowanie zwrotu towaru dla <i>{_return.imie} {_return.nazwisko}</i></Typography>
+            variant='h4'>Pokwitowanie zwrotu towaru przyjętego
+            do Komisu dla <i>{_return.imie} {_return.nazwisko}</i></Typography>
           <Typography variant='body1' fontSize={20}><b>Numer umowy:</b> {_return.numer_umowy}</Typography>
           <Typography variant='body1' fontSize={20}><b>Kod przedmiotu:</b> {decToHex(_return.id_przedmiotu)}</Typography>
           <Typography variant='body1' fontSize={20}><b>Nazwa towaru:</b> {_return.nazwa}</Typography>
@@ -51,15 +53,18 @@ const ReturnPrint = () => {
 
         </Box>
         <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-          <Typography variant='body' fontSize={24}>{fullDateToString(_return.data)}</Typography>
           <Box>
-            <Typography variant='body1' sx={{ marginBottom: 3 }}>Podpis: </Typography>
-            <Typography variant='body2'>___________________________</Typography>
+            <Typography variant='body1' sx={{ marginBottom: 3 }}>Podpis sprzedawcy: </Typography>
+            <Typography variant='body2'>{"...".repeat(20)}</Typography>
+          </Box>
+          <Box>
+            <Typography variant='body1' sx={{ marginBottom: 3 }}>Podpis odbierającego: </Typography>
+            <Typography variant='body2'>{"...".repeat(20)}</Typography>
           </Box>
         </Box>
 
       </Box>
-    </div>
+    </PrintTemplate>
   )
 }
 

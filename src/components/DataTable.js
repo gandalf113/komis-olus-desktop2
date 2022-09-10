@@ -16,7 +16,7 @@ import SearchBar from './modals/SearchBar';
 
 Modal.setAppElement('#root');
 
-export const DataTable = ({ loading, tableData, columns = {}, hideSearchBar=false }) => {
+export const DataTable = ({ loading, tableData, columns = {}, hideSearchBar = false, shrinkRows = false }) => {
     const data = React.useMemo(
         () => tableData,
         [tableData]
@@ -78,12 +78,14 @@ export const DataTable = ({ loading, tableData, columns = {}, hideSearchBar=fals
                             prepareRow(row)
                             return (
                                 // Apply the row props
-                                <TableRow {...row.getRowProps()}>
+                                <TableRow {...row.getRowProps()} >
                                     {// Loop over the rows cells
                                         row.cells.map(cell => {
                                             // Apply the cell props
                                             return (
-                                                <TableCell {...cell.getCellProps()}>
+                                                <TableCell {...cell.getCellProps()}
+                                                    sx={{ paddingY: shrinkRows ? 0.5 : 2 }}
+                                                >
                                                     {// Render the cell contents
                                                         cell.render('Cell')}
                                                 </TableCell>
