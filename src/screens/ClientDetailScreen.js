@@ -8,6 +8,8 @@ import ClientSummaryScreen from './ClientSummaryScreen';
 import { useDispatch } from 'react-redux';
 import { setPath } from '../redux/screenSlice';
 
+import '../global.css';
+
 function a11yProps(index) {
     return {
         id: `simple-tab-${index}`,
@@ -83,7 +85,7 @@ const ClientDetailScreen = () => {
         <Box sx={{ width: '100%' }}>
             <Typography variant='h5' sx={{ marginBottom: 1 }}>{client.imie} {client.nazwisko}</Typography>
             <Typography variant='body1' sx={{ marginBottom: 1 }}>{client.adres}</Typography>
-            <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+            <Box sx={{ borderBottom: 1, borderColor: 'divider' }} className='no-print'>
                 <Tabs value={tabIndex} onChange={handleTabChange} aria-label="basic tabs example">
                     <Tab label="Umowy" {...a11yProps(0)} />
                     <Tab label="Wypłaty" {...a11yProps(1)} />

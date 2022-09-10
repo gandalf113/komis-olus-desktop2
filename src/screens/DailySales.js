@@ -1,6 +1,8 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux';
+import { Box, Tab, Tabs } from '@mui/material';
 import { DataTable } from '../components/DataTable'
+import TabPanel from '../components/TabPanel';
 import { toCurrency } from '../utils/miscUtils';
 import { useParams } from 'react-router-dom';
 import { SalesContext } from '../context/sales-context';
@@ -8,6 +10,14 @@ import { toggleEditSaleModal } from '../redux/modalSlice';
 import EditIcon from '@mui/icons-material/Edit';
 import { setPath } from '../redux/screenSlice';
 import { yearAndMonthToString } from '../utils/date-utils';
+import DailySummary from './DailySummary';
+
+function a11yProps(index) {
+    return {
+        id: `simple-tab-${index}`,
+        'aria-controls': `simple-tabpanel-${index}`,
+    };
+}
 
 
 /**
@@ -26,20 +36,19 @@ const getDailySales = (allSales, date) => {
 
 const DailySales = () => {
     const dispatch = useDispatch();
+    const { date, day } = useParams();
 
     const [sales, setSales] = useState();
-
-    const { date, day } = useParams();
+    const [tabIndex, setTabIndex] = useState(0);
 
     const { allSales, setCurrentlyEditedSale } = useContext(SalesContext);
 
-    const fullDate = () => {
-        // return month + '-' + day
-        return `${date}-${day}`
-    }
+    const handleTabChange = (event, newValue) => {
+        setTabIndex(newValue);
+    };
 
-    const getMonthAndYear = () => {
-        alert(date);
+    const fullDate = () => {
+        return `${date}-${day}`
     }
 
     useEffect(() => {
@@ -47,7 +56,7 @@ const DailySales = () => {
         dispatch(setPath(`Sprzedaż\\${readableDate}\\${day} ${readableDate}`))
         const dailySales = getDailySales(allSales, fullDate());
         setSales(dailySales);
-    }, [allSales])
+    }, [allSales, date, day, dispatch])
 
 
     const columns = React.useMemo(
@@ -94,12 +103,28 @@ const DailySales = () => {
         [dispatch, setCurrentlyEditedSale]
     )
 
-    if (!sales) return <div>oops</div>;
+    if (!sales) return <div></div>;
 
     return (
-        <div>
-            <DataTable loading={false} tableData={sales} columns={columns} />
-        </div>
+        <Box sx={{ width: '100%' }}>
+            <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+                <Tabs value={tabIndex} onChange={handleTabChange} aria-label="basic tabs example">
+                    <Tab label="Sprzedaż" {...a11yProps(0)} />
+                    <Tab label="Podsumowanie dnia" {...a11yProps(1)} />
+                </Tabs>
+            </Box>
+
+            {/* Sales */}
+            <TabPanel value={tabIndex} index={0}>
+                <DataTable loading={false} tableData={sales} columns={columns} />
+            </TabPanel>
+
+            {/* Summary */}
+            <TabPanel value={tabIndex} index={1}>
+                <DailySummary sales={sales} />
+            </TabPanel>
+
+        </Box>
     )
 }
 
