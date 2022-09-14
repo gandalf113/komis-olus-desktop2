@@ -95,6 +95,9 @@ export const NewContractModal = ({ isOpen, handleClose }) => {
          * @param {String} contractNumber - number of the contract relative to the year like '142/2022'
          */
         const handleCreation = (clientId, contractNumber) => {
+            console.log(clientId)
+            console.log(contractNumber)
+
             window.api.createContract(clientId, contractNumber, getToday())
                 .then(res => {
                     const contractId = res[0];
@@ -121,25 +124,30 @@ export const NewContractModal = ({ isOpen, handleClose }) => {
             // If we are creating a contract for EXISTING user
             handleCreation(client.id_klienta, contractNumber);
         } else {
+            // TODO: input address and phone here
+
             // If we are creating a contract for a NEW user
             // First, create the new user
-            window.api.createClient(firstName, lastName, short)
+            window.api.createClient(firstName, lastName, short, '', '')
                 .then(res => {
                     // Refresh the clients
                     reloadClients();
                     console.log(res)
 
                     const clientId = res[0]
+                    console.log(clientId);
                     return clientId;
                 })
                 .catch(error => {
+                    console.error(error);
                 })
                 .then(clientId => {
+                    console.log(clientId)
                     // Create the contract now that we have a valid client
                     handleCreation(clientId, contractNumber)
                 })
                 .catch(error => {
-                    alert('Nie udało się dodać klienta! Informacje o błędzie w konsoli.')
+                    // alert('Nie udało się dodać klienta! Informacje o błędzie w konsoli.')
                     console.error(error)
                 })
         }

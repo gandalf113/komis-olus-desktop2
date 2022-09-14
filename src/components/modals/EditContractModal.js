@@ -72,7 +72,7 @@ const EditContractModal = ({ isOpen, handleClose }) => {
     return (
         <Dialog open={isOpen} onClose={handleClose}>
             <DialogTitle>
-                Nowa umowa
+                Edytuj umowę
             </DialogTitle>
 
             <DialogContent style={{ minWidth: 560 }}>
