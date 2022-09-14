@@ -1,8 +1,10 @@
+import { Typography, IconButton } from '@mui/material';
 import React, { useContext, useEffect, useMemo } from 'react'
-import { useParams } from 'react-router-dom';
+import { Navigate, useNavigate, useParams } from 'react-router-dom';
 import { DataTable } from '../components/DataTable';
 import { ReturnsContext } from '../context/return-context'
 import { decToHex } from '../utils/miscUtils';
+import PrintIcon from '@mui/icons-material/Print';
 
 /**
  * Wyświetl zwroty dla danego klienta
@@ -15,14 +17,16 @@ const filterReturns = (allReturns, clientId) => {
 }
 
 const ClientReturnsScreen = () => {
-
     const { allReturns, reloadReturns } = useContext(ReturnsContext);
 
     const { id: clientId } = useParams();
+    const navigate = useNavigate();
 
     useEffect(() => {
         reloadReturns();
     }, []);
+
+    const openPrintView = (returnId) => navigate(`/returns/${returnId}/print`);
 
     const columns = useMemo(
         () => [
@@ -33,7 +37,7 @@ const ClientReturnsScreen = () => {
             {
                 Header: 'Kod z metki',
                 accessor: 'id_przedmiotu',
-                Cell: props => <p>{decToHex(props.value)}</p>
+                Cell: props => <Typography>{decToHex(props.value)}</Typography>
             },
             {
                 Header: 'Nazwa przedmiotu',
@@ -51,12 +55,12 @@ const ClientReturnsScreen = () => {
                 Header: 'Data zwrotu',
                 accessor: 'data',
             },
-            // {
-            //     Header: 'Drukuj',
-            //     Cell: props => <IconButton onClick={() => openPrintView(props.row.original.id_zwrotu)}>
-            //         <PrintIcon/>
-            //     </IconButton>
-            // },
+            {
+                Header: 'Drukuj',
+                Cell: props => <IconButton onClick={() => openPrintView(props.row.original.id_zwrotu)}>
+                    <PrintIcon/>
+                </IconButton>
+            },
         ],
         []
     )

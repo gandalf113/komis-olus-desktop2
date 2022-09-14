@@ -26,7 +26,6 @@ export const generateContractNumber = (allContracts, year) => {
 }
 
 export const NewContractModal = ({ isOpen, handleClose }) => {
-    const [clients, setClients] = useState([]);
     const [selectedClient, setSelectedClient] = useState();
 
     // New client form data
@@ -39,7 +38,7 @@ export const NewContractModal = ({ isOpen, handleClose }) => {
     const navigate = useNavigate();
 
     const { reloadContracts, allContracts } = useContext(ContractContext);
-    const { reloadClients } = useContext(ClientContext);
+    const { reloadClients, allClients } = useContext(ClientContext);
 
     const contractNumber = generateContractNumber(allContracts, new Date().getFullYear());
 
@@ -47,10 +46,6 @@ export const NewContractModal = ({ isOpen, handleClose }) => {
         setFirstName('');
         setLastName('');
         setShort('');
-        // Get clients on open
-        if (isOpen) {
-            getClients();
-        }
     }, [isOpen])
 
     const toggleIsNewClient = () => {
@@ -66,12 +61,6 @@ export const NewContractModal = ({ isOpen, handleClose }) => {
 
         today = yyyy + '-' + mm + '-' + dd;
         return today
-    }
-
-    const getClients = async () => {
-        await window.api.getClients().then(res => {
-            setClients(res);
-        })
     }
 
     const openContract = (contractId) => {
@@ -172,8 +161,8 @@ export const NewContractModal = ({ isOpen, handleClose }) => {
                             id="search-client"
                             freeSolo
                             disabled={isNewClient}
-                            options={clients}
-                            getOptionLabel={(client) => client.skrot + " -  " + client.imie + " " + client.nazwisko}
+                            options={allClients}
+                            getOptionLabel={(client) => client.skrot + " |  " + client.imie + " " + client.nazwisko + " | " + client.adres}
                             onChange={(event, client) => {
                                 if (client)
                                     setSelectedClient(client)
