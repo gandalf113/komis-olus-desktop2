@@ -1,16 +1,18 @@
 import React, { useContext, useEffect } from 'react'
 import { DataTable } from '../components/DataTable'
 import { useDispatch } from 'react-redux'
-import { setNavbarTitle, setPath } from '../redux/screenSlice';
 import { ClientContext } from '../context/client-context';
-import { Typography } from '@mui/material';
+import { setNavbarTitle, setPath } from '../redux/screenSlice';
+import { IconButton, Typography } from '@mui/material';
+import EditIcon from '@mui/icons-material/Edit';
 import { useNavigate } from 'react-router-dom';
+import { toggleEditClientModal } from '../redux/modalSlice';
 
 const ClientsScreen = () => {
     const dispatch = useDispatch()
     const navigate = useNavigate();
 
-    const { allClients: clients, reloadClients } = useContext(ClientContext);
+    const { allClients: clients, reloadClients, setCurrentlyEditetClient } = useContext(ClientContext);
 
     useEffect(() => {
 
@@ -48,8 +50,19 @@ const ClientsScreen = () => {
                 Header: 'Otwórz',
                 Cell: props => <Typography sx={{ cursor: 'pointer' }} onClick={() => navigate(`/clients/${props.row.original.id_klienta}`)}
                     color="secondary">Otwórz</Typography>
-
             },
+            {
+                Header: 'Edytuj',
+                Cell: props => <IconButton
+                    onClick={() => {
+                        setCurrentlyEditetClient(props.row.original);
+                        dispatch(toggleEditClientModal(true));
+                    }}>
+                    <EditIcon
+
+                        sx={{ cursor: 'pointer' }} />
+                </IconButton>
+            }
         ],
         []
     )

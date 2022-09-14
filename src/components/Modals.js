@@ -4,8 +4,10 @@ import {
     toggleNewClientModal, toggleNewReturnModal,
     toggleEditItemModal, toggleEditContractModal,
     toggleNewWithdrawModal,
-    toggleEditSaleModal
+    toggleEditSaleModal,
+    toggleEditClientModal
 } from '../redux/modalSlice';
+import EditClientModal from './modals/EditClientModal';
 import EditContractModal from './modals/EditContractModal';
 import EditItemModal from './modals/EditItemModal';
 import EditSaleModal from './modals/EditSaleModal';
@@ -28,7 +30,8 @@ const Modals = () => {
         newReturnIsOpen,
         editSaleIsOpen,
         editItemIsOpen,
-        editContractIsOpen
+        editContractIsOpen,
+        editClientIsOpen
     } = useSelector(state => state.modal)
 
     return (
@@ -42,6 +45,7 @@ const Modals = () => {
             <EditSaleModal isOpen={editSaleIsOpen} handleClose={() => dispatch(toggleEditSaleModal(false))} />
             <EditItemModal isOpen={editItemIsOpen} handleClose={() => dispatch(toggleEditItemModal(false))} />
             <EditContractModal isOpen={editContractIsOpen} handleClose={() => dispatch(toggleEditContractModal(false))} />
+            <EditClientModal isOpen={editClientIsOpen} handleClose={() => dispatch(toggleEditClientModal(false))} />
         </div>
     )
 }
