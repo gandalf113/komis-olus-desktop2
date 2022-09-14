@@ -12,10 +12,10 @@ import { ContractContext } from '../../context/contract-context';
 export const NewItemModal = ({ isOpen, handleClose }) => {
     // Local state
     const [name, setName] = useState('')
-    const [amount, setAmount] = useState(1)
-    const [commiterValue, setCommiterValue] = useState(0)
+    const [amount, setAmount] = useState('')
+    const [commiterValue, setCommiterValue] = useState('')
     const [margin, setMargin] = useState(0)
-    const [price, setPrice] = useState()
+    const [price, setPrice] = useState('')
 
     // Redux
     const { currentContract: contract } = useSelector(state => state.screen)
@@ -26,9 +26,9 @@ export const NewItemModal = ({ isOpen, handleClose }) => {
     // Reset the values on open
     useEffect(() => {
         setName('')
-        setCommiterValue(0)
+        setCommiterValue('')
         setMargin(0)
-        setAmount(1)
+        setAmount('')
         setPrice('0.00')
     }, [isOpen])
 
@@ -88,7 +88,7 @@ export const NewItemModal = ({ isOpen, handleClose }) => {
                             id="item-amount-input"
                             label="Ilość"
                             type="number"
-                            defaultValue={1}
+                            value={amount}
                             onChange={(e) => setAmount(e.target.value)}
                             InputLabelProps={{
                                 shrink: true,
