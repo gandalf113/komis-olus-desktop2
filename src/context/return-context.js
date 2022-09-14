@@ -1,6 +1,6 @@
 import { createContext, useState } from "react";
 
-export const ReturnsContext = createContext();
+export const ReturnsContext = createContext({});
 
 const ReturnsProvider = props => {
     const [allReturns, setAllReturns] = useState([]);

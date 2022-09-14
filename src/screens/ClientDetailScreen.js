@@ -9,6 +9,7 @@ import { useDispatch } from 'react-redux';
 import { setPath } from '../redux/screenSlice';
 
 import '../global.css';
+import ClientReturnsScreen from './ClientReturnsScreen';
 
 function a11yProps(index) {
     return {
@@ -90,6 +91,7 @@ const ClientDetailScreen = () => {
                 <Tabs value={tabIndex} onChange={handleTabChange} aria-label="basic tabs example">
                     <Tab label="Umowy" {...a11yProps(0)} />
                     <Tab label="Wypłaty" {...a11yProps(1)} />
+                    <Tab label="Zwroty" {...a11yProps(2)} />
                 </Tabs>
             </Box>
             {/* Client's contracts */}
@@ -103,6 +105,11 @@ const ClientDetailScreen = () => {
             {/* Client's withdraws */}
             <TabPanel value={tabIndex} index={1}>
                 <ClientSummaryScreen />
+            </TabPanel>
+
+            {/* Client's returns */}
+            <TabPanel value={tabIndex} index={2}>
+                <ClientReturnsScreen />
             </TabPanel>
         </Box>
     )
