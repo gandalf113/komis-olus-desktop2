@@ -1,70 +1,270 @@
-# Getting Started with Create React App
+# MENADŻER SKLEPU
+<p>Program powstał dla komisu odzieżowego, pozwala na zarządzanie bazą danych z klientami, umowami oraz sprzedażą.</p>
+<img src="/preview.png" alt="preview">
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## BAZA DANYCH
+Program korzysta z bazy SQLlite3.
+### Lokalizacja
+Obecnie baza danych jest automatycznie wczytywana z lokalizacji: <i>C:/KOMIS_OLUS/database.sqlite</i>.
+W przyszłości dodana zostanie możliwość ręcznego wyboru bazy danych.
+### Struktura
 
-## Available Scripts
+#### Klienci
+<table style="width: 240px;" border="1" cellpadding="4">
+<tbody>
+<tr>
+<th>NAZWA</th>
+<th>TYP</th>
+<th>OPIS</th>
+<th>OBCY_KLUCZ</th>
+</tr>
+<tr>
+<td>id_klienta</td>
+<td>INTEGER</td>
+<td>klucz główny</td>
+<td></td>
+</tr>
+<tr>
+<td>skrot</td>
+<td>TEXT</td>
+<td>powstaje z dwóch pierwszych liter imienia i nazwiska oraz liczby porządkowej, np. mona2</td>
+<td></td>
+</tr>
+<tr>
+<td>imie</td>
+<td>TEXT</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+</tr>
+<tr>
+<td>nazwisko</td>
+<td>TEXT</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+</tr>
+<tr>
+<td>adres</td>
+<td>TEXT</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+</tr>
+<tr>
+<td>nr_tel</td>
+<td>TEXT</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+</tr>
+</tbody>
+</table>
 
-In the project directory, you can run:
+#### Przedmioty
+<table style="width: 240px;" border="1" cellpadding="4">
+<tbody>
+<tr>
+<th>NAZWA</th>
+<th>TYP</th>
+<th>OPIS</th>
+<th>OBCY_KLUCZ</th>
+</tr>
+<tr>
+<td>id_przedmiotu</td>
+<td>INTEGER</td>
+<td>klucz główny</td>
+<td></td>
+</tr>
+<tr>
+<td>id_umowy</td>
+<td>INTEGER</td>
+<td>id umowy, do której należy przedmiot</td>
+<td>umowy.id_umowy</td>
+</tr>
+<tr>
+<td>nazwa</td>
+<td>TEXT</td>
+<td>nazwa przedmiotu np. zielony sweter</td>
+<td>&nbsp;</td>
+</tr>
+<tr>
+<td>przyjetaIlosc</td>
+<td>INTEGER</td>
+<td>ilość sztuk przedmiotu w momencie przyjęcia do komisu</td>
+<td>&nbsp;</td>
+</tr>
+<tr>
+<td>sprzedanaIlosc</td>
+<td>INTEGER</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+</tr>
+<tr>
+<td>zwroconaIlosc</td>
+<td>INTEGER</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+</tr>
+<tr>
+<td>kwotaDlaKomitenta</td>
+<td>NUMERIC</td>
+<td>kwota, którą zarobi komitent</td>
+<td>&nbsp;</td>
+</tr>
 
-### `npm start`
+<tr>
+<td>domyslnaMarza</td>
+<td>NUMERIC</td>
+<td>marżę można zmienić w momencie sprzedaży</td>
+<td>&nbsp;</td>
+</tr>
+</tbody>
+</table>
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+#### Sprzedaż
+<table style="width: 240px;" border="1" cellpadding="4">
+<tbody>
+<tr>
+<th>NAZWA</th>
+<th>TYP</th>
+<th>OPIS</th>
+<th>OBCY_KLUCZ</th>
+</tr>
+<tr>
+<td>id_sprzedazy</td>
+<td>INTEGER</td>
+<td>klucz główny</td>
+<td></td>
+</tr>
+<tr>
+<td>id_przedmiotu</td>
+<td>INTEGER</td>
+<td>id przedmiotu, który się sprzedał</td>
+<td>przedmioty.id_przedmiotu</td>
+</tr>
+<tr>
+<td>data</td>
+<td>TEXT</td>
+<td>data w formacie yyyy-mm-dd</td>
+<td>&nbsp;</td>
+</tr>
+<tr>
+<td>marza</td>
+<td>NUMERIC</td>
+<td>kwota, którą zarobi komis</td>
+<td>&nbsp;</td>
+</tr>
+<tr>
+<td>cena</td>
+<td>NUMERIC</td>
+<td>przedmiot.kwotaDlaKomitenta + sprzedaz.marza</td>
+<td>&nbsp;</td>
+</tr>
+</tbody>
+</table>
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+#### Umowy
+<table style="width: 240px;" border="1" cellpadding="4">
+<tbody>
+<tr>
+<th>NAZWA</th>
+<th>TYP</th>
+<th>OPIS</th>
+<th>OBCY_KLUCZ</th>
+</tr>
+<tr>
+<td>id_umowy</td>
+<td>INTEGER</td>
+<td>klucz główny</td>
+<td></td>
+</tr>
+<tr>
+<td>id_klienta</td>
+<td>INTEGER</td>
+<td>id klienta, z którymy zawarta jest umowa</td>
+<td>klienci.id_klienta</td>
+</tr>
+<tr>
+<td>data</td>
+<td>TEXT</td>
+<td>data zawarcia umowy w formacie yyyy-mm-dd</td>
+<td>&nbsp;</td>
+</tr>
+<tr>
+<td>numer_umowy</td>
+<td>TEXT</td>
+<td>identyfikator, np. 6/2022 dla szóstej umowy w 2022 roku</td>
+<td>&nbsp;</td>
+</tr>
+</tbody>
+</table>
 
-### `npm test`
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+#### Wyplaty
+<table style="width: 240px;" border="1" cellpadding="4">
+<tbody>
+<tr>
+<th>NAZWA</th>
+<th>TYP</th>
+<th>OPIS</th>
+<th>OBCY_KLUCZ</th>
+</tr>
+<tr>
+<td>id_wyplaty</td>
+<td>INTEGER</td>
+<td>klucz główny</td>
+<td></td>
+</tr>
+<tr>
+<td>id_klienta</td>
+<td>INTEGER</td>
+<td>id klienta, który wypłaca pieniądze</td>
+<td>klienci.id_klienta</td>
+</tr>
+<tr>
+<td>data</td>
+<td>TEXT</td>
+<td>data wypłaty w formacie yyyy-mm-dd</td>
+<td>&nbsp;</td>
+</tr>
+<tr>
+<td>kwota</td>
+<td>NUMERIC</td>
+<td>wypłacana kwota</td>
+<td>&nbsp;</td>
+</tr>
+</tbody>
+</table>
 
-### `npm run build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+#### Zwroty
+<table style="width: 240px;" border="1" cellpadding="4">
+<tbody>
+<tr>
+<th>NAZWA</th>
+<th>TYP</th>
+<th>OPIS</th>
+<th>OBCY_KLUCZ</th>
+</tr>
+<tr>
+<td>id_zwrotu</td>
+<td>INTEGER</td>
+<td>klucz główny</td>
+<td></td>
+</tr>
+<tr>
+<td>id_przedmiotu</td>
+<td>INTEGER</td>
+<td>id zwracanego przedmiotu</td>
+<td>przedmioty.id_przedmiotu</td>
+</tr>
+<tr>
+<td>data</td>
+<td>TEXT</td>
+<td>data zwrotu w formacie yyyy-mm-dd</td>
+<td>&nbsp;</td>
+</tr>
+<tr>
+<td>ilosc</td>
+<td>INTEGER</td>
+<td>ilość zwracanych sztuk</td>
+<td>&nbsp;</td>
+</tr>
+</tbody>
+</table>
