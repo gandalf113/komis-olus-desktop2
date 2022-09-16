@@ -32,7 +32,7 @@ import ListItemText from '@mui/material/ListItemText';
 import PointOfSaleIcon from '@mui/icons-material/PointOfSale';
 import { useDispatch, useSelector } from 'react-redux';
 import { setScreen } from '../redux/screenSlice';
-import { toggleNewClientModal, toggleNewContractModal, toggleNewSaleModal } from '../redux/modalSlice';
+import { setClientModal, toggleNewClientModal, toggleNewContractModal, toggleNewSaleModal } from '../redux/modalSlice';
 
 import SalesScreen from './SalesScreen';
 import ClientsScreen from './ClientsScreen';
@@ -169,7 +169,7 @@ export default function PersistentDrawerLeft() {
                         >
                             <AddIcon />
                         </IconButton> */}
-                        <IconButton onClick={handlePrint}  size="large" aria-label="show 4 new mails" color="inherit">
+                        <IconButton onClick={handlePrint} size="large" aria-label="show 4 new mails" color="inherit">
                             <PrintIcon />
                         </IconButton>
                     </Box>
@@ -245,7 +245,10 @@ export default function PersistentDrawerLeft() {
                 <Divider />
                 <List>
                     <ListItem disablePadding>
-                        <ListItemButton onClick={() => dispatch(toggleNewClientModal(true))}>
+                        <ListItemButton onClick={() => dispatch(setClientModal({
+                            isOpen: true,
+                            edit: false
+                        }))}>
                             <ListItemIcon>
                                 <PersonAddIcon />
                             </ListItemIcon>

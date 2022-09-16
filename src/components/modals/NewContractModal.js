@@ -10,7 +10,7 @@ import { openNotification as showNotification } from '../../redux/notificationSl
 import { ContractContext } from '../../context/contract-context';
 import { useNavigate } from 'react-router-dom';
 import { Box } from '@mui/system';
-import { generateShort } from './NewClientModal';
+import { generateShort } from './ClientModal';
 import { ClientContext } from '../../context/client-context';
 
 

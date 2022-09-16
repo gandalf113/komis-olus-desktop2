@@ -6,7 +6,7 @@ import { setNavbarTitle, setPath } from '../redux/screenSlice';
 import { IconButton, Typography } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
 import { useNavigate } from 'react-router-dom';
-import { toggleEditClientModal } from '../redux/modalSlice';
+import { setClientModal, toggleEditClientModal } from '../redux/modalSlice';
 
 const ClientsScreen = () => {
     const dispatch = useDispatch()
@@ -55,8 +55,11 @@ const ClientsScreen = () => {
                 Header: 'Edytuj',
                 Cell: props => <IconButton
                     onClick={() => {
-                        setCurrentlyEditetClient(props.row.original);
-                        dispatch(toggleEditClientModal(true));
+                        dispatch(setClientModal({
+                            isOpen: true,
+                            edit: true,
+                            client: props.row.original,
+                        }))
                     }}>
                     <EditIcon
 

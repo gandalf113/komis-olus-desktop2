@@ -2,9 +2,9 @@ import React, { useContext, useEffect, useState } from 'react'
 import {
     Dialog, DialogTitle, DialogContent, DialogActions, TextField, Box, Button
 } from '@mui/material';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { openNotification as showNotification } from '../../redux/notificationSlice';
-import { toggleNewClientModal } from '../../redux/modalSlice';
+import { toggleEditClientModal } from '../../redux/modalSlice';
 import { ClientContext } from '../../context/client-context';
 
 /**
@@ -42,36 +42,57 @@ export const generateShort = async (firstName, lastName) => {
 
     const suffix = await findFreeSuffix(1)
 
-    // Suffix is undefined :(
     return short + suffix
 }
 
-export const NewClientModal = ({ isOpen, handleClose }) => {
+export const ClientModal = ({ isOpen, handleClose }) => {
+    const dispatch = useDispatch();
+
+    const { reloadClients } = useContext(ClientContext);
+    const { clientModal } = useSelector(state => state.modal);
+
     // Local state
+    const [clientId, setClientId] = useState('');
     const [firstName, setFirstName] = useState('');
     const [lastName, setLastName] = useState('');
     const [short, setShort] = useState('');
     const [address, setAddress] = useState('');
     const [phone, setPhone] = useState('');
 
-    // Reset the values on open
+    // Load the values on open
     useEffect(() => {
-        setFirstName('');
-        setLastName('');
-        setShort('');
-        setAddress('');
-        setPhone('');
-    }, [isOpen])
-
-    const dispatch = useDispatch();
-    const { reloadClients } = useContext(ClientContext);
+        setClientId(clientModal.edit ? clientModal.client.id_klienta : '');
+        setFirstName(clientModal.edit ? clientModal.client.imie : '');
+        setLastName(clientModal.edit ? clientModal.client.nazwisko : '');
+        setShort(clientModal.edit ? clientModal.client.skrot : '');
+        setAddress(clientModal.edit ? clientModal.client.adres : '');
+        setPhone(clientModal.edit ? clientModal.client.nr_tel : '');
+    }, [isOpen]);
 
 
-    const createClient = async (firstName, lastName, short, address, phone) => {
+    const updateClient = async () => {
+        const clientId = clientModal.client.id_klienta;
+
+        window.api.updateClient(clientId, firstName, lastName, short, address, phone)
+            .then(_ => {
+                // Close the modal
+                handleClose();
+                // Refresh the clients
+                reloadClients();
+                // Show success notification
+                dispatch(showNotification(`Pomyślnie zaktualizowano klienta: ${short}`))
+            })
+            .catch(error => {
+                alert('Nie udało się dodać klienta! Informacje o błędzie w konsoli.')
+                console.error(error)
+            })
+    }
+
+    const createClient = async () => {
         window.api.createClient(firstName, lastName, short, address, phone)
             .then(_ => {
                 // Close the modal
-                dispatch(toggleNewClientModal(false))
+                handleClose();
                 // Refresh the clients
                 reloadClients();
                 // Show success notification
@@ -83,16 +104,18 @@ export const NewClientModal = ({ isOpen, handleClose }) => {
             })
     }
 
+
     return (
         <div>
             <Dialog open={isOpen} onClose={handleClose}>
-                <DialogTitle>Nowy klient</DialogTitle>
+                <DialogTitle>{clientModal.edit ? 'Edytuj klienta' : 'Nowy klient'}</DialogTitle>
                 <DialogContent style={{ mt: 2, minWidth: 560 }}>
                     <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
                         <TextField
                             id="client-first-name-input"
                             label="Imię"
                             variant="filled"
+                            value={firstName}
                             onChange={(e) => {
                                 setFirstName(e.target.value)
 
@@ -107,6 +130,7 @@ export const NewClientModal = ({ isOpen, handleClose }) => {
                             id="client-last-name-input"
                             label="Nazwisko"
                             variant="filled"
+                            value={lastName}
                             onChange={(e) => {
                                 setLastName(e.target.value)
 
@@ -121,6 +145,7 @@ export const NewClientModal = ({ isOpen, handleClose }) => {
                             id="client-address-input"
                             label="Adres"
                             variant="filled"
+                            value={address}
                             onChange={(e) => {
                                 setAddress(e.target.value)
                             }}
@@ -132,6 +157,7 @@ export const NewClientModal = ({ isOpen, handleClose }) => {
                             id="client-phone-input"
                             label="Numer Telefonu"
                             variant="filled"
+                            value={phone}
                             onChange={(e) => {
                                 setPhone(e.target.value)
                             }}
@@ -151,9 +177,7 @@ export const NewClientModal = ({ isOpen, handleClose }) => {
                         />
                     </Box>
                     <DialogActions>
-                        <Button onClick={() => {
-                            createClient(firstName, lastName, short, address, phone);
-                        }}>Dodaj</Button>
+                        <Button onClick={clientModal.edit ? updateClient : createClient}>Zapisz</Button>
                     </DialogActions>
 
                 </DialogContent>
@@ -162,4 +186,4 @@ export const NewClientModal = ({ isOpen, handleClose }) => {
     );
 }
 
-export default NewClientModal
+export default ClientModal
