@@ -4,7 +4,7 @@ import { DataTable } from '../components/DataTable'
 import { Box, Button, Typography } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
 import AssignmentReturnIcon from '@mui/icons-material/AssignmentReturn';
-import { toggleEditItemModal, toggleNewItemModal, toggleNewReturnModal } from '../redux/modalSlice';
+import { setItemModal } from '../redux/modalSlice';
 import { toCurrency, decToHex } from '../utils/miscUtils';
 import { useNavigate, useParams } from 'react-router-dom';
 import { ContractContext } from '../context/contract-context';
@@ -108,8 +108,12 @@ const ContractDetailScreen = () => {
                 Header: 'Edytuj',
                 Cell: props => <EditIcon
                     onClick={() => {
-                        setCurrentlyEditetItem(props.row.original);
-                        dispatch(toggleEditItemModal(true))
+                        dispatch(setItemModal({
+                            isOpen: true,
+                            edit: true,
+                            item: props.row.original,
+                            contract: contract
+                        }))
                     }}
                     sx={{ cursor: 'pointer' }} />
             },
@@ -117,8 +121,7 @@ const ContractDetailScreen = () => {
                 Header: 'Zwróć',
                 Cell: props => <AssignmentReturnIcon
                     onClick={() => {
-                        setCurrentlyEditetItem(props.row.original);
-                        dispatch(toggleNewReturnModal(true));
+
                     }}
                     sx={{ cursor: 'pointer' }} />
             },
@@ -150,7 +153,11 @@ const ContractDetailScreen = () => {
             </Box>
             <Box sx={{ mb: 2, display: 'flex', alignItems: 'end', gap: 1 }}>
                 <Button
-                    onClick={() => dispatch(toggleNewItemModal(true))} variant="contained" color="secondary" style={{ marginTop: 20 }}>
+                    onClick={() => dispatch(setItemModal({
+                        isOpen: true,
+                        edit: false,
+                        contract: contract
+                    }))} variant="contained" color="secondary" style={{ marginTop: 20 }}>
                     Przyjmij towar
                 </Button>
                 <Button

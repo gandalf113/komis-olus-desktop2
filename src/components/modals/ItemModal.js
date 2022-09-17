@@ -5,36 +5,65 @@ import {
 import { openNotification as showNotification } from '../../redux/notificationSlice';
 import { ContractContext } from '../../context/contract-context';
 import { calculatePrice } from '../../utils/miscUtils';
+import { useSelector } from 'react-redux';
 
-export const EditItemModal = ({ isOpen, handleClose }) => {
+export const ItemModal = ({ isOpen, handleClose }) => {
     // Local state
-    const [name, setName] = useState('')
-    const [amount, setAmount] = useState(1)
-    const [commiterValue, setCommiterValue] = useState(0)
-    const [margin, setMargin] = useState(0)
-    const [price, setPrice] = useState(0)
+    const [name, setName] = useState('');
+    const [amount, setAmount] = useState('');
+    const [commiterValue, setCommiterValue] = useState('');
+    const [margin, setMargin] = useState('');
+    const [price, setPrice] = useState('0.00');
 
-    const { reloadContracts, currentlyEditedItem } = useContext(ContractContext);
+    const { reloadContracts } = useContext(ContractContext);
+    const { itemModal } = useSelector(state => state.modal);
 
     // Ustaw wartości pól
     useEffect(() => {
-        if (currentlyEditedItem) {
-            setName(currentlyEditedItem.nazwa)
-            setCommiterValue(currentlyEditedItem.kwotaDlaKomitenta)
-            setAmount(currentlyEditedItem.przyjetaIlosc)
-            setMargin(currentlyEditedItem.domyslnaMarza)
-        }
-    }, [isOpen, currentlyEditedItem])
+        setName(itemModal.edit ? itemModal.item.nazwa : '')
+        setCommiterValue(itemModal.edit ? itemModal.item.kwotaDlaKomitenta : '')
+        setAmount(itemModal.edit ? itemModal.item.przyjetaIlosc : '')
+        setMargin(itemModal.edit ? itemModal.item.domyslnaMarza : '')
+    }, [isOpen, itemModal])
 
     useEffect(() => {
         const newPrice = calculatePrice(commiterValue, margin)
-        setPrice(`${newPrice} zł`)
+
+        if (newPrice === 'NaN') setPrice('')
+        else setPrice(`${newPrice} zł`)
     }, [commiterValue, margin])
 
     const validateForm = () => {
         return name.trim !== '' && amount >= 1 && commiterValue && commiterValue > 0 &&
             price
     }
+
+
+    /**
+     *
+     * @param {string} name - item name
+     * @param {number} commiterValue - amount of money for the commiter
+     * @param {number} defaultMargin - profit for the company
+     * @param {int} amount - how many items of this kind has the commiter brought
+     */
+    const createItem = async (name, commiterValue, defaultMargin, amount) => {
+        const contract = itemModal.contract;
+
+        window.api.createItem(name, amount, commiterValue, defaultMargin, contract.id_umowy)
+            .then(_ => {
+                // Close the modal
+                handleClose();
+                // Refresh the contract
+                reloadContracts();
+                // Show success notification
+                showNotification(`Pomyślnie dodano przedmiot do umowy ${contract.skrot}`)
+            })
+            .catch(error => {
+                alert('Nie udało się dodać przedmiotu! Informacje o błędzie w konsoli.')
+                console.error(error)
+            })
+    }
+
 
     /**
  *
@@ -83,7 +112,7 @@ export const EditItemModal = ({ isOpen, handleClose }) => {
     return (
         <div>
             <Dialog open={isOpen} onClose={handleClose}>
-                <DialogTitle>Edycja towaru</DialogTitle>
+                <DialogTitle>{itemModal.edit ? 'Edycja towaru' : 'Nowy towar'}</DialogTitle>
                 <DialogContent style={{ mt: 2, minWidth: 560 }}>
                     <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
                         <TextField
@@ -142,6 +171,7 @@ export const EditItemModal = ({ isOpen, handleClose }) => {
                             id="item-price-input-noneditable"
                             label="Cena"
                             type="text"
+                            placeholder='0.00 zł'
                             value={price}
                             InputLabelProps={{
                                 shrink: true,
@@ -151,14 +181,15 @@ export const EditItemModal = ({ isOpen, handleClose }) => {
 
                     </Box>
                     <DialogActions>
-                        <Button onClick={() => {
-                            deleteItem(currentlyEditedItem.id_przedmiotu);
-                        }} color='error'>Usuń</Button>
+                        {itemModal.edit && <Button onClick={() => {
+                            deleteItem(itemModal.item.id_przedmiotu);
+                        }} color='error'>Usuń</Button>}
                         <Button onClick={() => {
                             handleClose()
                         }}>Odrzuć</Button>
                         <Button onClick={() => {
-                            updateItem(currentlyEditedItem.id_przedmiotu, name, commiterValue, margin, amount)
+                            if (itemModal.edit) updateItem(itemModal.item.id_przedmiotu, name, commiterValue, margin, amount);
+                            else createItem(name, commiterValue, margin, amount);
                         }} disabled={!validateForm()}>Zapisz</Button>
                     </DialogActions>
 
@@ -168,4 +199,4 @@ export const EditItemModal = ({ isOpen, handleClose }) => {
     );
 }
 
-export default EditItemModal
+export default ItemModal

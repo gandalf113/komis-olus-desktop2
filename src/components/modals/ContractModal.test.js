@@ -1,4 +1,4 @@
-import { generateContractNumber } from "./NewContractModal";
+import { generateContractNumber } from "./ContractModal";
 
 const contracts = [
     {
