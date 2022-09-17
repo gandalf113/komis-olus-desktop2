@@ -45,16 +45,13 @@ export const ContractModal = ({ isOpen, handleClose }) => {
     const contractNumber = generateContractNumber(allContracts, new Date().getFullYear());
 
     useEffect(() => {
-        setFirstName('');
-        setLastName('');
-        setShort('');
-    }, [contractModal])
-
-    useEffect(() => {
         if (isOpen) {
-            if(allClients.length === 0) reloadClients();
+            if (allClients.length === 0) reloadClients();
+
 
             if (contractModal.edit) {
+                setIsNewClient(false);
+
                 const fetchSelectedClient = async (clientId) => {
                     window.api.getClient(clientId).then(res => {
                         setSelectedClient(res[0]);
@@ -62,6 +59,10 @@ export const ContractModal = ({ isOpen, handleClose }) => {
                 }
                 fetchSelectedClient(contractModal.contract.id_klienta);
             } else {
+                setFirstName('');
+                setLastName('');
+                setShort('');
+
                 setSelectedClient(null);
             }
         }
@@ -241,12 +242,12 @@ export const ContractModal = ({ isOpen, handleClose }) => {
                     </Box>
 
                 </DialogContent>
-                <DialogActions style={{ display: 'flex', justifyContent: 'space-between' }}>
-                    <FormControlLabel
+                <DialogActions style={{ display: 'flex', justifyContent: contractModal.edit ? 'flex-end' : 'space-between' }}>
+                    {!contractModal.edit && <FormControlLabel
                         control={<Switch
                             checked={isNewClient}
                             onChange={toggleIsNewClient} />}
-                        label={<Typography variant='button' color='gray'>Nowy klient?</Typography>} />
+                        label={<Typography variant='button' color='gray'>Nowy klient?</Typography>} />}
 
                     <Button onClick={() => {
                         if (contractModal.edit) updateContract(selectedClient.id_klienta)
