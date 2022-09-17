@@ -6,7 +6,7 @@ import TabPanel from '../components/TabPanel';
 import { toCurrency } from '../utils/miscUtils';
 import { useParams } from 'react-router-dom';
 import { SalesContext } from '../context/sales-context';
-import { toggleEditSaleModal } from '../redux/modalSlice';
+import { setSaleModal, toggleEditSaleModal } from '../redux/modalSlice';
 import EditIcon from '@mui/icons-material/Edit';
 import { setPath } from '../redux/screenSlice';
 import { yearAndMonthToString } from '../utils/date-utils';
@@ -93,9 +93,11 @@ const DailySales = () => {
                 Header: 'Edytuj',
                 Cell: props => <EditIcon
                     onClick={() => {
-                        // setCurrentlyEditetItem(props.row.original);
-                        setCurrentlyEditedSale(props.row.original)
-                        dispatch(toggleEditSaleModal(true))
+                        dispatch(setSaleModal({
+                            isOpen: true,
+                            edit: true,
+                            sale: props.row.original
+                        }));
                     }}
                     sx={{ cursor: 'pointer' }} />
             },

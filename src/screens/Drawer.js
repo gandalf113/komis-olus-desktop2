@@ -29,7 +29,7 @@ import PrintIcon from '@mui/icons-material/Print';
 import ListItemText from '@mui/material/ListItemText';
 import PointOfSaleIcon from '@mui/icons-material/PointOfSale';
 import { useDispatch, useSelector } from 'react-redux';
-import { setClientModal, setContractModal, toggleNewSaleModal } from '../redux/modalSlice';
+import { setClientModal, setContractModal, setSaleModal } from '../redux/modalSlice';
 
 import SalesScreen from './SalesScreen';
 import ClientsScreen from './ClientsScreen';
@@ -250,7 +250,10 @@ export default function PersistentDrawerLeft() {
                     </ListItem>
 
                     <ListItem disablePadding>
-                        <ListItemButton onClick={() => dispatch(toggleNewSaleModal(true))}>
+                        <ListItemButton onClick={() => dispatch(setSaleModal({
+                            isOpen: true,
+                            edit: false
+                        }))}>
                             <ListItemIcon>
                                 <PointOfSaleIcon />
                             </ListItemIcon>

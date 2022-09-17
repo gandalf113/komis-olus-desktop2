@@ -3,7 +3,7 @@ import { DataTable } from '../components/DataTable';
 import { SalesContext } from '../context/sales-context';
 import { toCurrency } from '../utils/miscUtils';
 import EditIcon from '@mui/icons-material/Edit';
-import { toggleEditSaleModal } from '../redux/modalSlice';
+import { setSaleModal, toggleEditSaleModal } from '../redux/modalSlice';
 import { useDispatch } from 'react-redux';
 import { setPath } from '../redux/screenSlice';
 
@@ -53,8 +53,13 @@ const AllSales = () => {
                 Cell: props => <EditIcon
                     onClick={() => {
                         // setCurrentlyEditetItem(props.row.original);
-                        setCurrentlyEditedSale(props.row.original)
-                        dispatch(toggleEditSaleModal(true))
+                        // setCurrentlyEditedSale(props.row.original)
+                        // dispatch(toggleEditSaleModal(true))
+                        dispatch(setSaleModal({
+                            isOpen: true,
+                            edit: true,
+                            sale: props.row.original
+                        }))
                     }}
                     sx={{ cursor: 'pointer' }} />
             },

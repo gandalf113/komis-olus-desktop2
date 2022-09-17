@@ -6,15 +6,17 @@ import {
 import InfoIcon from '@mui/icons-material/Info';
 import ItemDetailModal from './ItemDetailModal';
 import { openNotification as showNotification } from '../../redux/notificationSlice';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { SalesContext } from '../../context/sales-context';
 import { ContractContext } from '../../context/contract-context';
 import { getToday } from '../../utils/date-utils';
 import { checkIfSoldOut, toCurrency, decToHex, calculatePrice } from '../../utils/miscUtils';
 
-export const NewSaleModal = ({ isOpen, handleClose }) => {
+export const SaleModal = ({ isOpen, handleClose }) => {
     // Local state
     const [detailModalOpen, setDetailModalOpen] = useState(false);
+
+    const { saleModal } = useSelector(state => state.modal);
 
     const [selectedItem, setSelectedItem] = useState();
     const [items, setItems] = useState();
@@ -36,11 +38,15 @@ export const NewSaleModal = ({ isOpen, handleClose }) => {
     }
 
     useEffect(() => {
-        window.api.getItems().then(items => {
-            setItems(items);
-        });
+        if (saleModal.edit) {
+            loadItem(saleModal.sale.id_przedmiotu)
+        } else {
+            window.api.getItems().then(items => {
+                setItems(items);
+            });
 
-        clearItem();
+            clearItem();
+        }
     }, [isOpen]);
 
 
@@ -72,16 +78,32 @@ export const NewSaleModal = ({ isOpen, handleClose }) => {
         })
     }
 
+    const updateSale = async (item, margin) => {
+        const price = calculatePrice(item.kwotaDlaKomitenta, margin);
+        const sale = saleModal.sale
+
+        await window.api.updateSale(sale.id_sprzedazy, margin, price).then(res => {
+            reloadSales();
+            reloadContracts();
+
+            handleClose();
+            dispatch(showNotification(`Pomyślnie zaktualizowano sprzedaż nr. ${sale.id_sprzedazy}`))
+        }).catch(error => {
+            alert('Wystąpił błąd')
+            console.log(error)
+        })
+    }
+
     /**
      * Get the detailed item
-     * @param {Object} item - undetailed item object
+     * @param {Number} itemId - itemId in decimal
      */
-    const loadItem = (item) => {
-        const itemId = decToHex(item.id_przedmiotu);
-        window.api.getItemsDetailed(itemId).then(res => {
+    const loadItem = (itemId) => {
+        const itemIdHex = decToHex(itemId);
+        window.api.getItemsDetailed(itemIdHex).then(res => {
             const item = res[0];
             setSelectedItem(item);
-            setMargin(item.domyslnaMarza)
+            setMargin(saleModal.edit ? saleModal.sale.marza : item.domyslnaMarza)
         })
     }
 
@@ -98,23 +120,23 @@ export const NewSaleModal = ({ isOpen, handleClose }) => {
 
     const validateForm = () => {
         return selectedItem && price && price > 0 && margin >= 0
-            && !checkIfSoldOut(selectedItem)
+            && (!checkIfSoldOut(selectedItem) || saleModal.edit)
     }
 
     return (
         <div>
             <Dialog open={isOpen} onClose={handleClose}>
-                <DialogTitle>Nowa sprzedaż</DialogTitle>
+                <DialogTitle>{saleModal.edit ? 'Edytuj sprzedaż' : 'Nowa sprzedaż'}</DialogTitle>
                 <DialogContent sx={{ minWidth: 400 }}>
                     <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
                         <Box></Box>
-                        <Autocomplete
+                        {!saleModal.edit && <Autocomplete
                             id='search-item'
                             options={items}
                             getOptionLabel={(item) => decToHex(item.id_przedmiotu) + ` (${item.nazwa})`}
                             onChange={(event, item) => {
                                 if (item)
-                                    loadItem(item);
+                                    loadItem(item.id_przedmiotu);
                                 else
                                     clearItem();
                             }}
@@ -122,7 +144,7 @@ export const NewSaleModal = ({ isOpen, handleClose }) => {
                                 <TextField {...params}
                                     label='Wprowadź kod z metki' />
                             )}
-                        />
+                        />}
                         <TextField
                             id="price-input"
                             type='number'
@@ -151,7 +173,11 @@ export const NewSaleModal = ({ isOpen, handleClose }) => {
                         <Typography variant='body2' color={validateForm() ? 'inherit' : 'lightgray'}>
                             <b>CENA: </b>{!!price ? toCurrency(price) : toCurrency(0)}
                         </Typography>
-                        <Button disabled={!validateForm()} onClick={() => createSale(selectedItem, margin)}>Sprzedaj</Button>
+                        <Button disabled={!validateForm()} onClick={() => {
+                            if (saleModal.edit) updateSale(selectedItem, margin);
+                            else createSale(selectedItem, margin)
+                        }}>
+                            {saleModal.edit ? 'Zapisz' : 'Sprzedaj'}</Button>
                     </DialogActions>
 
                 </DialogContent>
@@ -161,4 +187,4 @@ export const NewSaleModal = ({ isOpen, handleClose }) => {
     );
 }
 
-export default NewSaleModal
+export default SaleModal
