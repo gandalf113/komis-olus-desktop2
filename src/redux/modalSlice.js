@@ -3,7 +3,6 @@ import { createSlice } from "@reduxjs/toolkit";
 export const modalSlice = createSlice({
     name: "modal",
     initialState: {
-        newClientIsOpen: false,
         newContractIsOpen: false,
         newSaleIsOpen: false,
         newItemIsOpen: false,
@@ -12,18 +11,28 @@ export const modalSlice = createSlice({
         editSaleIsOpen: false,
         editItemIsOpen: false,
         editContractIsOpen: false,
-        editClientIsOpen: false,
 
         clientModal: {
+            id: 'client',
             isOpen: false,
             edit: false,
             client: {},
-        }
+        },
+
+        contractModal: {
+            id: 'contract',
+            isOpen: false,
+            edit: false,
+            contract: {},
+        },
         // Item detail modal is handled from within NewSaleModal
     },
     reducers: {
         setClientModal: (state, action) => {
             state.clientModal = action.payload;
+        },
+        setContractModal: (state, action) => {
+            state.contractModal = action.payload;
         },
         toggleNewClientModal: (state, action) => {
             state.newClientIsOpen = action.payload
@@ -72,6 +81,7 @@ export const modalSlice = createSlice({
 
 export const {
     setClientModal,
+    setContractModal,
 
     toggleNewClientModal,
     toggleNewContractModal,

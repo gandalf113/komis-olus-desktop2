@@ -1,12 +1,11 @@
 import React from 'react';
 import {
-    useLocation,
     Routes,
     Route,
     useNavigate,
 } from "react-router-dom";
 import { styled, useTheme } from '@mui/material/styles';
-import { Link, Breadcrumbs, Box, Button } from '@mui/material';
+import { Breadcrumbs, Box } from '@mui/material';
 import Drawer from '@mui/material/Drawer';
 import CssBaseline from '@mui/material/CssBaseline';
 import MuiAppBar from '@mui/material/AppBar';
@@ -26,13 +25,11 @@ import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import AssignmentReturnIcon from '@mui/icons-material/AssignmentReturn';
-import AddIcon from '@mui/icons-material/Add';
 import PrintIcon from '@mui/icons-material/Print';
 import ListItemText from '@mui/material/ListItemText';
 import PointOfSaleIcon from '@mui/icons-material/PointOfSale';
 import { useDispatch, useSelector } from 'react-redux';
-import { setScreen } from '../redux/screenSlice';
-import { setClientModal, toggleNewClientModal, toggleNewContractModal, toggleNewSaleModal } from '../redux/modalSlice';
+import { setClientModal, setContractModal, toggleNewSaleModal } from '../redux/modalSlice';
 
 import SalesScreen from './SalesScreen';
 import ClientsScreen from './ClientsScreen';
@@ -41,9 +38,7 @@ import ContractDetailScreen from './ContractDetailScreen';
 import MonthlySales from './MonthlySales';
 import DailySales from './DailySales';
 import AllSales from './AllSales';
-import MonthlySummary from './MonthlySummary';
 import ClientDetailScreen from './ClientDetailScreen';
-import ClientSummaryScreen from './ClientSummaryScreen';
 import ReturnsScreen from './ReturnsScreen';
 import ReturnPrint from './print/ReturnPrint';
 import ContractPrint from './print/ContractPrint';
@@ -101,11 +96,10 @@ export default function PersistentDrawerLeft() {
     const theme = useTheme();
     const [open, setOpen] = React.useState(true);
 
-    const { navbarTitle, path } = useSelector(state => state.screen);
+    const { path } = useSelector(state => state.screen);
 
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    const location = useLocation();
 
     const handleDrawerOpen = () => {
         setOpen(true);
@@ -152,23 +146,10 @@ export default function PersistentDrawerLeft() {
                                     {p}
                                 </Typography>
                             ))}
-                            {/* <Typography color='lightgray' onClick={() => navigate('/clients')}>
-                                Klienci
-                            </Typography>
-                            <Typography color='white' onClick={() => navigate('/clients/21')}>
-                                koka1
-                            </Typography> */}
                         </Breadcrumbs>
                     </Typography>
                     <Box sx={{ flexGrow: 1 }} />
                     <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
-                        {/* <IconButton
-                            size="large"
-                            aria-label="show 17 new notifications"
-                            color="inherit"
-                        >
-                            <AddIcon />
-                        </IconButton> */}
                         <IconButton onClick={handlePrint} size="large" aria-label="show 4 new mails" color="inherit">
                             <PrintIcon />
                         </IconButton>
@@ -257,7 +238,10 @@ export default function PersistentDrawerLeft() {
                     </ListItem>
 
                     <ListItem disablePadding>
-                        <ListItemButton onClick={() => dispatch(toggleNewContractModal(true))}>
+                        <ListItemButton onClick={() => dispatch(setContractModal({
+                            isOpen: true,
+                            edit: false
+                        }))}>
                             <ListItemIcon>
                                 <ReceiptIcon />
                             </ListItemIcon>

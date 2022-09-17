@@ -7,7 +7,7 @@ import { ContractContext } from '../context/contract-context';
 import EditIcon from '@mui/icons-material/Edit';
 import ReceiptIcon from '@mui/icons-material/Receipt';
 import { useNavigate } from 'react-router-dom';
-import { toggleEditContractModal } from '../redux/modalSlice';
+import { setContractModal, toggleEditContractModal } from '../redux/modalSlice';
 
 const ContractsScreen = () => {
     const dispatch = useDispatch();
@@ -65,8 +65,11 @@ const ContractsScreen = () => {
                 Header: 'Edytuj',
                 Cell: props => <IconButton
                     onClick={() => {
-                        setCurrentlyEditedContract(props.row.original);
-                        dispatch(toggleEditContractModal(true));
+                        dispatch(setContractModal({
+                            isOpen: true,
+                            edit: true,
+                            contract: props.row.original
+                        }))
                     }}>
                     <EditIcon
 

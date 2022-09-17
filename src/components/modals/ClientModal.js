@@ -177,7 +177,9 @@ export const ClientModal = ({ isOpen, handleClose }) => {
                         />
                     </Box>
                     <DialogActions>
-                        <Button onClick={clientModal.edit ? updateClient : createClient}>Zapisz</Button>
+                        <Button onClick={clientModal.edit ? updateClient : createClient}>
+                            {clientModal.edit ? 'Zapisz' : 'Dodaj'}
+                        </Button>
                     </DialogActions>
 
                 </DialogContent>
