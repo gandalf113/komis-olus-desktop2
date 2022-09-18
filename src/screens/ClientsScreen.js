@@ -2,17 +2,17 @@ import React, { useContext, useEffect } from 'react'
 import { DataTable } from '../components/DataTable'
 import { useDispatch } from 'react-redux'
 import { ClientContext } from '../context/client-context';
-import { setNavbarTitle, setPath } from '../redux/screenSlice';
+import { setPath } from '../redux/screenSlice';
 import { IconButton, Typography } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
 import { useNavigate } from 'react-router-dom';
-import { setClientModal, toggleEditClientModal } from '../redux/modalSlice';
+import { setClientModal } from '../redux/modalSlice';
 
 const ClientsScreen = () => {
     const dispatch = useDispatch()
     const navigate = useNavigate();
 
-    const { allClients: clients, reloadClients, setCurrentlyEditetClient } = useContext(ClientContext);
+    const { allClients: clients, reloadClients } = useContext(ClientContext);
 
     useEffect(() => {
 

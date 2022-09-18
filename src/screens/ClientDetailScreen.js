@@ -33,13 +33,10 @@ const ClientDetailScreen = () => {
         setTabIndex(newValue);
     };
 
-    const { setCurrentlyEditetClient } = useContext(ClientContext);
-
     useEffect(() => {
         window.api.getClient(id).then(res => {
             const client = res[0];
             dispatch(setPath(`Klienci\\${client.skrot}`));
-            setCurrentlyEditetClient(client);
             setClient(client);
         });
 

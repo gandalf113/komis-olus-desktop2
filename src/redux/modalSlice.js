@@ -3,8 +3,6 @@ import { createSlice } from "@reduxjs/toolkit";
 export const modalSlice = createSlice({
     name: "modal",
     initialState: {
-        newWithdrawIsOpen: false,
-
         clientModal: {
             id: 'client',
             isOpen: false,
@@ -42,6 +40,15 @@ export const modalSlice = createSlice({
             item: {}
         },
 
+        withdrawModal: {
+            id: 'withdraw',
+            isOpen: false,
+            edit: false,
+            withdraw: {},
+            client: {},
+            withdrawableAmount: 0
+        }
+
         // Item detail modal is handled from within NewSaleModal
     },
     reducers: {
@@ -60,10 +67,10 @@ export const modalSlice = createSlice({
         setReturnModal: (state, action) => {
             state.returnModal = action.payload;
         },
-
-        toggleNewWithdrawModal: (state, action) => {
-            state.newWithdrawIsOpen = action.payload
+        setWithdrawModal: (state, action) => {
+            state.withdrawModal = action.payload;
         },
+
     }
 })
 
@@ -73,8 +80,7 @@ export const {
     setItemModal,
     setSaleModal,
     setReturnModal,
-
-    toggleNewWithdrawModal,
+    setWithdrawModal
 } = modalSlice.actions
 
 export default modalSlice.reducer

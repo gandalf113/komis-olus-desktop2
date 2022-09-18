@@ -5,7 +5,7 @@ import {
 import { ClientContext } from '../../context/client-context';
 import React, { useState, useContext, useEffect } from 'react'
 import { getToday } from '../../utils/date-utils';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { openNotification } from '../../redux/notificationSlice';
 import { toCurrency } from '../../utils/miscUtils';
 import { WithdrawContext } from '../../context/withdraw-context';
@@ -15,8 +15,9 @@ const NewWithdrawModal = ({ isOpen, handleClose }) => {
 
     const dispatch = useDispatch();
 
-    const { currentlyEditetClient } = useContext(ClientContext);
-    const { reloadWithdraws, withdrawableAmount } = useContext(WithdrawContext);
+    const { reloadWithdraws } = useContext(WithdrawContext);
+
+    const { withdrawModal } = useSelector(state => state.modal);
 
     useEffect(() => {
         setAmount('');
@@ -24,11 +25,11 @@ const NewWithdrawModal = ({ isOpen, handleClose }) => {
 
     // TODO: Get client id somehow
     const createWithdraw = () => {
-        window.api.createWithdraw(currentlyEditetClient.id_klienta, amount, getToday())
+        window.api.createWithdraw(withdrawModal.client.id_klienta, amount, getToday())
             .then(_ => {
                 handleClose();
                 reloadWithdraws();
-                dispatch(openNotification(`Pomyślnie wypłacono ${toCurrency(amount)} dla ${currentlyEditetClient.skrot}`));
+                dispatch(openNotification(`Pomyślnie wypłacono ${toCurrency(amount)} dla ${withdrawModal.client.skrot}`));
             })
             .catch(err => {
                 alert('Nie udało się wypłacić pieniędzy. Informacje o błędzie w konsoli.');
@@ -37,14 +38,12 @@ const NewWithdrawModal = ({ isOpen, handleClose }) => {
     }
 
     const validateAmount = () => {
-        return amount <= withdrawableAmount;
+        return amount <= withdrawModal.withdrawableAmount;
     }
 
     const validateForm = () => {
-        return amount && validateAmount();
+        return amount && validateAmount() && amount > 0;
     }
-
-    if (!currentlyEditetClient) return null;
 
     return (
         <Dialog open={isOpen} onClose={handleClose}>
@@ -55,7 +54,7 @@ const NewWithdrawModal = ({ isOpen, handleClose }) => {
                         id="client"
                         label="Klient"
                         type="text"
-                        value={currentlyEditetClient.skrot}
+                        value={withdrawModal.client.skrot}
                         variant="filled"
                     />
 

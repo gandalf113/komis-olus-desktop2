@@ -4,7 +4,7 @@ import { Box, Typography, Button } from '@mui/material';
 import { SalesContext } from '../context/sales-context';
 import { toCurrency } from '../utils/miscUtils';
 import { useDispatch } from 'react-redux';
-import { toggleNewWithdrawModal } from '../redux/modalSlice';
+import { setWithdrawModal } from '../redux/modalSlice';
 import { DataTable } from '../components/DataTable';
 import { WithdrawContext } from '../context/withdraw-context';
 
@@ -46,7 +46,7 @@ const ClientSummaryScreen = () => {
     const [withdraws, setWithdraws] = useState();
 
     const { allSales } = useContext(SalesContext);
-    const { allWithdraws, setWithdrawableAmount } = useContext(WithdrawContext);
+    const { allWithdraws } = useContext(WithdrawContext);
 
     /**
      * Get client detail
@@ -102,8 +102,12 @@ const ClientSummaryScreen = () => {
 
 
     const handleOpenNewWithdrawModal = () => {
-        setWithdrawableAmount(getWithdrawAmount(sumOfSales, withdraws));
-        dispatch(toggleNewWithdrawModal(true));
+        dispatch(setWithdrawModal({
+            isOpen: true,
+            edit: false,
+            client: client,
+            withdrawableAmount: getWithdrawAmount(sumOfSales, withdraws)
+        }));
     }
 
 
@@ -115,7 +119,7 @@ const ClientSummaryScreen = () => {
                     style={{ marginTop: 10, marginBottom: 10 }} color='secondary' variant='contained'>Pokaż umowy</Button> */}
             </Box>
             <DataTable loading={false} tableData={withdraws} columns={columms} />
-            <Box style={{ display: 'flex', flexDirection: 'column', alignItems:'start', gap: 2, marginTop: 4 }}>
+            <Box style={{ display: 'flex', flexDirection: 'column', alignItems: 'start', gap: 2, marginTop: 4 }}>
                 <Typography variant='body'>Suma sprzedaży: {toCurrency(sumOfSales)} </Typography>
                 <Typography variant='body'>Do wypłaty: {toCurrency(getWithdrawAmount(sumOfSales, withdraws))} </Typography>
                 <Button onClick={handleOpenNewWithdrawModal}

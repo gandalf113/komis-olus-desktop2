@@ -5,8 +5,6 @@ export const ClientContext = createContext();
 const ClientProvider = props => {
     const [allClients, setAllClients] = useState([]);
 
-    const [currentlyEditetClient, setCurrentlyEditetClient] = useState();
-
     const reloadClients = () => {
         window.api.getClients().then(clients => {
             setAllClients(clients);
@@ -14,8 +12,7 @@ const ClientProvider = props => {
     }
 
     return <ClientContext.Provider value={{
-        allClients, reloadClients,
-        currentlyEditetClient, setCurrentlyEditetClient
+        allClients, reloadClients
     }}>
         {props.children}
     </ClientContext.Provider>

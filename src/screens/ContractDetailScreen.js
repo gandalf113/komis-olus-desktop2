@@ -23,7 +23,7 @@ const ContractDetailScreen = () => {
     const [client, setClient] = useState();
 
     const { id } = useParams();
-    const { setCurrentContractID, allContracts, setCurrentlyEditetItem } = useContext(ContractContext);
+    const { setCurrentContractID, allContracts } = useContext(ContractContext);
 
     const dispatch = useDispatch();
     const navigate = useNavigate();
@@ -130,7 +130,7 @@ const ContractDetailScreen = () => {
                     sx={{ cursor: 'pointer' }} />
             },
         ],
-        [dispatch, setCurrentlyEditetItem]
+        [dispatch]
     )
 
     if (!contract || !items || !client) return null
