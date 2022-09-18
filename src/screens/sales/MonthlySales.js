@@ -1,13 +1,13 @@
 import React, { useEffect, useState, useContext } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
-import { DataTable } from '../components/DataTable';
+import { DataTable } from '../../components/DataTable';
 import { Tab, Tabs, Typography, Box } from '@mui/material';
-import { SalesContext } from '../context/sales-context';
-import { getMonthlySales } from '../utils/sale-utils';
-import { extractDay, fullDateToString, yearAndMonthToString } from '../utils/date-utils';
+import { SalesContext } from '../../context/sales-context';
+import { getMonthlySales } from '../../utils/sale-utils';
+import { extractDay, fullDateToString, yearAndMonthToString } from '../../utils/date-utils';
 import { useDispatch } from 'react-redux';
-import { setPath } from '../redux/screenSlice';
-import TabPanel from '../components/TabPanel';
+import { setPath } from '../../redux/screenSlice';
+import TabPanel from '../../components/TabPanel';
 import MonthlySummary from './MonthlySummary';
 
 function a11yProps(index) {

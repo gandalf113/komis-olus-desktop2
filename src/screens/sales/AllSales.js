@@ -1,11 +1,11 @@
 import React, { useEffect, useContext } from 'react'
-import { DataTable } from '../components/DataTable';
-import { SalesContext } from '../context/sales-context';
-import { toCurrency } from '../utils/miscUtils';
+import { DataTable } from '../../components/DataTable';
+import { SalesContext } from '../../context/sales-context';
+import { toCurrency } from '../../utils/miscUtils';
 import EditIcon from '@mui/icons-material/Edit';
-import { setSaleModal } from '../redux/modalSlice';
+import { setSaleModal } from '../../redux/modalSlice';
 import { useDispatch } from 'react-redux';
-import { setPath } from '../redux/screenSlice';
+import { setPath } from '../../redux/screenSlice';
 
 const AllSales = () => {
     // const [sales, setSales] = useState();

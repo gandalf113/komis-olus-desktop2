@@ -1,6 +1,6 @@
 import React from 'react'
 import { Box, Typography } from '@mui/material'
-import { fullDateToString } from '../../utils/date-utils'
+import { fullDateToString } from '../utils/date-utils'
 
 const PrintTemplate = ({ children, date }) => {
     return (

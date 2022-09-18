@@ -1,12 +1,12 @@
 import React, { useContext, useEffect } from 'react'
-import { DataTable } from '../components/DataTable'
+import { DataTable } from '../../components/DataTable'
 import { useDispatch } from 'react-redux'
-import { ClientContext } from '../context/client-context';
-import { setPath } from '../redux/screenSlice';
+import { ClientContext } from '../../context/client-context';
+import { setPath } from '../../redux/screenSlice';
 import { IconButton, Typography } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
 import { useNavigate } from 'react-router-dom';
-import { setClientModal } from '../redux/modalSlice';
+import { setClientModal } from '../../redux/modalSlice';
 
 const ClientsScreen = () => {
     const dispatch = useDispatch()

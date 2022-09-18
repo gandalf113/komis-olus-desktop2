@@ -1,14 +1,13 @@
 import React, { useEffect, useState, useMemo, useCallback, useContext } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { Typography, Box, Button, Tabs, Tab } from '@mui/material'
-import { DataTable } from '../components/DataTable';
-import { ClientContext } from '../context/client-context';
-import TabPanel from '../components/TabPanel';
+import { DataTable } from '../../components/DataTable';
+import TabPanel from '../../components/TabPanel';
 import ClientSummaryScreen from './ClientSummaryScreen';
 import { useDispatch } from 'react-redux';
-import { setPath } from '../redux/screenSlice';
+import { setPath } from '../../redux/screenSlice';
 
-import '../global.css';
+import '../../global.css';
 import ClientReturnsScreen from './ClientReturnsScreen';
 
 function a11yProps(index) {

@@ -5,9 +5,8 @@ import { Box, Typography } from '@mui/material';
 import { useParams } from 'react-router-dom';
 import { ContractContext } from '../../context/contract-context';
 import { toCurrency, decToHex } from '../../utils/miscUtils';
-import { fullDateToString } from '../../utils/date-utils';
 import { setPath } from '../../redux/screenSlice';
-import PrintTemplate from './PrintTemplate';
+import PrintTemplate from '../PrintTemplate';
 
 const ContractPrint = () => {
     const { loading } = useSelector(state => state.screen)

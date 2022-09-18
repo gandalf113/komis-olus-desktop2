@@ -31,17 +31,24 @@ import PointOfSaleIcon from '@mui/icons-material/PointOfSale';
 import { useDispatch, useSelector } from 'react-redux';
 import { setClientModal, setContractModal, setSaleModal } from '../redux/modalSlice';
 
-import SalesScreen from './SalesScreen';
-import ClientsScreen from './ClientsScreen';
-import ContractsScreen from './ContractsScreen';
-import ContractDetailScreen from './ContractDetailScreen';
-import MonthlySales from './MonthlySales';
-import DailySales from './DailySales';
-import AllSales from './AllSales';
-import ClientDetailScreen from './ClientDetailScreen';
-import ReturnsScreen from './ReturnsScreen';
-import ReturnPrint from './print/ReturnPrint';
-import ContractPrint from './print/ContractPrint';
+// Sales
+import SalesScreen from './sales/SalesScreen';
+import MonthlySales from './sales/MonthlySales';
+import DailySales from './sales/DailySales';
+import AllSales from './sales/AllSales';
+
+// Clients
+import ClientsScreen from './clients/ClientsScreen';
+import ClientDetailScreen from './clients/ClientDetailScreen';
+
+// Contracts
+import ContractsScreen from './contracts/ContractsScreen';
+import ContractDetailScreen from './contracts/ContractDetailScreen';
+import ContractPrint from './contracts/ContractPrint';
+
+// Returns
+import ReturnsScreen from './returns/ReturnsScreen';
+import ReturnPrint from './returns/ReturnPrint';
 
 import "../global.css";
 

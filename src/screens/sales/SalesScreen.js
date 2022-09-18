@@ -2,10 +2,10 @@ import { Typography } from '@mui/material';
 import React, { useContext, useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { DataTable } from '../components/DataTable'
-import { SalesContext } from '../context/sales-context';
-import { yearAndMonthToString } from '../utils/date-utils';
-import { setPath } from '../redux/screenSlice';
+import { DataTable } from '../../components/DataTable'
+import { SalesContext } from '../../context/sales-context';
+import { yearAndMonthToString } from '../../utils/date-utils';
+import { setPath } from '../../redux/screenSlice';
 
 const SalesScreen = () => {
     const navigate = useNavigate();

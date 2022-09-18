@@ -1,15 +1,15 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux';
 import { Box, Tab, Tabs } from '@mui/material';
-import { DataTable } from '../components/DataTable'
-import TabPanel from '../components/TabPanel';
-import { toCurrency } from '../utils/miscUtils';
+import { DataTable } from '../../components/DataTable'
+import TabPanel from '../../components/TabPanel';
+import { toCurrency } from '../../utils/miscUtils';
 import { useParams } from 'react-router-dom';
-import { SalesContext } from '../context/sales-context';
-import { setSaleModal } from '../redux/modalSlice';
+import { SalesContext } from '../../context/sales-context';
+import { setSaleModal } from '../../redux/modalSlice';
 import EditIcon from '@mui/icons-material/Edit';
-import { setPath } from '../redux/screenSlice';
-import { yearAndMonthToString } from '../utils/date-utils';
+import { setPath } from '../../redux/screenSlice';
+import { yearAndMonthToString } from '../../utils/date-utils';
 import DailySummary from './DailySummary';
 
 function a11yProps(index) {

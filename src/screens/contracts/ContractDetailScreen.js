@@ -1,15 +1,15 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux';
-import { DataTable } from '../components/DataTable'
+import { DataTable } from '../../components/DataTable'
 import { Box, Button, Typography } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
 import AssignmentReturnIcon from '@mui/icons-material/AssignmentReturn';
-import { setItemModal, setReturnModal } from '../redux/modalSlice';
-import { toCurrency, decToHex } from '../utils/miscUtils';
+import { setItemModal, setReturnModal } from '../../redux/modalSlice';
+import { toCurrency, decToHex } from '../../utils/miscUtils';
 import { useNavigate, useParams } from 'react-router-dom';
-import { ContractContext } from '../context/contract-context';
-import { fullDateToString } from '../utils/date-utils';
-import { setPath } from '../redux/screenSlice';
+import { ContractContext } from '../../context/contract-context';
+import { fullDateToString } from '../../utils/date-utils';
+import { setPath } from '../../redux/screenSlice';
 
 
 // Contract detail screen

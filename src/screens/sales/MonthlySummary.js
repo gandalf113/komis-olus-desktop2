@@ -1,25 +1,32 @@
-import React, { useEffect, useState, useMemo } from 'react'
+import React, { useContext, useEffect, useState, useMemo } from 'react'
 import { useParams } from 'react-router-dom'
 import { Typography } from '@mui/material'
-import { DataTable } from '../components/DataTable'
-import { toCurrency } from '../utils/miscUtils'
-import LoadingSpinner from '../components/LoadingSpinner'
+import { DataTable } from '../../components/DataTable'
+import { SalesContext } from '../../context/sales-context'
+import { getMonthlySales } from '../../utils/sale-utils'
+import { toCurrency } from '../../utils/miscUtils'
+import LoadingSpinner from '../../components/LoadingSpinner'
 import { Box } from '@mui/system'
-import { fullDateToString } from '../utils/date-utils'
-import { getPropertySum, getSummary, groupSalesByDate } from '../utils/summary-utils'
+import { fullDateToString } from '../../utils/date-utils'
+import { getPropertySum, getSummary, groupSalesByDate } from '../../utils/summary-utils'
 
 
-const DailySummary = ({ sales }) => {
+const MonthlySummary = () => {
   const { date } = useParams();
+
+  const { allSales } = useContext(SalesContext);
 
   const [summary, setSummary] = useState();
 
+
   useEffect(() => {
+    const sales = getMonthlySales(allSales, date);
+
     const groupedSales = groupSalesByDate(sales);
     const summary = getSummary(groupedSales);
 
     setSummary(summary)
-  }, [sales, date])
+  }, [allSales, date])
 
 
   const columns = useMemo(
@@ -27,8 +34,8 @@ const DailySummary = ({ sales }) => {
       {
         Header: 'Data',
         accessor: 'data',
-        Cell: props => <div> {fullDateToString(props.value)} </div>,
-        Footer: <span>test</span>
+        Cell: props => <div> {fullDateToString(props.value)} </div>
+
       },
       {
         Header: 'Prowizja',
@@ -48,7 +55,7 @@ const DailySummary = ({ sales }) => {
 
   return (
     <div>
-      <DataTable loading={false} columns={columns} tableData={summary} hideSearchBar />
+      <DataTable loading={false} columns={columns} tableData={summary} hideSearchBar/>
       <Box sx={{ marginTop: 2, marginLeft: 1 }}>
         <Typography variant='h6'>RAZEM:</Typography>
         <Typography>Prowizja: {getPropertySum(summary, 'prowizja')} zł</Typography>
@@ -64,4 +71,4 @@ const DailySummary = ({ sales }) => {
   )
 }
 
-export default DailySummary
+export default MonthlySummary

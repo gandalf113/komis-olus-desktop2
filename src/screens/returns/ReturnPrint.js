@@ -2,11 +2,10 @@ import { Box, Typography } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useParams } from 'react-router-dom';
-import { fullDateToString } from '../../utils/date-utils';
 import { decToHex, toCurrency } from '../../utils/miscUtils';
 import '../../global.css';
 import { setPath } from '../../redux/screenSlice';
-import PrintTemplate from './PrintTemplate';
+import PrintTemplate from '../PrintTemplate';
 
 const ReturnPrint = () => {
   const { id } = useParams();
