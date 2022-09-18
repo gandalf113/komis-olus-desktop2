@@ -11,7 +11,7 @@ const AllSales = () => {
     // const [sales, setSales] = useState();
     const dispatch = useDispatch();
 
-    const { allSales: sales, reloadSales, setCurrentlyEditedSale } = useContext(SalesContext);
+    const { allSales: sales, reloadSales } = useContext(SalesContext);
 
     useEffect(() => {
         dispatch(setPath('Cała sprzedaż'))
@@ -52,9 +52,6 @@ const AllSales = () => {
                 Header: 'Edytuj',
                 Cell: props => <EditIcon
                     onClick={() => {
-                        // setCurrentlyEditetItem(props.row.original);
-                        // setCurrentlyEditedSale(props.row.original)
-                        // dispatch(toggleEditSaleModal(true))
                         dispatch(setSaleModal({
                             isOpen: true,
                             edit: true,

@@ -1,19 +1,19 @@
 import React, { useEffect, useCallback, useContext } from 'react'
 import { DataTable } from '../components/DataTable'
-import { IconButton, Typography, Button } from '@mui/material';
+import { IconButton } from '@mui/material';
 import { useDispatch } from 'react-redux';
 import { setNavbarTitle, setPath } from '../redux/screenSlice';
 import { ContractContext } from '../context/contract-context';
 import EditIcon from '@mui/icons-material/Edit';
 import ReceiptIcon from '@mui/icons-material/Receipt';
 import { useNavigate } from 'react-router-dom';
-import { setContractModal, toggleEditContractModal } from '../redux/modalSlice';
+import { setContractModal } from '../redux/modalSlice';
 
 const ContractsScreen = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
-    const { allContracts: contracts, reloadContracts, setCurrentlyEditedContract } = useContext(ContractContext);
+    const { allContracts: contracts, reloadContracts } = useContext(ContractContext);
 
     useEffect(() => {
         dispatch(setPath('Umowy'))

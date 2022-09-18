@@ -4,7 +4,6 @@ export const modalSlice = createSlice({
     name: "modal",
     initialState: {
         newWithdrawIsOpen: false,
-        newReturnIsOpen: false,
 
         clientModal: {
             id: 'client',
@@ -33,7 +32,15 @@ export const modalSlice = createSlice({
             isOpen: false,
             edit: false,
             sale: {}
-        }
+        },
+
+        returnModal: {
+            id: 'return',
+            isOpen: false,
+            edit: false,
+            return: {},
+            item: {}
+        },
 
         // Item detail modal is handled from within NewSaleModal
     },
@@ -50,11 +57,12 @@ export const modalSlice = createSlice({
         setSaleModal: (state, action) => {
             state.saleModal = action.payload;
         },
+        setReturnModal: (state, action) => {
+            state.returnModal = action.payload;
+        },
+
         toggleNewWithdrawModal: (state, action) => {
             state.newWithdrawIsOpen = action.payload
-        },
-        toggleNewReturnModal: (state, action) => {
-            state.newReturnIsOpen = action.payload
         },
     }
 })
@@ -64,9 +72,9 @@ export const {
     setContractModal,
     setItemModal,
     setSaleModal,
+    setReturnModal,
 
     toggleNewWithdrawModal,
-    toggleNewReturnModal,
 } = modalSlice.actions
 
 export default modalSlice.reducer

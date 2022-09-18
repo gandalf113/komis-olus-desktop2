@@ -4,7 +4,7 @@ import { DataTable } from '../components/DataTable'
 import { Box, Button, Typography } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
 import AssignmentReturnIcon from '@mui/icons-material/AssignmentReturn';
-import { setItemModal } from '../redux/modalSlice';
+import { setItemModal, setReturnModal } from '../redux/modalSlice';
 import { toCurrency, decToHex } from '../utils/miscUtils';
 import { useNavigate, useParams } from 'react-router-dom';
 import { ContractContext } from '../context/contract-context';
@@ -121,7 +121,11 @@ const ContractDetailScreen = () => {
                 Header: 'Zwróć',
                 Cell: props => <AssignmentReturnIcon
                     onClick={() => {
-
+                        dispatch(setReturnModal({
+                            isOpen: true,
+                            edit: false,
+                            item: props.row.original
+                        }))
                     }}
                     sx={{ cursor: 'pointer' }} />
             },

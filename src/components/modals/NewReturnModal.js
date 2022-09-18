@@ -3,13 +3,15 @@ import {
     Dialog, DialogTitle, DialogContent, TextField, Box, DialogActions, Button
 } from '@mui/material';
 import { openNotification, openNotification as showNotification } from '../../redux/notificationSlice';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { getToday } from '../../utils/date-utils';
 import { ContractContext } from '../../context/contract-context';
 import { checkIfAmountRemaining } from '../../utils/miscUtils';
 
 export const NewReturnModal = ({ isOpen, handleClose }) => {
-    const { currentlyEditedItem, reloadContracts } = useContext(ContractContext);
+    const { reloadContracts } = useContext(ContractContext);
+
+    const { returnModal } = useSelector(state => state.modal);
 
     const [amount, setAmount] = useState(1);
 
@@ -18,9 +20,10 @@ export const NewReturnModal = ({ isOpen, handleClose }) => {
     const createReturn = async () => {
         const date = getToday();
 
-        window.api.createReturn(currentlyEditedItem.id_przedmiotu, amount, date)
+
+        window.api.createReturn(returnModal.item.id_przedmiotu, amount, date)
             .then(_ => {
-                window.api.incrementReturnedAmountBy(currentlyEditedItem.id_przedmiotu, amount)
+                window.api.incrementReturnedAmountBy(returnModal.item.id_przedmiotu, amount)
                     .then(_ => {
                         handleClose();
                         reloadContracts();
@@ -38,10 +41,7 @@ export const NewReturnModal = ({ isOpen, handleClose }) => {
         // window.api.incrementReturnedAmount
     }
 
-
-    if (!currentlyEditedItem) return null;
-
-    const isAmountValid = checkIfAmountRemaining(currentlyEditedItem, amount);
+    const isAmountValid = checkIfAmountRemaining(returnModal.item, amount);
 
     return (
         <div>
@@ -71,7 +71,7 @@ export const NewReturnModal = ({ isOpen, handleClose }) => {
                             type="text"
                             error={isAmountValid}
                             helperText={isAmountValid && 'Nie ma tyle towaru na stanie'}
-                            value={currentlyEditedItem.nazwa}
+                            value={returnModal.item.nazwa}
                         />
                     </Box>
                     <DialogActions>

@@ -1,11 +1,11 @@
 import { useDispatch, useSelector } from 'react-redux';
 import {
-    toggleNewReturnModal,
     toggleNewWithdrawModal,
     setClientModal,
     setContractModal,
     setItemModal,
-    setSaleModal
+    setSaleModal,
+    setReturnModal
 } from '../redux/modalSlice';
 import ClientModal from './modals/ClientModal';
 import ContractModal from './modals/ContractModal';
@@ -22,20 +22,20 @@ const Modals = () => {
         contractModal,
         itemModal,
         saleModal,
+        returnModal,
 
         newWithdrawIsOpen,
-        newReturnIsOpen,
     } = useSelector(state => state.modal);
 
     return (
         <div>
             <NewWithdrawModal isOpen={newWithdrawIsOpen} handleClose={() => dispatch(toggleNewWithdrawModal(false))} />
-            <NewReturnModal isOpen={newReturnIsOpen} handleClose={() => dispatch(toggleNewReturnModal(false))} />
 
             <ClientModal isOpen={clientModal.isOpen} handleClose={() => dispatch(setClientModal({ ...clientModal, isOpen: false }))} />
             <ContractModal isOpen={contractModal.isOpen} handleClose={() => dispatch(setContractModal({ ...contractModal, isOpen: false }))} />
             <ItemModal isOpen={itemModal.isOpen} handleClose={() => dispatch(setItemModal({ ...itemModal, isOpen: false }))} />
             <SaleModal isOpen={saleModal.isOpen} handleClose={() => dispatch(setSaleModal({ ...saleModal, isOpen: false }))} />
+            <NewReturnModal isOpen={returnModal.isOpen} handleClose={() => dispatch(setReturnModal({ ...returnModal, isOpen: false }))} />
         </div>
     )
 }

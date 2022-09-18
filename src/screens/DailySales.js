@@ -41,7 +41,7 @@ const DailySales = () => {
     const [sales, setSales] = useState();
     const [tabIndex, setTabIndex] = useState(0);
 
-    const { allSales, setCurrentlyEditedSale } = useContext(SalesContext);
+    const { allSales } = useContext(SalesContext);
 
     const handleTabChange = (event, newValue) => {
         setTabIndex(newValue);
@@ -102,7 +102,7 @@ const DailySales = () => {
                     sx={{ cursor: 'pointer' }} />
             },
         ],
-        [dispatch, setCurrentlyEditedSale]
+        [dispatch]
     )
 
     if (!sales) return <div></div>;
