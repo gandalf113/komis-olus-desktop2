@@ -5,7 +5,7 @@ import { ReturnsContext } from '../../context/return-context'
 import PrintIcon from '@mui/icons-material/Print';
 import { DataTable } from '../../components/DataTable';
 import LoadingSpinner from '../../components/LoadingSpinner';
-import { decToHex } from '../../utils/miscUtils';
+import { decToHex } from '../../utils/misc-utils';
 import { IconButton, Typography } from '@mui/material';
 import { setPath } from '../../redux/screenSlice';
 

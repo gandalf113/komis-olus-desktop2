@@ -2,7 +2,7 @@ import { Box, Typography } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useParams } from 'react-router-dom';
-import { decToHex, toCurrency } from '../../utils/miscUtils';
+import { decToHex, toCurrency } from '../../utils/misc-utils';
 import '../../global.css';
 import { setPath } from '../../redux/screenSlice';
 import PrintTemplate from '../PrintTemplate';

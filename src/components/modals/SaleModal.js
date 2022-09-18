@@ -10,7 +10,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { SalesContext } from '../../context/sales-context';
 import { ContractContext } from '../../context/contract-context';
 import { getToday } from '../../utils/date-utils';
-import { checkIfSoldOut, toCurrency, decToHex, calculatePrice } from '../../utils/miscUtils';
+import { checkIfSoldOut, toCurrency, decToHex, calculatePrice } from '../../utils/misc-utils';
 
 export const SaleModal = ({ isOpen, handleClose }) => {
     // Local state

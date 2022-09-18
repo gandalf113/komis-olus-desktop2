@@ -7,7 +7,7 @@ import React, { useState, useContext, useEffect } from 'react'
 import { getToday } from '../../utils/date-utils';
 import { useDispatch, useSelector } from 'react-redux';
 import { openNotification } from '../../redux/notificationSlice';
-import { toCurrency } from '../../utils/miscUtils';
+import { toCurrency } from '../../utils/misc-utils';
 import { WithdrawContext } from '../../context/withdraw-context';
 
 const NewWithdrawModal = ({ isOpen, handleClose }) => {

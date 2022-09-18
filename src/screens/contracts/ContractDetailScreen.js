@@ -5,7 +5,7 @@ import { Box, Button, Typography } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
 import AssignmentReturnIcon from '@mui/icons-material/AssignmentReturn';
 import { setItemModal, setReturnModal } from '../../redux/modalSlice';
-import { toCurrency, decToHex } from '../../utils/miscUtils';
+import { toCurrency, decToHex } from '../../utils/misc-utils';
 import { useNavigate, useParams } from 'react-router-dom';
 import { ContractContext } from '../../context/contract-context';
 import { fullDateToString } from '../../utils/date-utils';

@@ -3,7 +3,7 @@ import React, { useContext, useEffect, useMemo } from 'react'
 import { Navigate, useNavigate, useParams } from 'react-router-dom';
 import { DataTable } from '../../components/DataTable';
 import { ReturnsContext } from '../../context/return-context'
-import { decToHex } from '../../utils/miscUtils';
+import { decToHex } from '../../utils/misc-utils';
 import PrintIcon from '@mui/icons-material/Print';
 
 /**

@@ -4,7 +4,7 @@ import { DataTable } from '../../components/DataTable'
 import { Box, Typography } from '@mui/material';
 import { useParams } from 'react-router-dom';
 import { ContractContext } from '../../context/contract-context';
-import { toCurrency, decToHex } from '../../utils/miscUtils';
+import { toCurrency, decToHex } from '../../utils/misc-utils';
 import { setPath } from '../../redux/screenSlice';
 import PrintTemplate from '../PrintTemplate';
 

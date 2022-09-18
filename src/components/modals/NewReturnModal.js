@@ -6,7 +6,7 @@ import { openNotification, openNotification as showNotification } from '../../re
 import { useDispatch, useSelector } from 'react-redux';
 import { getToday } from '../../utils/date-utils';
 import { ContractContext } from '../../context/contract-context';
-import { checkIfAmountRemaining } from '../../utils/miscUtils';
+import { checkIfAmountRemaining } from '../../utils/misc-utils';
 
 export const NewReturnModal = ({ isOpen, handleClose }) => {
     const { reloadContracts } = useContext(ContractContext);

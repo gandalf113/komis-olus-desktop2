@@ -3,7 +3,7 @@ import { useDispatch } from 'react-redux';
 import { Box, Tab, Tabs } from '@mui/material';
 import { DataTable } from '../../components/DataTable'
 import TabPanel from '../../components/TabPanel';
-import { toCurrency } from '../../utils/miscUtils';
+import { toCurrency } from '../../utils/misc-utils';
 import { useParams } from 'react-router-dom';
 import { SalesContext } from '../../context/sales-context';
 import { setSaleModal } from '../../redux/modalSlice';

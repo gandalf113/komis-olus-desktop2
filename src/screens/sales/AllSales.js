@@ -1,7 +1,7 @@
 import React, { useEffect, useContext } from 'react'
 import { DataTable } from '../../components/DataTable';
 import { SalesContext } from '../../context/sales-context';
-import { toCurrency } from '../../utils/miscUtils';
+import { toCurrency } from '../../utils/misc-utils';
 import EditIcon from '@mui/icons-material/Edit';
 import { setSaleModal } from '../../redux/modalSlice';
 import { useDispatch } from 'react-redux';

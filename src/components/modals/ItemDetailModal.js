@@ -1,5 +1,5 @@
 import { Dialog, DialogTitle, DialogContent, DialogActions, Button } from '@mui/material'
-import { toCurrency } from '../../utils/miscUtils';
+import { toCurrency } from '../../utils/misc-utils';
 
 export const ItemDetailModal = ({ isOpen, handleClose, item }) => {
     if (!item) return null

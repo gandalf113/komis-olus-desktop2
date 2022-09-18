@@ -2,7 +2,7 @@ import React, { useState, useEffect, useMemo, useContext } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Box, Typography, Button } from '@mui/material';
 import { SalesContext } from '../../context/sales-context';
-import { toCurrency } from '../../utils/miscUtils';
+import { toCurrency } from '../../utils/misc-utils';
 import { useDispatch } from 'react-redux';
 import { setWithdrawModal } from '../../redux/modalSlice';
 import { DataTable } from '../../components/DataTable';

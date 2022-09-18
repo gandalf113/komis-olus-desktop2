@@ -4,7 +4,7 @@ import {
 } from '@mui/material';
 import { openNotification as showNotification } from '../../redux/notificationSlice';
 import { ContractContext } from '../../context/contract-context';
-import { calculatePrice } from '../../utils/miscUtils';
+import { calculatePrice } from '../../utils/misc-utils';
 import { useSelector } from 'react-redux';
 
 export const ItemModal = ({ isOpen, handleClose }) => {
