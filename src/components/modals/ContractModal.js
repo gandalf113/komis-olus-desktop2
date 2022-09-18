@@ -189,26 +189,46 @@ export const ContractModal = ({ isOpen, handleClose }) => {
                         <TextField
                             id="numer-umowy"
                             label='Numer umowy'
-                            value={contractNumber}
+                            value={contractModal.edit ? contractModal.contract.numer_umowy : contractNumber}
                         />
-                        {!isNewClient && <Autocomplete
-                            id="search-client"
-                            freeSolo
-                            disabled={isNewClient}
-                            options={allClients}
-                            value={contractModal.edit && selectedClient}
-                            getOptionLabel={(client) => client.skrot + " |  " + client.imie + " " + client.nazwisko + " | " + client.adres}
-                            onChange={(event, client) => {
-                                if (client)
-                                    setSelectedClient(client)
-                            }}
-                            // onInputChange={() => {
-                            //     setSelectedClient({})
-                            // }}
-                            renderInput={(params) => (
-                                <TextField {...params} label="Szukaj klienta" />)
-                            }
-                        />}
+                        {!isNewClient &&
+
+                            (contractModal.edit ? <Autocomplete
+                                id="search-client"
+                                freeSolo
+                                disabled={isNewClient}
+                                options={allClients}
+                                value={selectedClient}
+                                getOptionLabel={(client) => client.skrot + " |  " + client.imie + " " + client.nazwisko + " | " + client.adres}
+                                onChange={(event, client) => {
+                                    if (client)
+                                        setSelectedClient(client)
+                                }}
+                                // onInputChange={() => {
+                                //     setSelectedClient({})
+                                // }}
+                                renderInput={(params) => (
+                                    <TextField {...params} label="Szukaj klienta" />)
+                                }
+                            /> : <Autocomplete
+                                id="search-client"
+                                freeSolo
+                                disabled={isNewClient}
+                                options={allClients}
+                                getOptionLabel={(client) => client.skrot + " |  " + client.imie + " " + client.nazwisko + " | " + client.adres}
+                                onChange={(event, client) => {
+                                    if (client)
+                                        setSelectedClient(client)
+                                }}
+                                onInputChange={() => {
+                                    setSelectedClient({})
+                                }}
+                                renderInput={(params) => (
+                                    <TextField {...params} label="Szukaj klienta" />)
+                                }
+                            />
+                            )
+                        }
                         <Box sx={{ display: `${isNewClient ? 'flex' : 'none'}`, flexDirection: 'column', gap: 1 }}>
                             <TextField
                                 id="client-first-name-input"
