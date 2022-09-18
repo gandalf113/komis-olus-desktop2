@@ -71,8 +71,6 @@ const ClientsScreen = () => {
     )
     return (
         <div>
-            {/* <Button variant="contained" color="success" style={{ marginBottom: 10 }}
-                onClick={() => dispatch(toggleNewClientModal(true))}>Nowy klient</Button> */}
             <DataTable loading={false} tableData={clients} columns={columns} />
         </div>
     )

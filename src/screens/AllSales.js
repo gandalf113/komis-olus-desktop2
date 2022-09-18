@@ -3,7 +3,7 @@ import { DataTable } from '../components/DataTable';
 import { SalesContext } from '../context/sales-context';
 import { toCurrency } from '../utils/miscUtils';
 import EditIcon from '@mui/icons-material/Edit';
-import { setSaleModal, toggleEditSaleModal } from '../redux/modalSlice';
+import { setSaleModal } from '../redux/modalSlice';
 import { useDispatch } from 'react-redux';
 import { setPath } from '../redux/screenSlice';
 

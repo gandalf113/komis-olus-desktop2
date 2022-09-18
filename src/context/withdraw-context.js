@@ -5,7 +5,6 @@ export const WithdrawContext = createContext();
 const WithdrawProvider = props => {
     const [allWithdraws, setAllWithdraws] = useState([]);
 
-    const [withdrawableAmount, setWithdrawableAmount] = useState();
 
     const reloadWithdraws = () => {
         window.api.getWithdraws().then(withdraws => {
@@ -13,7 +12,7 @@ const WithdrawProvider = props => {
         });
     }
 
-    return <WithdrawContext.Provider value={{ allWithdraws, reloadWithdraws, withdrawableAmount, setWithdrawableAmount }}>
+    return <WithdrawContext.Provider value={{ allWithdraws, reloadWithdraws }}>
         {props.children}
     </WithdrawContext.Provider>
 }

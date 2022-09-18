@@ -4,7 +4,6 @@ import {
 } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
 import { openNotification as showNotification } from '../../redux/notificationSlice';
-import { toggleEditClientModal } from '../../redux/modalSlice';
 import { ClientContext } from '../../context/client-context';
 
 /**
