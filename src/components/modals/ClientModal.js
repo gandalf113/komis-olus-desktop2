@@ -103,6 +103,23 @@ export const ClientModal = ({ isOpen, handleClose }) => {
             })
     }
 
+    const deleteClient = async () => {
+        const clientId = clientModal.client.id_klienta;
+
+        window.api.deleteClient(clientId)
+            .then(_ => {
+                // Close the modal
+                handleClose();
+                // Refresh the clients
+                reloadClients();
+                // Show success notification
+                dispatch(showNotification(`Pomyślnie usunięto klienta: ${short}`))
+            })
+            .catch(error => {
+                alert('Nie udało się usunąć klienta! Informacje o błędzie w konsoli.')
+                console.error(error)
+            })
+    }
 
     return (
         <div>
@@ -176,6 +193,9 @@ export const ClientModal = ({ isOpen, handleClose }) => {
                         />
                     </Box>
                     <DialogActions>
+                        <Button onClick={deleteClient} color='error'>
+                            Usuń
+                        </Button>
                         <Button onClick={clientModal.edit ? updateClient : createClient}>
                             {clientModal.edit ? 'Zapisz' : 'Dodaj'}
                         </Button>

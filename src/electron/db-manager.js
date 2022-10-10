@@ -292,6 +292,14 @@ getItemsDetailed = ipcMain.handle('get/items/detailed', async (event, args) => {
         .where('id_przedmiotu', hexToDec(search))
 })
 
+deleteClient = ipcMain.handle('delete/client', async (event, args) => {
+    const { clientId } = args
+
+    await knex.raw('PRAGMA foreign_keys = ON');
+
+    return knex.select('*').from('klienci')
+        .where('id_klienta', clientId).del();
+})
 
 deleteItem = ipcMain.handle('delete/item', async (event, args) => {
     const { itemId } = args
@@ -302,6 +310,8 @@ deleteItem = ipcMain.handle('delete/item', async (event, args) => {
 
 deleteContract = ipcMain.handle('delete/contract', async (event, args) => {
     const { contractId } = args
+
+    await knex.raw('PRAGMA foreign_keys = ON');
 
     return knex.select('*').from('umowy')
         .where('id_umowy', contractId).del();

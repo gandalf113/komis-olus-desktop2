@@ -66,7 +66,7 @@ export const ContractModal = ({ isOpen, handleClose }) => {
                 setSelectedClient(null);
             }
         }
-    }, [isOpen, contractModal, allClients.length, reloadClients]);
+    }, [isOpen]);
 
     const toggleIsNewClient = () => {
         setIsNewClient(!isNewClient);
