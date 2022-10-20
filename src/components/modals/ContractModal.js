@@ -34,6 +34,8 @@ export const ContractModal = ({ isOpen, handleClose }) => {
     const [isNewClient, setIsNewClient] = useState(false);
     const [firstName, setFirstName] = useState('');
     const [lastName, setLastName] = useState('');
+    const [address, setAddress] = useState('');
+    const [phone, setPhone] = useState('');
     const [short, setShort] = useState('');
 
     const dispatch = useDispatch();
@@ -61,6 +63,8 @@ export const ContractModal = ({ isOpen, handleClose }) => {
             } else {
                 setFirstName('');
                 setLastName('');
+                setPhone('');
+                setAddress('');
                 setShort('');
 
                 setSelectedClient(null);
@@ -133,11 +137,9 @@ export const ContractModal = ({ isOpen, handleClose }) => {
             // If we are creating a contract for EXISTING user
             handleCreation(client.id_klienta, contractNumber);
         } else {
-            // TODO: input address and phone here
-
             // If we are creating a contract for a NEW user
             // First, create the new user
-            window.api.createClient(firstName, lastName, short, '', '')
+            window.api.createClient(firstName, lastName, short, address, phone)
                 .then(res => {
                     // Refresh the clients
                     reloadClients();
@@ -180,16 +182,16 @@ export const ContractModal = ({ isOpen, handleClose }) => {
         const contractId = contractModal.contract.id_umowy;
 
         window.api.deleteContract(contractId)
-        .then(_ => {
-            // Close the modal
-            handleClose();
-            // Refresh the contracts
-            reloadContracts();
-            dispatch(showNotification(`Pomyślnie usunięto umowę: ${contractNumber}`));
-        }).catch(error => {
-            alert('Nie udało się usunąć umowy! Informacje o błędzie w konsoli.')
-            console.error(error)
-        });
+            .then(_ => {
+                // Close the modal
+                handleClose();
+                // Refresh the contracts
+                reloadContracts();
+                dispatch(showNotification(`Pomyślnie usunięto umowę: ${contractNumber}`));
+            }).catch(error => {
+                alert('Nie udało się usunąć umowy! Informacje o błędzie w konsoli.')
+                console.error(error)
+            });
     }
 
     return (
@@ -266,6 +268,17 @@ export const ContractModal = ({ isOpen, handleClose }) => {
                                     generateShort(firstName, e.target.value)
                                         .then(res => setShort(res))
                                 }}
+                            />
+
+                            <TextField
+                                id="client-address-input"
+                                label="Adres"
+                                onChange={(e) => setAddress(e.target.value)}
+                            />
+                            <TextField
+                                id="client-phone-input"
+                                label="Telefon"
+                                onChange={(e) => setPhone(e.target.value)}
                             />
                             <TextField
                                 id="client-short-input"

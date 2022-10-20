@@ -49,11 +49,11 @@ const DailySummary = ({ sales }) => {
   return (
     <div>
       <DataTable loading={false} columns={columns} tableData={summary} hideSearchBar />
-      <Box sx={{ marginTop: 2, marginLeft: 1 }}>
+      {/* <Box sx={{ marginTop: 2, marginLeft: 1 }}>
         <Typography variant='h6'>RAZEM:</Typography>
         <Typography>Prowizja: {getPropertySum(summary, 'prowizja')} zł</Typography>
         <Typography>Kwota dla komitenta: {getPropertySum(summary, 'kwotaDlaKomitenta')} zł</Typography>
-      </Box>
+      </Box> */}
       {/* {Object.keys(days).map(day => (
         <div>
           <p>Kwota dla komitenta: {getPropertySum(days[day], 'kwotaDlaKomitenta')} zł</p>
