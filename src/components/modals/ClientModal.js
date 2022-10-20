@@ -33,7 +33,6 @@ export const generateShort = async (firstName, lastName) => {
                 // If this abbreviation is taken...
                 return findFreeSuffix(suffix_number + 1)
             } else {
-                console.log(suffix_number) // <- This prints the correct result, but I'm unable to return it
                 return suffix_number
             }
         })
@@ -193,9 +192,10 @@ export const ClientModal = ({ isOpen, handleClose }) => {
                         />
                     </Box>
                     <DialogActions>
-                        <Button onClick={deleteClient} color='error'>
-                            Usuń
-                        </Button>
+                        {clientModal.edit &&
+                            <Button onClick={deleteClient} color='error'>
+                                Usuń
+                            </Button>}
                         <Button onClick={clientModal.edit ? updateClient : createClient}>
                             {clientModal.edit ? 'Zapisz' : 'Dodaj'}
                         </Button>

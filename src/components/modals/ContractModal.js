@@ -176,6 +176,22 @@ export const ContractModal = ({ isOpen, handleClose }) => {
             });
     }
 
+    const deleteContract = async () => {
+        const contractId = contractModal.contract.id_umowy;
+
+        window.api.deleteContract(contractId)
+        .then(_ => {
+            // Close the modal
+            handleClose();
+            // Refresh the contracts
+            reloadContracts();
+            dispatch(showNotification(`Pomyślnie usunięto umowę: ${contractNumber}`));
+        }).catch(error => {
+            alert('Nie udało się usunąć umowy! Informacje o błędzie w konsoli.')
+            console.error(error)
+        });
+    }
+
     return (
         <div>
             <Dialog open={isOpen} onClose={handleClose}>
@@ -263,6 +279,12 @@ export const ContractModal = ({ isOpen, handleClose }) => {
 
                 </DialogContent>
                 <DialogActions style={{ display: 'flex', justifyContent: contractModal.edit ? 'flex-end' : 'space-between' }}>
+                    {contractModal.edit &&
+                        <Button onClick={deleteContract} color='error'>
+                            Usuń
+                        </Button>
+                    }
+
                     {!contractModal.edit && <FormControlLabel
                         control={<Switch
                             checked={isNewClient}
