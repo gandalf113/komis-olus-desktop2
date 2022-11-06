@@ -234,7 +234,7 @@ export default function PersistentDrawerLeft() {
             <Main open={open}>
                 <DrawerHeader />
                 <Routes>
-                    <Route path="/" element={<>Komis Olus</>} exact />
+                    <Route path="/" element={<ClientsScreen />} exact />
                     <Route path="/clients" element={<ClientsScreen />} />
                     <Route path="/clients/:id" element={<ClientDetailScreen />} />
 
