@@ -12,7 +12,7 @@ export const ItemModal = ({ isOpen, handleClose }) => {
     const [name, setName] = useState('');
     const [amount, setAmount] = useState('');
     const [commiterValue, setCommiterValue] = useState('');
-    const [margin, setMargin] = useState('');
+    const [margin, setMargin] = useState(0);
     const [price, setPrice] = useState('0.00');
 
     const { reloadContracts } = useContext(ContractContext);
@@ -23,7 +23,7 @@ export const ItemModal = ({ isOpen, handleClose }) => {
         setName(itemModal.edit ? itemModal.item.nazwa : '')
         setCommiterValue(itemModal.edit ? itemModal.item.kwotaDlaKomitenta : '')
         setAmount(itemModal.edit ? itemModal.item.przyjetaIlosc : '')
-        setMargin(itemModal.edit ? itemModal.item.domyslnaMarza : '')
+        setMargin(itemModal.edit ? itemModal.item.domyslnaMarza : 0)
     }, [isOpen, itemModal])
 
     useEffect(() => {
@@ -152,32 +152,37 @@ export const ItemModal = ({ isOpen, handleClose }) => {
                             }}
                             variant="filled"
                         />
-                        <TextField
-                            id="item-margin-input"
-                            label="Domyślna marża [zł]"
-                            type="number"
-                            defaultValue={'0.00'}
-                            value={margin}
-                            onChange={(e) => setMargin(e.target.value)}
-                            InputLabelProps={{
-                                shrink: true,
-                            }}
-                            inputProps={{
-                                step: 0.01
-                            }}
-                            variant="filled"
-                        />
-                        <TextField
-                            id="item-price-input-noneditable"
-                            label="Cena"
-                            type="text"
-                            placeholder='0.00 zł'
-                            value={price}
-                            InputLabelProps={{
-                                shrink: true,
-                            }}
-                            variant="filled"
-                        />
+                        {itemModal.edit ?
+                            <>
+                                <TextField
+                                    id="item-margin-input"
+                                    label="Domyślna marża [zł]"
+                                    type="number"
+                                    defaultValue={'0.00'}
+                                    value={margin}
+                                    onChange={(e) => setMargin(e.target.value)}
+                                    InputLabelProps={{
+                                        shrink: true,
+                                    }}
+                                    inputProps={{
+                                        step: 0.01,
+                                        min: 0
+                                    }}
+                                    variant="filled"
+                                />
+                                <TextField
+                                    id="item-price-input-noneditable"
+                                    label="Cena"
+                                    type="text"
+                                    placeholder='0.00 zł'
+                                    value={price}
+                                    InputLabelProps={{
+                                        shrink: true,
+                                    }}
+                                    variant="filled"
+                                />
+                            </> : null
+                        }
 
                     </Box>
                     <DialogActions>

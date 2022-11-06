@@ -192,10 +192,10 @@ export const ClientModal = ({ isOpen, handleClose }) => {
                         />
                     </Box>
                     <DialogActions>
-                        {clientModal.edit &&
+                        {/* {clientModal.edit &&
                             <Button onClick={deleteClient} color='error'>
                                 Usuń
-                            </Button>}
+                            </Button>} */}
                         <Button onClick={clientModal.edit ? updateClient : createClient}>
                             {clientModal.edit ? 'Zapisz' : 'Dodaj'}
                         </Button>

@@ -1,12 +1,12 @@
 import React from 'react'
-import { Button } from '@mui/material'
+import { Button, IconButton, Typography } from '@mui/material'
 
 const AddButton = ({ text, icon, onClick }) => {
   return (
-    <Button variant='text' color='primary' sx={{ marginBottom: 2 }} onClick={onClick}>
+    <IconButton variant='text'  sx={{ marginBottom: 2 }} onClick={onClick}>
       {icon}
-      {text}
-    </Button>
+      <Typography variant='button'>{text.toUpperCase()}</Typography>
+    </IconButton>
   )
 }
 
