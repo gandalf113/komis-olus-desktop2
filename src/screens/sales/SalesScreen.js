@@ -6,6 +6,7 @@ import { DataTable } from '../../components/DataTable'
 import { SalesContext } from '../../context/sales-context';
 import { yearAndMonthToString } from '../../utils/date-utils';
 import { setPath } from '../../redux/screenSlice';
+import AddSaleButton from '../../components/AddSaleButton';
 
 const SalesScreen = () => {
     const navigate = useNavigate();
@@ -40,7 +41,7 @@ const SalesScreen = () => {
         }))
 
         setMonths(monthObjects)
-    }, [sales, reloadSales])
+    }, [sales, reloadSales, dispatch])
 
     const columns = React.useMemo(
         () => [
@@ -63,10 +64,12 @@ const SalesScreen = () => {
     )
 
     return (
-        <div>
+        <>
+            <AddSaleButton />
+
             {/* <Button onClick={openModal} variant="contained" color="success" style={{ marginBottom: 10 }}>Nowa sprzedaż</Button> */}
-            <DataTable loading={false} tableData={months} columns={columns} hideSearchBar/>
-        </div>
+            <DataTable loading={false} tableData={months} columns={columns} hideSearchBar />
+        </>
     )
 }
 

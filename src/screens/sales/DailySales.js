@@ -11,6 +11,7 @@ import EditIcon from '@mui/icons-material/Edit';
 import { setPath } from '../../redux/screenSlice';
 import { yearAndMonthToString } from '../../utils/date-utils';
 import DailySummary from './DailySummary';
+import AddSaleButton from '../../components/AddSaleButton';
 
 function a11yProps(index) {
     return {
@@ -109,6 +110,7 @@ const DailySales = () => {
 
     return (
         <Box sx={{ width: '100%' }}>
+            <AddSaleButton />
             <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
                 <Tabs value={tabIndex} onChange={handleTabChange} aria-label="basic tabs example">
                     <Tab label="Sprzedaż" {...a11yProps(0)} />

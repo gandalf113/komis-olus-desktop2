@@ -1,13 +1,15 @@
 import React, { useEffect, useCallback, useContext } from 'react'
+import { useDispatch } from 'react-redux';
 import { DataTable } from '../../components/DataTable'
 import { IconButton } from '@mui/material';
-import { useDispatch } from 'react-redux';
 import { setNavbarTitle, setPath } from '../../redux/screenSlice';
 import { ContractContext } from '../../context/contract-context';
 import EditIcon from '@mui/icons-material/Edit';
 import ReceiptIcon from '@mui/icons-material/Receipt';
 import { useNavigate } from 'react-router-dom';
 import { setContractModal } from '../../redux/modalSlice';
+import AddButton from '../../components/AddButton';
+
 
 const ContractsScreen = () => {
     const dispatch = useDispatch();
@@ -80,10 +82,16 @@ const ContractsScreen = () => {
         [openContract]
     )
     return (
-        <div>
-            {/* <Button onClick={openModal} variant="contained" color="success" style={{ marginBottom: 10 }}>Nowa umowa</Button> */}
+        <>
+            <AddButton
+                text='Nowa umowa'
+                icon={<ReceiptIcon sx={{ marginRight: 1 }} />}
+                onClick={() => dispatch(setContractModal({
+                    isOpen: true,
+                    edit: false
+                }))} />
             <DataTable loading={false} tableData={contracts} columns={columns} />
-        </div>
+        </>
     )
 }
 

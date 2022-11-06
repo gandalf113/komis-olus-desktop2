@@ -212,14 +212,14 @@ export default function PersistentDrawerLeft() {
                         </ListItemButton>
                     </ListItem>
 
-                    <ListItem disablePadding>
+                    {/* <ListItem disablePadding>
                         <ListItemButton onClick={() => navigate('/sales/all')}>
                             <ListItemIcon>
                                 <PointOfSaleIcon />
                             </ListItemIcon>
                             <ListItemText primary="Cała sprzedaż" />
                         </ListItemButton>
-                    </ListItem>
+                    </ListItem> */}
 
                     <ListItem disablePadding>
                         <ListItemButton onClick={() => navigate('/returns')}>
@@ -227,44 +227,6 @@ export default function PersistentDrawerLeft() {
                                 <AssignmentReturnIcon />
                             </ListItemIcon>
                             <ListItemText primary="Zwroty" />
-                        </ListItemButton>
-                    </ListItem>
-                </List>
-                <Divider />
-                <List>
-                    <ListItem disablePadding>
-                        <ListItemButton onClick={() => dispatch(setClientModal({
-                            isOpen: true,
-                            edit: false
-                        }))}>
-                            <ListItemIcon>
-                                <PersonAddIcon />
-                            </ListItemIcon>
-                            <ListItemText primary="Nowy klient" />
-                        </ListItemButton>
-                    </ListItem>
-
-                    <ListItem disablePadding>
-                        <ListItemButton onClick={() => dispatch(setContractModal({
-                            isOpen: true,
-                            edit: false
-                        }))}>
-                            <ListItemIcon>
-                                <ReceiptIcon />
-                            </ListItemIcon>
-                            <ListItemText primary="Nowa umowa" />
-                        </ListItemButton>
-                    </ListItem>
-
-                    <ListItem disablePadding>
-                        <ListItemButton onClick={() => dispatch(setSaleModal({
-                            isOpen: true,
-                            edit: false
-                        }))}>
-                            <ListItemIcon>
-                                <PointOfSaleIcon />
-                            </ListItemIcon>
-                            <ListItemText primary="Nowa sprzedaż" />
                         </ListItemButton>
                     </ListItem>
                 </List>

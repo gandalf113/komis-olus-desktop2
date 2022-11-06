@@ -9,6 +9,7 @@ import { useDispatch } from 'react-redux';
 import { setPath } from '../../redux/screenSlice';
 import TabPanel from '../../components/TabPanel';
 import MonthlySummary from './MonthlySummary';
+import AddSaleButton from '../../components/AddSaleButton';
 
 function a11yProps(index) {
     return {
@@ -80,6 +81,8 @@ const MonthlySales = () => {
 
     return (
         <Box sx={{ width: '100%' }}>
+            <AddSaleButton />
+
             <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
                 <Tabs value={tabIndex} onChange={handleTabChange} aria-label="basic tabs example">
                     <Tab label="Sprzedaż" {...a11yProps(0)} />

@@ -7,6 +7,9 @@ import { IconButton, Typography } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
 import { useNavigate } from 'react-router-dom';
 import { setClientModal } from '../../redux/modalSlice';
+import PersonAddIcon from '@mui/icons-material/PersonAdd';
+import AddButton from '../../components/AddButton';
+
 
 const ClientsScreen = () => {
     const dispatch = useDispatch()
@@ -69,10 +72,18 @@ const ClientsScreen = () => {
         ],
         []
     )
+
     return (
-        <div>
+        <>
+            <AddButton
+                text='Dodaj klienta'
+                icon={<PersonAddIcon sx={{ marginRight: 1 }} />}
+                onClick={() => dispatch(setClientModal({
+                    isOpen: true,
+                    edit: false
+                }))} />
             <DataTable loading={false} tableData={clients} columns={columns} />
-        </div>
+        </>
     )
 }
 
