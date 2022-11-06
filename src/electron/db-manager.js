@@ -82,6 +82,8 @@ getContractsWithClients = ipcMain.handle("get/contracts-clients", async (event, 
 getSalesWithItems = ipcMain.handle("get/sales-items", async (event, args) => {
     return knex.select('*').from('sprzedaz')
         .leftJoin('przedmioty', 'przedmioty.id_przedmiotu', 'sprzedaz.id_przedmiotu')
+        .leftJoin('umowy', 'przedmioty.id_umowy', 'umowy.id_umowy')
+        .leftJoin('klienci', 'umowy.id_klienta', 'klienci.id_klienta')
         .orderBy('id_sprzedazy', 'desc')
 })
 
@@ -90,6 +92,8 @@ getSalesWithItemsByDate = ipcMain.handle("get/sales-items/date", async (event, a
 
     return knex.select('*').from('sprzedaz')
         .leftJoin('przedmioty', 'przedmioty.id_przedmiotu', 'sprzedaz.id_przedmiotu')
+        .leftJoin('umowy', 'przedmioty.id_umowy', 'umowy.id_umowy')
+        .leftJoin('klienci', 'umowy.id_klienta', 'klienci.id_klienta')
         .orderBy('id_sprzedazy', 'desc').where('sprzedaz.data', date)
 })
 

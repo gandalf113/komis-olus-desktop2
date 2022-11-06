@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux';
 import { DataTable } from '../../components/DataTable'
-import { Box, Button, Typography } from '@mui/material';
+import { Box, Button, IconButton, Typography } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
 import AssignmentReturnIcon from '@mui/icons-material/AssignmentReturn';
 import { setItemModal, setReturnModal } from '../../redux/modalSlice';
@@ -95,42 +95,35 @@ const ContractDetailScreen = () => {
                 accessor: 'domyslnaMarza',
                 Cell: props => <div> {toCurrency(props.value)} </div>
             },
-            // {
-            //     Header: 'Cena',
-            //     accessor: 'cena',
-            //     Cell: props => <div> {toCurrency(props.value)} </div>
-            // },
             {
                 Header: 'Do wypłaty',
                 Cell: props => <div> {toCurrency(props.row.original.kwotaDlaKomitenta * props.row.original.sprzedanaIlosc)} </div>
             },
             {
                 Header: 'Edytuj',
-                Cell: props => <EditIcon
-                    onClick={() => {
-                        dispatch(setItemModal({
-                            isOpen: true,
-                            edit: true,
-                            item: props.row.original,
-                            contract: contract
-                        }))
-                    }}
-                    sx={{ cursor: 'pointer' }} />
+                Cell: props => <IconButton onClick={() => dispatch(setItemModal({
+                        isOpen: true,
+                        edit: true,
+                        item: props.row.original,
+                        contract: contract
+                    }))}>
+                    <EditIcon />
+                </IconButton>
             },
             {
                 Header: 'Zwróć',
-                Cell: props => <AssignmentReturnIcon
-                    onClick={() => {
-                        dispatch(setReturnModal({
-                            isOpen: true,
-                            edit: false,
-                            item: props.row.original
-                        }))
-                    }}
-                    sx={{ cursor: 'pointer' }} />
+                Cell: props => <IconButton onClick={() => dispatch(setReturnModal({
+                    isOpen: true,
+                    edit: false,
+                    item: props.row.original
+                }))
+                }>
+                    <AssignmentReturnIcon />
+                </IconButton>
+
             },
         ],
-        [dispatch]
+        [dispatch, contract]
     )
 
     if (!contract || !items || !client) return null
