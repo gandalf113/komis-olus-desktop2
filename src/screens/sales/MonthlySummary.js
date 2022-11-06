@@ -38,7 +38,7 @@ const MonthlySummary = () => {
 
       },
       {
-        Header: 'Prowizja',
+        Header: 'Marża',
         accessor: 'prowizja',
         Cell: props => <div> {toCurrency(props.value)} </div>
       },
@@ -46,6 +46,10 @@ const MonthlySummary = () => {
         Header: 'Kwota dla komitenta',
         accessor: 'kwotaDlaKomitenta',
         Cell: props => <div> {toCurrency(props.value)} </div>
+      },
+      {
+        Header: 'Razem',
+        Cell: props => <div> {toCurrency(props.row.original.prowizja + props.row.original.kwotaDlaKomitenta)} </div>
       },
     ],
     []
@@ -58,8 +62,9 @@ const MonthlySummary = () => {
       <DataTable loading={false} columns={columns} tableData={summary} hideSearchBar/>
       <Box sx={{ marginTop: 2, marginLeft: 1 }}>
         <Typography variant='h6'>RAZEM:</Typography>
-        <Typography>Prowizja: {getPropertySum(summary, 'prowizja')} zł</Typography>
+        <Typography>Marża: {getPropertySum(summary, 'prowizja')} zł</Typography>
         <Typography>Kwota dla komitenta: {getPropertySum(summary, 'kwotaDlaKomitenta')} zł</Typography>
+        <Typography>Cena: {getPropertySum(summary, 'kwotaDlaKomitenta') + getPropertySum(summary, 'prowizja')} zł</Typography>
       </Box>
       {/* {Object.keys(days).map(day => (
         <div>

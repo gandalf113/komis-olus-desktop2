@@ -31,7 +31,7 @@ const DailySummary = ({ sales }) => {
         Footer: <span>test</span>
       },
       {
-        Header: 'Prowizja',
+        Header: 'Marża',
         accessor: 'prowizja',
         Cell: props => <div> {toCurrency(props.value)} </div>
       },
@@ -39,6 +39,10 @@ const DailySummary = ({ sales }) => {
         Header: 'Kwota dla komitenta',
         accessor: 'kwotaDlaKomitenta',
         Cell: props => <div> {toCurrency(props.value)} </div>
+      },
+      {
+        Header: 'Razem',
+        Cell: props => <div> {toCurrency(props.row.original.prowizja + props.row.original.kwotaDlaKomitenta)} </div>
       },
     ],
     []

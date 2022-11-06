@@ -125,7 +125,7 @@ const DailySales = () => {
             <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
                 <Tabs value={tabIndex} onChange={handleTabChange} aria-label="basic tabs example">
                     <Tab label="Sprzedaż" {...a11yProps(0)} />
-                    <Tab label="Podsumowanie dnia" {...a11yProps(1)} />
+                    <Tab label="Podsumowanie sprzedaży" {...a11yProps(1)} />
                 </Tabs>
             </Box>
 
