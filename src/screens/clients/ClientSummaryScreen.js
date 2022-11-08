@@ -78,7 +78,7 @@ const ClientSummaryScreen = () => {
     const columms = useMemo(
         () => [
             {
-                Header: 'Id',
+                Header: 'ID',
                 accessor: 'id_wyplaty',
             },
             {

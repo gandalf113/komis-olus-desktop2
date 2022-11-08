@@ -27,7 +27,7 @@ const ReturnsScreen = () => {
     const columns = useMemo(
         () => [
             {
-                Header: 'Id',
+                Header: 'ID',
                 accessor: 'id_zwrotu',
             },
             {

@@ -53,10 +53,10 @@ const ClientDetailScreen = () => {
 
     const columns = useMemo(
         () => [
-            {
-                Header: 'Id',
-                accessor: 'id_umowy',
-            },
+            // {
+            //     Header: 'ID',
+            //     accessor: 'id_umowy',
+            // },
             {
                 Header: 'Numer umowy',
                 accessor: 'numer_umowy',

@@ -16,7 +16,7 @@ import SearchBar from './modals/SearchBar';
 
 Modal.setAppElement('#root');
 
-export const DataTable = ({ loading, tableData, columns = {}, hideSearchBar = false, shrinkRows = false }) => {
+export const DataTable = ({ loading, tableData, columns = {}, hideSearchBar = false, shrinkRows = false, enumerate = false }) => {
     const data = React.useMemo(
         () => tableData,
         [tableData]
@@ -50,9 +50,10 @@ export const DataTable = ({ loading, tableData, columns = {}, hideSearchBar = fa
             <Table  {...getTableProps()}>
                 <TableHead>
                     {// Loop over the header rows
-                        headerGroups.map(headerGroup => (
+                        headerGroups.map((headerGroup, index) => (
                             // Apply the header row props
                             <TableRow {...headerGroup.getHeaderGroupProps()}>
+                                {enumerate ? <TableCell>Indeks</TableCell> : null}
                                 {// Loop over the headers in each row
                                     headerGroup.headers.map(column => (
                                         // Apply the header cell props
@@ -73,12 +74,13 @@ export const DataTable = ({ loading, tableData, columns = {}, hideSearchBar = fa
                 {/* Apply the table body props */}
                 <TableBody {...getTableBodyProps()}>
                     {// Loop over the table rows
-                        rows.map(row => {
+                        rows.map((row, index) => {
                             // Prepare the row for display
                             prepareRow(row)
                             return (
                                 // Apply the row props
                                 <TableRow {...row.getRowProps()} >
+                                    {enumerate ? <TableCell>{index + 1}</TableCell> : null}
                                     {// Loop over the rows cells
                                         row.cells.map(cell => {
                                             // Apply the cell props

@@ -25,10 +25,10 @@ const ClientsScreen = () => {
 
     const columns = React.useMemo(
         () => [
-            {
-                Header: 'ID',
-                accessor: 'id_klienta', // accessor is the "key" in the data
-            },
+            // {
+            //     Header: 'ID',
+            //     accessor: 'id_klienta', // accessor is the "key" in the data
+            // },
             {
                 Header: 'Skrót',
                 accessor: 'skrot',

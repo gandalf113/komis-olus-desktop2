@@ -21,7 +21,7 @@ const AllSales = () => {
     const columns = React.useMemo(
         () => [
             {
-                Header: 'id',
+                Header: 'ID',
                 accessor: 'id_sprzedazy',
             },
             {

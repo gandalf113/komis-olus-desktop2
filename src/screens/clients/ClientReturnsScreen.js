@@ -31,7 +31,7 @@ const ClientReturnsScreen = () => {
     const columns = useMemo(
         () => [
             {
-                Header: 'Id',
+                Header: 'ID',
                 accessor: 'id_zwrotu',
             },
             {

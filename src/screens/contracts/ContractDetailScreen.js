@@ -167,7 +167,7 @@ const ContractDetailScreen = () => {
                 </Button>
             </Box>
 
-            <DataTable loading={loading} tableData={items} columns={columns} />
+            <DataTable loading={loading} tableData={items} columns={columns} enumerate={true}/>
         </div>
     )
 }

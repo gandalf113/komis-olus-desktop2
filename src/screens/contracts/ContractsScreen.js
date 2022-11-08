@@ -32,10 +32,10 @@ const ContractsScreen = () => {
 
     const columns = React.useMemo(
         () => [
-            {
-                Header: 'Id',
-                accessor: 'id_umowy',
-            },
+            // {
+            //     Header: 'ID',
+            //     accessor: 'id_umowy',
+            // },
             {
                 Header: 'Numer umowy',
                 accessor: 'numer_umowy',
