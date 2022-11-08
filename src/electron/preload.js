@@ -36,7 +36,7 @@ const WINDOW_API = {
     updateClient: (clientId, firstName, lastName, short, address, phone) => ipcRenderer.invoke("update/client", { clientId: clientId, firstName: firstName, lastName: lastName, short: short, address: address, phone }),
     updateContract: (contractId, clientId) => ipcRenderer.invoke("update/contract", { contractId: contractId, clientId: clientId }),
     updateSale: (saleId, margin, price, date) => ipcRenderer.invoke("update/sale", { saleId: saleId, margin: margin, price: price, date: date }),
-    updateItem: (itemId, name, amount, commiterValue, defaultMargin) => ipcRenderer.invoke("update/item", { itemId: itemId, name: name, amount: amount, commiterValue: commiterValue, defaultMargin: defaultMargin }),
+    updateItem: (itemId, name, amount, soldAmount, commiterValue, defaultMargin) => ipcRenderer.invoke("update/item", { itemId: itemId, name: name, amount: amount, soldAmount: soldAmount, commiterValue: commiterValue, defaultMargin: defaultMargin }),
     // Increment
     incrementSoldAmount: (itemId) => ipcRenderer.invoke("increment/soldAmount", { itemId: itemId }),
     incrementReturnedAmountBy: (itemId, amount) => ipcRenderer.invoke("increment/returnedAmount", { itemId: itemId, amount: amount }),

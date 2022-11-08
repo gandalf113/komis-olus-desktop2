@@ -212,14 +212,14 @@ export default function PersistentDrawerLeft() {
                         </ListItemButton>
                     </ListItem>
 
-                    <ListItem disablePadding>
+                    {/* <ListItem disablePadding>
                         <ListItemButton onClick={() => navigate('/sales/all')}>
                             <ListItemIcon>
                                 <PointOfSaleIcon />
                             </ListItemIcon>
                             <ListItemText primary="Cała sprzedaż" />
                         </ListItemButton>
-                    </ListItem>
+                    </ListItem> */}
 
                     <ListItem disablePadding>
                         <ListItemButton onClick={() => navigate('/returns')}>

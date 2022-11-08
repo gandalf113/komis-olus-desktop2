@@ -11,6 +11,7 @@ export const ItemModal = ({ isOpen, handleClose }) => {
     // Local state
     const [name, setName] = useState('');
     const [amount, setAmount] = useState('');
+    const [soldAmount, setSoldAmount] = useState(0);
     const [commiterValue, setCommiterValue] = useState('');
     const [margin, setMargin] = useState(0);
     const [price, setPrice] = useState('0.00');
@@ -20,23 +21,19 @@ export const ItemModal = ({ isOpen, handleClose }) => {
 
     // Ustaw wartości pól
     useEffect(() => {
-        setName(itemModal.edit ? itemModal.item.nazwa : '')
-        setCommiterValue(itemModal.edit ? itemModal.item.kwotaDlaKomitenta : '')
-        setAmount(itemModal.edit ? itemModal.item.przyjetaIlosc : '')
-        setMargin(itemModal.edit ? itemModal.item.domyslnaMarza : 0)
+        setName(itemModal.edit ? itemModal.item.nazwa : '');
+        setCommiterValue(itemModal.edit ? itemModal.item.kwotaDlaKomitenta : '');
+        setAmount(itemModal.edit ? itemModal.item.przyjetaIlosc : '');
+        setSoldAmount(itemModal.edit ? itemModal.item.sprzedanaIlosc : 0);
+        setMargin(itemModal.edit ? itemModal.item.domyslnaMarza : 0);
     }, [isOpen, itemModal])
 
     useEffect(() => {
-        const newPrice = calculatePrice(commiterValue, margin)
+        const newPrice = calculatePrice(commiterValue, margin);
 
-        if (newPrice === 'NaN') setPrice('')
-        else setPrice(`${newPrice} zł`)
+        if (newPrice === 'NaN') setPrice('');
+        else setPrice(`${newPrice} zł`);
     }, [commiterValue, margin])
-
-    const validateForm = () => {
-        return name.trim !== '' && amount >= 1 && commiterValue && commiterValue > 0 &&
-            price
-    }
 
 
     /**
@@ -72,8 +69,8 @@ export const ItemModal = ({ isOpen, handleClose }) => {
  * @param {number} defaultMargin - profit for the company
  * @param {int} amount - how many items of this kind has the commiter brought
  */
-    const updateItem = async (itemId, name, commiterValue, defaultMargin, amount) => {
-        window.api.updateItem(itemId, name, amount, commiterValue, defaultMargin)
+    const updateItem = async (itemId, name, commiterValue, defaultMargin, amount, soldAmount) => {
+        window.api.updateItem(itemId, name, amount, soldAmount, commiterValue, defaultMargin)
             .then(_ => {
                 // Close
                 handleClose();
@@ -108,6 +105,15 @@ export const ItemModal = ({ isOpen, handleClose }) => {
             })
     }
 
+    const validateSoldAmount = () => {
+        return soldAmount <= amount && soldAmount >= 0;
+    }
+
+    const validateForm = () => {
+        return name.trim !== '' && amount >= 1 && commiterValue && commiterValue > 0 &&
+            price && validateSoldAmount()
+    }
+
 
     return (
         <div>
@@ -137,6 +143,23 @@ export const ItemModal = ({ isOpen, handleClose }) => {
                             }}
                             variant="filled"
                         />
+                        {itemModal.edit ? <TextField
+                            id="item-sold-amount-input"
+                            label="Sprzedana ilość"
+                            type="number"
+                            value={soldAmount}
+                            onChange={(e) => setSoldAmount(e.target.value)}
+                            InputLabelProps={{
+                                shrink: true,
+                            }}
+                            inputProps={{
+                                step: 1,
+                                min: 0
+                            }}
+                            error={!validateSoldAmount()}
+                            variant="filled"
+                        /> : null
+                        }
                         <TextField
                             id="item-committer-value-input"
                             label="Kwota dla komitenta [zł]"
@@ -193,7 +216,7 @@ export const ItemModal = ({ isOpen, handleClose }) => {
                             handleClose()
                         }}>Odrzuć</Button>
                         <Button onClick={() => {
-                            if (itemModal.edit) updateItem(itemModal.item.id_przedmiotu, name, commiterValue, margin, amount);
+                            if (itemModal.edit) updateItem(itemModal.item.id_przedmiotu, name, commiterValue, margin, amount, soldAmount);
                             else createItem(name, commiterValue, margin, amount);
                         }} disabled={!validateForm()}>Zapisz</Button>
                     </DialogActions>
