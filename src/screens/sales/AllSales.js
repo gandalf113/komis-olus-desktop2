@@ -46,7 +46,7 @@ const AllSales = () => {
             },
             {
                 Header: 'Data sprzedaży',
-                accessor: 'data',
+                accessor: 'data_sprzedazy',
             },
             {
                 Header: 'Edytuj',

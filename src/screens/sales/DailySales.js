@@ -29,9 +29,7 @@ function a11yProps(index) {
  * @returns {Array} - sprzedaż dla danego dnia
  */
 const getDailySales = (allSales, date) => {
-    console.log(allSales)
-    console.log(date)
-    const dailySales = allSales.filter(sale => sale.data === date);
+    const dailySales = allSales.filter(sale => sale.data_sprzedazy === date);
     return dailySales
 }
 
@@ -91,7 +89,7 @@ const DailySales = () => {
             },
             {
                 Header: 'Data sprzedaży',
-                accessor: 'data',
+                accessor: 'data_sprzedazy',
             },
             {
                 Header: 'Edytuj',

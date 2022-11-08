@@ -35,7 +35,7 @@ const WINDOW_API = {
     // Update
     updateClient: (clientId, firstName, lastName, short, address, phone) => ipcRenderer.invoke("update/client", { clientId: clientId, firstName: firstName, lastName: lastName, short: short, address: address, phone }),
     updateContract: (contractId, clientId) => ipcRenderer.invoke("update/contract", { contractId: contractId, clientId: clientId }),
-    updateSale: (saleId, margin, price) => ipcRenderer.invoke("update/sale", { saleId: saleId, margin: margin, price: price }),
+    updateSale: (saleId, margin, price, date) => ipcRenderer.invoke("update/sale", { saleId: saleId, margin: margin, price: price, date: date }),
     updateItem: (itemId, name, amount, commiterValue, defaultMargin) => ipcRenderer.invoke("update/item", { itemId: itemId, name: name, amount: amount, commiterValue: commiterValue, defaultMargin: defaultMargin }),
     // Increment
     incrementSoldAmount: (itemId) => ipcRenderer.invoke("increment/soldAmount", { itemId: itemId }),
@@ -44,7 +44,6 @@ const WINDOW_API = {
     deleteClient: (clientId) => ipcRenderer.invoke("delete/client", { clientId: clientId }),
     deleteItem: (itemId) => ipcRenderer.invoke("delete/item", { itemId: itemId }),
     deleteContract: (contractId) => ipcRenderer.invoke("delete/contract", { contractId: contractId }),
-
 }
 
 const PRINTER_API = {

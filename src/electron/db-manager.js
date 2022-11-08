@@ -178,7 +178,7 @@ createSale = ipcMain.handle("create/sale", async (event, args) => {
             id_przedmiotu: itemId,
             marza: margin,
             cena: price,
-            data: date
+            data_sprzedazy: date
         })
 })
 
@@ -234,13 +234,16 @@ updateClient = ipcMain.handle("update/client", async (event, args) => {
 })
 
 updateSale = ipcMain.handle("update/sale", async (event, args) => {
-    const { saleId, margin, price } = args
+    const { saleId, margin, price, date } = args
+
+    console.log(date)
 
     return knex('sprzedaz')
         .where({ id_sprzedazy: saleId })
         .update({
             marza: margin,
             cena: price,
+            data_sprzedazy: date
         })
 })
 

@@ -1,12 +1,10 @@
 import React, { useEffect, useState, useMemo } from 'react'
 import { useParams } from 'react-router-dom'
-import { Typography } from '@mui/material'
 import { DataTable } from '../../components/DataTable'
 import { toCurrency } from '../../utils/misc-utils'
 import LoadingSpinner from '../../components/LoadingSpinner'
-import { Box } from '@mui/system'
 import { fullDateToString } from '../../utils/date-utils'
-import { getPropertySum, getSummary, groupSalesByDate } from '../../utils/summary-utils'
+import { getSummary, groupSalesByDate } from '../../utils/summary-utils'
 
 
 const DailySummary = ({ sales }) => {

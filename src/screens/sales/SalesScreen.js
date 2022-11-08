@@ -16,16 +16,19 @@ const SalesScreen = () => {
 
     const { allSales: sales, reloadSales } = useContext(SalesContext);
 
+    useEffect(() => {
+        dispatch(setPath('Sprzedaż'));
+        reloadSales();
+    }, [dispatch])
+
     /**
      * Pogrupuj listę sprzedaży wg. miesiąca
      */
     useEffect(() => {
-        dispatch(setPath('Sprzedaż'));
-        reloadSales();
 
         // Pobierz unikalną listę miesięcy połączonym z rokiem, np. [07-2022, 08-2022]
         let monthList = [...new Set(sales.map(sale => {
-            const date = new Date(sale.data)
+            const date = new Date(sale.data_sprzedazy)
             const month = date.getMonth()
             const year = date.getFullYear()
 
@@ -41,7 +44,7 @@ const SalesScreen = () => {
         }))
 
         setMonths(monthObjects)
-    }, [sales, reloadSales, dispatch])
+    }, [sales])
 
     const columns = React.useMemo(
         () => [

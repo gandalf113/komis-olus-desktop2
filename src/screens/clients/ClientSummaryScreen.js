@@ -62,7 +62,6 @@ const ClientSummaryScreen = () => {
      */
     useEffect(() => {
         window.api.getItemsForGivenClient(id).then(res => {
-            console.log(res);
             setItems(res);
         });
     }, [id, allSales]);
@@ -72,7 +71,6 @@ const ClientSummaryScreen = () => {
      */
     useEffect(() => {
         window.api.getWithdrawsForGivenClient(id).then(res => {
-            console.log(res);
             setWithdraws(res);
         });
     }, [id, allWithdraws]);

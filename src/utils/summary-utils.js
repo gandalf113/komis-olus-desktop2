@@ -14,7 +14,7 @@ export const getPropertySum = (sales, key) => {
  */
 export const groupSalesByDate = (sales) => {
     const groupedSales = sales.reduce((groups, sale) => {
-        const date = sale.data
+        const date = sale.data_sprzedazy
 
         if (!groups[date]) {
             groups[date] = []
@@ -28,7 +28,6 @@ export const groupSalesByDate = (sales) => {
 }
 
 export const getSummary = (groupedSales) => {
-    console.log(groupedSales)
     const groupArrays = Object.keys(groupedSales).map((date) => {
         return {
             data: date,

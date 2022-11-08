@@ -28,7 +28,6 @@ const ReturnPrint = () => {
     const fetchReturn = async () => {
       window.api.getReturn(id).then(res => {
         setReturn(res[0]);
-        console.log(res[0])
       });
     }
 

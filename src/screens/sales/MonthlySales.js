@@ -43,7 +43,7 @@ const MonthlySales = () => {
         const sales = getMonthlySales(allSales, date);
 
         // Pobierz unikalną listę dni handlowych
-        let dayList = [...new Set(sales.map(sale => sale.data))]
+        let dayList = [...new Set(sales.map(sale => sale.data_sprzedazy))]
 
         // Przekonwertuj ją na listę obiektów
         var dayObjects = dayList.map(day => ({
@@ -53,8 +53,7 @@ const MonthlySales = () => {
         setDays(dayObjects)
         // })
 
-    }, [allSales])
-
+    }, [allSales, date, dispatch])
 
 
     const columns = React.useMemo(
@@ -75,7 +74,7 @@ const MonthlySales = () => {
 
             },
         ],
-        []
+        [navigate]
     )
     if (!days) return null;
 

@@ -6,7 +6,7 @@
  */
  export const getMonthlySales = (allSales, date) => {
     const filteredSales = allSales.filter(sale => {
-        return sale.data.slice(0, -3) === date
+        return sale.data_sprzedazy.slice(0, -3) === date
     })
 
     return filteredSales

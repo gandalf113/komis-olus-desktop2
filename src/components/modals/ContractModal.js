@@ -108,9 +108,6 @@ export const ContractModal = ({ isOpen, handleClose }) => {
          * @param {String} contractNumber - number of the contract relative to the year like '142/2022'
          */
         const handleCreation = (clientId, contractNumber) => {
-            console.log(clientId)
-            console.log(contractNumber)
-
             window.api.createContract(clientId, contractNumber, getToday())
                 .then(res => {
                     const contractId = res[0];
@@ -128,7 +125,6 @@ export const ContractModal = ({ isOpen, handleClose }) => {
                     // Close the modal
                     handleClose();
                 }).catch(error => {
-                    console.log(error)
                     alert('Wystąpił błąd. Więcej informacji w konsoli.')
                 })
         }
@@ -143,17 +139,15 @@ export const ContractModal = ({ isOpen, handleClose }) => {
                 .then(res => {
                     // Refresh the clients
                     reloadClients();
-                    console.log(res)
 
                     const clientId = res[0]
-                    console.log(clientId);
+
                     return clientId;
                 })
                 .catch(error => {
                     console.error(error);
                 })
                 .then(clientId => {
-                    console.log(clientId)
                     // Create the contract now that we have a valid client
                     handleCreation(clientId, contractNumber)
                 })

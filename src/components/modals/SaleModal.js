@@ -9,8 +9,11 @@ import { openNotification as showNotification } from '../../redux/notificationSl
 import { useDispatch, useSelector } from 'react-redux';
 import { SalesContext } from '../../context/sales-context';
 import { ContractContext } from '../../context/contract-context';
-import { getToday } from '../../utils/date-utils';
+import { formatDateToYyyyMmDd, getToday } from '../../utils/date-utils';
 import { checkIfSoldOut, toCurrency, decToHex, calculatePrice } from '../../utils/misc-utils';
+import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
+import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
+import locale from 'date-fns/locale/pl'
 
 export const SaleModal = ({ isOpen, handleClose }) => {
     // Local state
@@ -22,6 +25,7 @@ export const SaleModal = ({ isOpen, handleClose }) => {
     const [items, setItems] = useState();
     const [margin, setMargin] = useState('');
     const [price, setPrice] = useState('');
+    const [date, setDate] = useState(new Date());
 
     const { reloadSales } = useContext(SalesContext);
     const { reloadContracts } = useContext(ContractContext);
@@ -39,8 +43,11 @@ export const SaleModal = ({ isOpen, handleClose }) => {
 
     useEffect(() => {
         if (saleModal.edit) {
+            setDate(new Date(saleModal.sale.data_sprzedazy))
             loadItem(saleModal.sale.id_przedmiotu)
         } else {
+            setDate(new Date())
+
             window.api.getItems().then(items => {
                 setItems(items);
             });
@@ -57,11 +64,12 @@ export const SaleModal = ({ isOpen, handleClose }) => {
 
     const createSale = async (item, margin) => {
         const price = calculatePrice(item.kwotaDlaKomitenta, margin);
+        console.log(date)
 
         const itemId = item.id_przedmiotu;
         const itemName = item.nazwa;
 
-        await window.api.createSale(itemId, margin, price, getToday()).then(res => {
+        await window.api.createSale(itemId, margin, price, formatDateToYyyyMmDd(date)).then(res => {
             console.log('Pomyślnie dodano sprzedaż')
 
             window.api.incrementSoldAmount(itemId).then(_ => {
@@ -78,11 +86,12 @@ export const SaleModal = ({ isOpen, handleClose }) => {
         })
     }
 
-    const updateSale = async (item, margin) => {
+    const updateSale = async (item, margin, date) => {
+        console.log("Hello wTF?")
         const price = calculatePrice(item.kwotaDlaKomitenta, margin);
         const sale = saleModal.sale
 
-        await window.api.updateSale(sale.id_sprzedazy, margin, price).then(res => {
+        await window.api.updateSale(sale.id_sprzedazy, margin, price, formatDateToYyyyMmDd(date)).then(res => {
             reloadSales();
             reloadContracts();
 
@@ -130,6 +139,16 @@ export const SaleModal = ({ isOpen, handleClose }) => {
                 <DialogContent sx={{ minWidth: 400 }}>
                     <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
                         <Box></Box>
+                        <LocalizationProvider dateAdapter={AdapterDateFns} adapterLocale={locale}>
+                            <DatePicker
+                                label="Data sprzedaży"
+                                value={date}
+                                onChange={(newDate) => {
+                                    console.log(formatDateToYyyyMmDd(newDate))
+                                    setDate(newDate);
+                                }}
+                                renderInput={(params) => <TextField {...params} />} />
+                        </LocalizationProvider>
                         {!saleModal.edit && <Autocomplete
                             id='search-item'
                             options={items}
@@ -174,7 +193,7 @@ export const SaleModal = ({ isOpen, handleClose }) => {
                             <b>CENA: </b>{!!price ? toCurrency(price) : toCurrency(0)}
                         </Typography>
                         <Button disabled={!validateForm()} onClick={() => {
-                            if (saleModal.edit) updateSale(selectedItem, margin);
+                            if (saleModal.edit) updateSale(selectedItem, margin, date);
                             else createSale(selectedItem, margin)
                         }}>
                             {saleModal.edit ? 'Zapisz' : 'Sprzedaj'}</Button>
