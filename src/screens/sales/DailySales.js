@@ -4,7 +4,7 @@ import { Box, IconButton, Tab, Tabs } from '@mui/material';
 import ReceiptIcon from '@mui/icons-material/Receipt';
 import { DataTable } from '../../components/DataTable'
 import TabPanel from '../../components/TabPanel';
-import { toCurrency } from '../../utils/misc-utils';
+import { decToHex, toCurrency } from '../../utils/misc-utils';
 import { useNavigate, useParams } from 'react-router-dom';
 import { SalesContext } from '../../context/sales-context';
 import { setSaleModal } from '../../redux/modalSlice';
@@ -65,7 +65,7 @@ const DailySales = () => {
             {
                 Header: 'Ścieżka',
                 accessor: 'id_sprzedazy',
-                Cell: props => <div> {props.row.original.skrot} | {props.row.original.numer_umowy} | {props.row.original.id_przedmiotu}</div>
+                Cell: props => <div> {props.row.original.skrot} | {props.row.original.numer_umowy} | {decToHex(props.row.original.id_przedmiotu)}</div>
 
             },
             {
