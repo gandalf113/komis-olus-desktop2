@@ -26,6 +26,8 @@ export const generateContractNumber = (allContracts, year) => {
 }
 
 export const ContractModal = ({ isOpen, handleClose }) => {
+    const { reloadContracts, allContracts } = useContext(ContractContext);
+    const { reloadClients, allClients } = useContext(ClientContext);
 
     const { contractModal } = useSelector(state => state.modal);
     const [selectedClient, setSelectedClient] = useState(null);
@@ -37,22 +39,18 @@ export const ContractModal = ({ isOpen, handleClose }) => {
     const [address, setAddress] = useState('');
     const [phone, setPhone] = useState('');
     const [short, setShort] = useState('');
+    const [contractNumber, setContractNumber] = useState('');
 
     const dispatch = useDispatch();
     const navigate = useNavigate();
-
-    const { reloadContracts, allContracts } = useContext(ContractContext);
-    const { reloadClients, allClients } = useContext(ClientContext);
-
-    const contractNumber = generateContractNumber(allContracts, new Date().getFullYear());
 
     useEffect(() => {
         if (isOpen) {
             if (allClients.length === 0) reloadClients();
 
-
             if (contractModal.edit) {
                 setIsNewClient(false);
+                setContractNumber(contractModal.contract.numer_umowy);
 
                 const fetchSelectedClient = async (clientId) => {
                     window.api.getClient(clientId).then(res => {
@@ -61,6 +59,7 @@ export const ContractModal = ({ isOpen, handleClose }) => {
                 }
                 fetchSelectedClient(contractModal.contract.id_klienta);
             } else {
+                setContractNumber(generateContractNumber(allContracts, new Date().getFullYear()));
                 setFirstName('');
                 setLastName('');
                 setPhone('');
@@ -160,7 +159,7 @@ export const ContractModal = ({ isOpen, handleClose }) => {
 
 
     const updateContract = (clientId) => {
-        window.api.updateContract(contractModal.contract.id_umowy, clientId)
+        window.api.updateContract(contractModal.contract.id_umowy, contractNumber, clientId)
             .then(_ => {
                 handleClose();
                 reloadContracts();
@@ -201,7 +200,8 @@ export const ContractModal = ({ isOpen, handleClose }) => {
                         <TextField
                             id="numer-umowy"
                             label='Numer umowy'
-                            value={contractModal.edit ? contractModal.contract.numer_umowy : contractNumber}
+                            value={contractNumber}
+                            onChange={e => setContractNumber(e.target.value)}
                         />
                         {!isNewClient &&
 

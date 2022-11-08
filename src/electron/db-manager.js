@@ -262,12 +262,13 @@ updateItem = ipcMain.handle("update/item", async (event, args) => {
 })
 
 updateContract = ipcMain.handle("update/contract", async (event, args) => {
-    const { contractId, clientId } = args
+    const { contractId, contractNumber, clientId } = args
 
     return knex('umowy')
         .where({ id_umowy: contractId })
         .update({
-            id_klienta: clientId
+            id_klienta: clientId,
+            numer_umowy: contractNumber
         })
 })
 
