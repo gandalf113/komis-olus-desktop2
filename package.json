@@ -1,6 +1,6 @@
 {
   "name": "komis-olus-desktop",
-  "version": "0.3.5",
+  "version": "0.3.6",
   "author": "Aleksander Szczepaniak",
   "description": "Program przechowujący baze danych klientow i umow komisu odziezowego",
   "main": "src/electron/main.js",

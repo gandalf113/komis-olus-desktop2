@@ -1,12 +1,15 @@
 import React, { useState, useEffect, useMemo, useContext } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
-import { Box, Typography, Button } from '@mui/material';
+import { useParams } from 'react-router-dom';
+import { Box, Typography, Button, IconButton } from '@mui/material';
 import { SalesContext } from '../../context/sales-context';
 import { toCurrency } from '../../utils/misc-utils';
 import { useDispatch } from 'react-redux';
 import { setWithdrawModal } from '../../redux/modalSlice';
 import { DataTable } from '../../components/DataTable';
 import { WithdrawContext } from '../../context/withdraw-context';
+import DeleteIcon from '@mui/icons-material/Delete';
+import ConfirmModal from '../../components/modals/ConfirmModal';
+import { openNotification } from '../../redux/notificationSlice';
 
 
 const getSumOfSales = (items) => {
@@ -38,15 +41,20 @@ const getWithdrawAmount = (sumOfSales, withdraws) => {
  */
 const ClientSummaryScreen = () => {
     const { id } = useParams();
-    const navigate = useNavigate();
+
     const dispatch = useDispatch();
 
     const [client, setClient] = useState();
     const [items, setItems] = useState();
     const [withdraws, setWithdraws] = useState();
 
+    const [deleteModal, setDeleteModal] = useState({
+        isOpen: false,
+        withdraw: null
+    });
+
     const { allSales } = useContext(SalesContext);
-    const { allWithdraws } = useContext(WithdrawContext);
+    const { allWithdraws, reloadWithdraws } = useContext(WithdrawContext);
 
     /**
      * Get client detail
@@ -75,6 +83,26 @@ const ClientSummaryScreen = () => {
         });
     }, [id, allWithdraws]);
 
+    const deleteWithdraw = () => {
+        const withdraw = deleteModal.withdraw;
+
+        if (!withdraw) return;
+
+        window.api.deleteWithdraw(withdraw.id_wyplaty)
+            .then(res => {
+                reloadWithdraws();
+                setDeleteModal({
+                    isOpen: false,
+                    withdraw: null
+                })
+                dispatch(openNotification(`Pomyślnie wycofano wypłatę o wartości ${withdraw.kwota} zł`));
+            })
+            .catch(err => {
+                alert("Nie udało się wycofać wypłaty. Informacje o błędzie w konsoli")
+                console.error(err);
+            });
+    }
+
     const columms = useMemo(
         () => [
             {
@@ -89,6 +117,12 @@ const ClientSummaryScreen = () => {
             {
                 Header: 'Data wypłaty',
                 accessor: 'data',
+            },
+            {
+                Header: 'Usuń',
+                Cell: props => <IconButton onClick={() => setDeleteModal({ isOpen: true, withdraw: props.row.original })} >
+                    <DeleteIcon />
+                </IconButton>
             },
         ],
         []
@@ -110,7 +144,7 @@ const ClientSummaryScreen = () => {
 
 
     return (
-        <div>
+        <>
             <Box style={{ alignItems: 'center' }}>
                 {/* <Typography variant='h5'>{client.imie} {client.nazwisko} - {client.skrot}</Typography>
                 <Button onClick={handleOpenClientContracts}
@@ -123,7 +157,15 @@ const ClientSummaryScreen = () => {
                 <Button onClick={handleOpenNewWithdrawModal}
                     sx={{ marginTop: 3 }} color='inherit' variant='contained'>Dodaj wypłatę</Button>
             </Box>
-        </div>
+
+            <ConfirmModal
+                handleClose={() => setDeleteModal({ ...deleteModal, isOpen: false })}
+                isOpen={deleteModal.isOpen}
+                title={deleteModal.withdraw ? `Czy na pewno chcesz wycofać wypłatę ${deleteModal.withdraw.kwota} zł dla ${client.skrot}?`
+                    : 'Czy na pewno chcesz wycofać wypłatę?'}
+                handleYes={deleteWithdraw}
+            />
+        </>
     )
 }
 

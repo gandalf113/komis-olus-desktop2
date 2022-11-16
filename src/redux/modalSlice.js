@@ -47,6 +47,13 @@ export const modalSlice = createSlice({
             withdraw: {},
             client: {},
             withdrawableAmount: 0
+        },
+
+        confirmModal: {
+            id: 'confirm',
+            title: "Czy na pewno chcesz to zrobić",
+            handleYes: () => {},
+            handleNo: () => {}
         }
 
         // Item detail modal is handled from within NewSaleModal
@@ -70,7 +77,9 @@ export const modalSlice = createSlice({
         setWithdrawModal: (state, action) => {
             state.withdrawModal = action.payload;
         },
-
+        setConfirmModal: (state, action) => {
+            state.confirmModal = action.payload;
+        }
     }
 })
 
@@ -80,7 +89,8 @@ export const {
     setItemModal,
     setSaleModal,
     setReturnModal,
-    setWithdrawModal
+    setWithdrawModal,
+    setConfirmModal
 } = modalSlice.actions
 
 export default modalSlice.reducer

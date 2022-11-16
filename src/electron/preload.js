@@ -44,6 +44,7 @@ const WINDOW_API = {
     deleteClient: (clientId) => ipcRenderer.invoke("delete/client", { clientId: clientId }),
     deleteItem: (itemId) => ipcRenderer.invoke("delete/item", { itemId: itemId }),
     deleteContract: (contractId) => ipcRenderer.invoke("delete/contract", { contractId: contractId }),
+    deleteWithdraw: (withdrawId) => ipcRenderer.invoke("delete/withdraw", { withdrawId: withdrawId }),
 }
 
 const PRINTER_API = {

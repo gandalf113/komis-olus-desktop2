@@ -325,3 +325,12 @@ deleteContract = ipcMain.handle('delete/contract', async (event, args) => {
     return knex.select('*').from('umowy')
         .where('id_umowy', contractId).del();
 })
+
+deleteWithdraw = ipcMain.handle('delete/withdraw', async (event, args) => {
+    const { withdrawId } = args
+
+    await knex.raw('PRAGMA foreign_keys = ON');
+
+    return knex.select('*').from('wyplaty')
+        .where('id_wyplaty', withdrawId).del();
+})
