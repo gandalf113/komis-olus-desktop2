@@ -9,7 +9,9 @@ import { DataTable } from '../../components/DataTable';
 import { WithdrawContext } from '../../context/withdraw-context';
 import DeleteIcon from '@mui/icons-material/Delete';
 import ConfirmModal from '../../components/modals/ConfirmModal';
+import SavingsSharpIcon from '@mui/icons-material/SavingsSharp';
 import { openNotification } from '../../redux/notificationSlice';
+import AddButton from '../../components/AddButton';
 
 
 const getSumOfSales = (items) => {
@@ -145,17 +147,17 @@ const ClientSummaryScreen = () => {
 
     return (
         <>
-            <Box style={{ alignItems: 'center' }}>
-                {/* <Typography variant='h5'>{client.imie} {client.nazwisko} - {client.skrot}</Typography>
-                <Button onClick={handleOpenClientContracts}
-                    style={{ marginTop: 10, marginBottom: 10 }} color='secondary' variant='contained'>Pokaż umowy</Button> */}
-            </Box>
-            <DataTable loading={false} tableData={withdraws} columns={columms} />
-            <Box style={{ display: 'flex', flexDirection: 'column', alignItems: 'start', gap: 2, marginTop: 4 }}>
+            <AddButton
+                icon={<SavingsSharpIcon />}
+                text="Dodaj wypłatę"
+                onClick={handleOpenNewWithdrawModal}
+            />
+
+            <DataTable loading={false} tableData={withdraws} columns={columms} hideSearchBar />
+
+            <Box sx={{ display: 'flex', flexDirection: 'column', marginTop: 3 }}>
                 <Typography variant='body'>Suma sprzedaży: {toCurrency(sumOfSales)} </Typography>
                 <Typography variant='body'>Do wypłaty: {toCurrency(getWithdrawAmount(sumOfSales, withdraws))} </Typography>
-                <Button onClick={handleOpenNewWithdrawModal}
-                    sx={{ marginTop: 3 }} color='inherit' variant='contained'>Dodaj wypłatę</Button>
             </Box>
 
             <ConfirmModal

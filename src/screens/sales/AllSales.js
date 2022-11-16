@@ -35,7 +35,7 @@ const AllSales = () => {
                 Cell: props => <div> {toCurrency(props.value)} </div>
             },
             {
-                Header: 'Marża',
+                Header: 'Prowizja',
                 accessor: 'marza',
                 Cell: props => <div> {toCurrency(props.value)} </div>
             },

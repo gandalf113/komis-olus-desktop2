@@ -6,9 +6,11 @@ import TabPanel from '../../components/TabPanel';
 import ClientSummaryScreen from './ClientSummaryScreen';
 import { useDispatch } from 'react-redux';
 import { setPath } from '../../redux/screenSlice';
-
+import ReceiptIcon from '@mui/icons-material/Receipt';
 import '../../global.css';
 import ClientReturnsScreen from './ClientReturnsScreen';
+import AddButton from '../../components/AddButton';
+import { setContractModal } from '../../redux/modalSlice';
 
 function a11yProps(index) {
     return {
@@ -53,10 +55,6 @@ const ClientDetailScreen = () => {
 
     const columns = useMemo(
         () => [
-            // {
-            //     Header: 'ID',
-            //     accessor: 'id_umowy',
-            // },
             {
                 Header: 'Numer umowy',
                 accessor: 'numer_umowy',
@@ -95,7 +93,16 @@ const ClientDetailScreen = () => {
                 <Box style={{ alignItems: 'center' }}>
                 </Box>
 
-                <DataTable loading={false} tableData={contracts} columns={columns} />
+                <AddButton
+                    icon={<ReceiptIcon />}
+                    text='Dodaj umowę'
+                    onClick={() => dispatch(setContractModal({
+                        isOpen: true,
+                        edit: false
+                    }))}
+                />
+
+                <DataTable loading={false} tableData={contracts} columns={columns} hideSearchBar/>
             </TabPanel>
 
             {/* Client's withdraws */}

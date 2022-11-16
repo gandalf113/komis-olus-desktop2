@@ -167,7 +167,7 @@ export const SaleModal = ({ isOpen, handleClose }) => {
                         <TextField
                             id="price-input"
                             type='number'
-                            label="Marża [zł]"
+                            label="Prowizja [zł]"
                             disabled={!selectedItem}
                             value={margin}
                             onChange={(e) => {

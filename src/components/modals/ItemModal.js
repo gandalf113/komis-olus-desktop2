@@ -179,7 +179,7 @@ export const ItemModal = ({ isOpen, handleClose }) => {
                             <>
                                 <TextField
                                     id="item-margin-input"
-                                    label="Domyślna marża [zł]"
+                                    label="Domyślna prowizja [zł]"
                                     type="number"
                                     defaultValue={'0.00'}
                                     value={margin}

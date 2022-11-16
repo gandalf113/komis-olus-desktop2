@@ -20,7 +20,7 @@ const NewWithdrawModal = ({ isOpen, handleClose }) => {
     const { withdrawModal } = useSelector(state => state.modal);
 
     useEffect(() => {
-        setAmount('');
+        setAmount(withdrawModal.withdrawableAmount);
     }, [isOpen]);
 
     // TODO: Get client id somehow

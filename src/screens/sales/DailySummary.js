@@ -29,7 +29,7 @@ const DailySummary = ({ sales }) => {
         Footer: <span>test</span>
       },
       {
-        Header: 'Marża',
+        Header: 'Prowizja',
         accessor: 'prowizja',
         Cell: props => <div> {toCurrency(props.value)} </div>
       },
