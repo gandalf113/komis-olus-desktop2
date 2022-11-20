@@ -40,11 +40,14 @@ const WINDOW_API = {
     // Increment
     incrementSoldAmount: (itemId) => ipcRenderer.invoke("increment/soldAmount", { itemId: itemId }),
     incrementReturnedAmountBy: (itemId, amount) => ipcRenderer.invoke("increment/returnedAmount", { itemId: itemId, amount: amount }),
+    // Decrement
+    decrementReturnedAmountBy: (itemId, amount) => ipcRenderer.invoke("decrement/returnedAmount", { itemId: itemId, amount: amount }),
     // Delete
     deleteClient: (clientId) => ipcRenderer.invoke("delete/client", { clientId: clientId }),
     deleteItem: (itemId) => ipcRenderer.invoke("delete/item", { itemId: itemId }),
     deleteContract: (contractId) => ipcRenderer.invoke("delete/contract", { contractId: contractId }),
     deleteWithdraw: (withdrawId) => ipcRenderer.invoke("delete/withdraw", { withdrawId: withdrawId }),
+    deleteReturn: (returnId) => ipcRenderer.invoke("delete/return", { returnId }),
 }
 
 const PRINTER_API = {

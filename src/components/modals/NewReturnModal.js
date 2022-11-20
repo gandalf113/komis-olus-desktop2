@@ -61,7 +61,6 @@ export const NewReturnModal = ({ isOpen, handleClose }) => {
                             label="Ilość"
                             inputProps={{ min: 1 }}
                             type="number"
-                            defaultValue={1}
                             value={amount}
                             onChange={(e) => setAmount(e.target.value)}
                         />

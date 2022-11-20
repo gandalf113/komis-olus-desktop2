@@ -288,6 +288,14 @@ incrementReturnedAmountBy = ipcMain.handle('increment/returnedAmount', async (ev
         .increment('zwroconaIlosc', amount)
 })
 
+decrementReturnedAmountBy = ipcMain.handle('decrement/returnedAmount', async (event, args) => {
+    const { itemId, amount } = args
+
+    return knex('przedmioty')
+        .where('id_przedmiotu', '=', itemId)
+        .decrement('zwroconaIlosc', amount)
+})
+
 getItemsDetailed = ipcMain.handle('get/items/detailed', async (event, args) => {
     const { search } = args
 
@@ -324,13 +332,22 @@ deleteContract = ipcMain.handle('delete/contract', async (event, args) => {
 
     return knex.select('*').from('umowy')
         .where('id_umowy', contractId).del();
-})
+});
 
 deleteWithdraw = ipcMain.handle('delete/withdraw', async (event, args) => {
-    const { withdrawId } = args
+    const { withdrawId } = args;
 
     await knex.raw('PRAGMA foreign_keys = ON');
 
     return knex.select('*').from('wyplaty')
         .where('id_wyplaty', withdrawId).del();
-})
+});
+
+deleteReturn = ipcMain.handle('delete/return', async (event, args) => {
+    const { returnId } = args;
+
+    await knex.raw('PRAGMA foreign_keys = ON');
+
+    return knex.select('*').from('zwroty')
+        .where('id_zwrotu', returnId).del();
+});
