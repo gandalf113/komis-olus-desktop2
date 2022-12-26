@@ -11,7 +11,7 @@ import ConfirmModal from '../../components/modals/ConfirmModal';
 export const deleteReturn = (_return, handleSuccess) => {
     window.api.deleteReturn(_return.id_zwrotu)
         .then(res => {
-            window.api.decrementReturnedAmountBy(_return.id_przedmiotu, _return.zwroconaIlosc)
+            window.api.decrementReturnedAmountBy(_return.id_przedmiotu, _return.ilosc)
                 .then(res => {
                     handleSuccess();
                 })
@@ -61,6 +61,10 @@ const ClientReturnsScreen = () => {
                 accessor: 'id_zwrotu',
             },
             {
+                Header: 'Numer umowy',
+                accessor: 'numer_umowy',
+            },
+            {
                 Header: 'Kod z metki',
                 accessor: 'id_przedmiotu',
                 Cell: props => <div>{decToHex(props.value)}</div>
@@ -99,6 +103,8 @@ const ClientReturnsScreen = () => {
 
     const filteredReturns = filterReturns(allReturns, clientId)
 
+    console.log(deleteModal);
+
     return (
         <>
             <DataTable loading={false} tableData={filteredReturns} columns={columns} />
@@ -106,7 +112,7 @@ const ClientReturnsScreen = () => {
                 handleClose={() => setDeleteModal({ ...deleteModal, isOpen: false })}
                 isOpen={deleteModal.isOpen}
                 title={deleteModal._return ? `Czy na pewno chcesz usunąć
-                zwrot '${deleteModal._return.nazwa}' (${deleteModal._return.zwroconaIlosc} sztuk) od ${deleteModal._return.skrot}?`
+                zwrot '${deleteModal._return.nazwa}' (${deleteModal._return.ilosc} sztuk) od ${deleteModal._return.skrot}?`
                     : 'Czy na pewno chcesz usunąć zwrot?'}
                 handleYes={() => deleteReturn(deleteModal._return, () => {
                     reloadReturns();

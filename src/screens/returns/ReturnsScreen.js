@@ -85,7 +85,7 @@ const ReturnsScreen = () => {
                 handleClose={() => setDeleteModal({ ...deleteModal, isOpen: false })}
                 isOpen={deleteModal.isOpen}
                 title={deleteModal._return ? `Czy na pewno chcesz usunąć
-                zwrot '${deleteModal._return.nazwa}' (${deleteModal._return.zwroconaIlosc} sztuk) od ${deleteModal._return.skrot}?`
+                zwrot '${deleteModal._return.nazwa}' (${deleteModal._return.ilosc} sztuk) od ${deleteModal._return.skrot}?`
                     : 'Czy na pewno chcesz usunąć zwrot?'}
                 handleYes={() => deleteReturn(deleteModal._return, () => {
                     reloadReturns();

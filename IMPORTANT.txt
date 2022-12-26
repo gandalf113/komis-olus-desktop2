@@ -1,0 +1,3 @@
+npm start doesn't work probably because something changed in the new Node.js version that I installed
+
+try to go back to Node 14
