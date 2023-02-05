@@ -1,33 +1,32 @@
-# MENADŻER SKLEPU
-<p>Program powstał dla komisu odzieżowego, pozwala na zarządzanie bazą danych z klientami, umowami oraz sprzedażą.</p>
+# CLOTHING STORE MANAGER
+<p>The program was created for a clothing consignment store, allowing management of the database with customers, contracts, and sales.</p>
 <img src="/preview.png" alt="preview">
 
-## BAZA DANYCH
-Program korzysta z bazy SQLlite3.
-### Lokalizacja
-Obecnie baza danych jest automatycznie wczytywana z lokalizacji: <i>C:/KOMIS_OLUS/database.sqlite</i>.
-W przyszłości dodana zostanie możliwość ręcznego wyboru bazy danych.
-### Struktura
+## Database
+The program uses SQLlite3 database.
+### Location
+Currently, the database is automatically loaded from the location: <i>C:/KOMIS_OLUS/database.sqlite</i>. In the future, the option to manually select the database will be added.
+### Structure
 
-#### Klienci
+#### Clients
 <table style="width: 240px;" border="1" cellpadding="4">
 <tbody>
 <tr>
-<th>NAZWA</th>
-<th>TYP</th>
-<th>OPIS</th>
-<th>OBCY_KLUCZ</th>
+<th>NAME</th>
+<th>TYPE</th>
+<th>DESC</th>
+<th>FOREIGN_KEY</th>
 </tr>
 <tr>
 <td>id_klienta</td>
 <td>INTEGER</td>
-<td>klucz główny</td>
+<td>primary key</td>
 <td></td>
 </tr>
 <tr>
 <td>skrot</td>
 <td>TEXT</td>
-<td>powstaje z dwóch pierwszych liter imienia i nazwiska oraz liczby porządkowej, np. mona2</td>
+<td>it is created from the first two letters of the first name and last name and an ordinal number, e.g. mona2</td>
 <td></td>
 </tr>
 <tr>
@@ -57,37 +56,37 @@ W przyszłości dodana zostanie możliwość ręcznego wyboru bazy danych.
 </tbody>
 </table>
 
-#### Przedmioty
+#### Items
 <table style="width: 240px;" border="1" cellpadding="4">
 <tbody>
 <tr>
-<th>NAZWA</th>
-<th>TYP</th>
-<th>OPIS</th>
-<th>OBCY_KLUCZ</th>
+<th>NAME</th>
+<th>TYPE</th>
+<th>DESC</th>
+<th>FOREIGN_KEY</th>
 </tr>
 <tr>
 <td>id_przedmiotu</td>
 <td>INTEGER</td>
-<td>klucz główny</td>
+<td>primary key</td>
 <td></td>
 </tr>
 <tr>
 <td>id_umowy</td>
 <td>INTEGER</td>
-<td>id umowy, do której należy przedmiot</td>
+<td>id of the contract to which the item belongs</td>
 <td>umowy.id_umowy</td>
 </tr>
 <tr>
 <td>nazwa</td>
 <td>TEXT</td>
-<td>nazwa przedmiotu np. zielony sweter</td>
+<td>name of the item, e.g. great sweater</td>
 <td>&nbsp;</td>
 </tr>
 <tr>
 <td>przyjetaIlosc</td>
 <td>INTEGER</td>
-<td>ilość sztuk przedmiotu w momencie przyjęcia do komisu</td>
+<td>quantity of items at the time of acceptance into the consignment</td>
 <td>&nbsp;</td>
 </tr>
 <tr>
@@ -105,50 +104,50 @@ W przyszłości dodana zostanie możliwość ręcznego wyboru bazy danych.
 <tr>
 <td>kwotaDlaKomitenta</td>
 <td>NUMERIC</td>
-<td>kwota, którą zarobi komitent</td>
+<td>amount the consignee will earn.</td>
 <td>&nbsp;</td>
 </tr>
 
 <tr>
 <td>domyslnaMarza</td>
 <td>NUMERIC</td>
-<td>marżę można zmienić w momencie sprzedaży</td>
+<td>margin can be changed at the moment of sale</td>
 <td>&nbsp;</td>
 </tr>
 </tbody>
 </table>
 
-#### Sprzedaż
+#### Sales
 <table style="width: 240px;" border="1" cellpadding="4">
 <tbody>
 <tr>
-<th>NAZWA</th>
-<th>TYP</th>
-<th>OPIS</th>
-<th>OBCY_KLUCZ</th>
+<th>NAME</th>
+<th>TYPE</th>
+<th>DESC</th>
+<th>FOREIGN_KEY</th>
 </tr>
 <tr>
 <td>id_sprzedazy</td>
 <td>INTEGER</td>
-<td>klucz główny</td>
+<td>primary key</td>
 <td></td>
 </tr>
 <tr>
 <td>id_przedmiotu</td>
 <td>INTEGER</td>
-<td>id przedmiotu, który się sprzedał</td>
+<td>id of the sold item</td>
 <td>przedmioty.id_przedmiotu</td>
 </tr>
 <tr>
 <td>data</td>
 <td>TEXT</td>
-<td>data w formacie yyyy-mm-dd</td>
+<td>date in yyyy-mm-dd format</td>
 <td>&nbsp;</td>
 </tr>
 <tr>
 <td>marza</td>
 <td>NUMERIC</td>
-<td>kwota, którą zarobi komis</td>
+<td>amount the store will earn</td>
 <td>&nbsp;</td>
 </tr>
 <tr>
@@ -160,110 +159,110 @@ W przyszłości dodana zostanie możliwość ręcznego wyboru bazy danych.
 </tbody>
 </table>
 
-#### Umowy
+#### Contracts
 <table style="width: 240px;" border="1" cellpadding="4">
 <tbody>
 <tr>
-<th>NAZWA</th>
-<th>TYP</th>
-<th>OPIS</th>
-<th>OBCY_KLUCZ</th>
+<th>NAME</th>
+<th>TYPE</th>
+<th>DESC</th>
+<th>FOREIGN_KEY</th>
 </tr>
 <tr>
 <td>id_umowy</td>
 <td>INTEGER</td>
-<td>klucz główny</td>
+<td>primary key</td>
 <td></td>
 </tr>
 <tr>
 <td>id_klienta</td>
 <td>INTEGER</td>
-<td>id klienta, z którymy zawarta jest umowa</td>
+<td>id of the customer with whom the contract is signed</td>
 <td>klienci.id_klienta</td>
 </tr>
 <tr>
 <td>data</td>
 <td>TEXT</td>
-<td>data zawarcia umowy w formacie yyyy-mm-dd</td>
+<td>date of the contract signing in yyyy-mm-dd format</td>
 <td>&nbsp;</td>
 </tr>
 <tr>
 <td>numer_umowy</td>
 <td>TEXT</td>
-<td>identyfikator, np. 6/2022 dla szóstej umowy w 2022 roku</td>
+<td>number of the contract, e.g. 6/2022 for the sixth contract of 2022</td>
 <td>&nbsp;</td>
 </tr>
 </tbody>
 </table>
 
 
-#### Wyplaty
+#### Withdrawals
 <table style="width: 240px;" border="1" cellpadding="4">
 <tbody>
 <tr>
-<th>NAZWA</th>
-<th>TYP</th>
-<th>OPIS</th>
-<th>OBCY_KLUCZ</th>
+<th>NAME</th>
+<th>TYPE</th>
+<th>DESC</th>
+<th>FOREIGN_KEY</th>
 </tr>
 <tr>
 <td>id_wyplaty</td>
 <td>INTEGER</td>
-<td>klucz główny</td>
+<td>primary key</td>
 <td></td>
 </tr>
 <tr>
 <td>id_klienta</td>
 <td>INTEGER</td>
-<td>id klienta, który wypłaca pieniądze</td>
+<td>id of the client drawing out the money</td>
 <td>klienci.id_klienta</td>
 </tr>
 <tr>
 <td>data</td>
 <td>TEXT</td>
-<td>data wypłaty w formacie yyyy-mm-dd</td>
+<td>withdrawal date in yyyy-mm-dd format</td>
 <td>&nbsp;</td>
 </tr>
 <tr>
 <td>kwota</td>
 <td>NUMERIC</td>
-<td>wypłacana kwota</td>
+<td>withdrawed amount</td>
 <td>&nbsp;</td>
 </tr>
 </tbody>
 </table>
 
-#### Zwroty
+#### Returns
 <table style="width: 240px;" border="1" cellpadding="4">
 <tbody>
 <tr>
-<th>NAZWA</th>
-<th>TYP</th>
-<th>OPIS</th>
-<th>OBCY_KLUCZ</th>
+<th>NAME</th>
+<th>TYPE</th>
+<th>DESC</th>
+<th>FOREIGN_KEY</th>
 </tr>
 <tr>
 <td>id_zwrotu</td>
 <td>INTEGER</td>
-<td>klucz główny</td>
+<td>primary key</td>
 <td></td>
 </tr>
 <tr>
 <td>id_przedmiotu</td>
 <td>INTEGER</td>
-<td>id zwracanego przedmiotu</td>
+<td>id of the returned item</td>
 <td>przedmioty.id_przedmiotu</td>
 </tr>
 <tr>
 <td>data</td>
 <td>TEXT</td>
-<td>data zwrotu w formacie yyyy-mm-dd</td>
+<td>return date in yyyy-mm-dd format</td>
 <td>&nbsp;</td>
 </tr>
 <tr>
 <td>ilosc</td>
 <td>INTEGER</td>
-<td>ilość zwracanych sztuk</td>
+<td>amount of the returned items</td>
 <td>&nbsp;</td>
 </tr>
 </tbody>
